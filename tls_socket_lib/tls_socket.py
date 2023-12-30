@@ -36,10 +36,14 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: bytes, timeout: int) -> None:
+    def execute(self, command: bytes, timeout: int, output_as_string: bool) -> None:
 
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
+
+        command - The function code you would like to execute. Make sure this is in computer format. \n
+        timeout - The amount of time to wait for a response from the host. Adjust this as needed. \n
+        output_as_string - If enabled, output will be delivered as a string instead of as bytecode.
         """
 
         socket = self.socket

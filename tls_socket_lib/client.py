@@ -2,11 +2,11 @@ import tls_socket
 import argparse
 
 def is_security_code_valid(security_code: str) -> bool:
-    
+
     """
     Checks if the user-provided RS-232 security code meets length and character requirements.
 
-    The RS-232 security code is an optional six-digit code used to limit external serial access to the system for security purposes.
+    security_code - Contains the security code provided by the user.
     """
 
     # If a security code was not provided, simply return true.
