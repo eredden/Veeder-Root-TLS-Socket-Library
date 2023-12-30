@@ -48,7 +48,13 @@ if __name__ == "__main__":
         print(f"You are connected to {args.ip} using port {args.port}.\n")
 
         while True:
-            command = input(">> ")
+            command = input("\n>> ")
+
+            if command.lower() == "exit":
+                print("Disconnecting from host...")
+                break
 
             command = bytes(f"{args.security_code}{command}", "utf-8")
             results = tls.execute(command, 5, args.display_format)
+        
+        print("Connection ended.")
