@@ -19,6 +19,4 @@ if __name__ == "__main__":
             command = bytes(command, "utf-8")
             results = tls.execute(command, 5)
 
-            # Converting bytecode results into a string.
-            results = results.decode("utf-8")
             print(f"{results}\n")

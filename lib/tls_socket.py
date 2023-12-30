@@ -40,7 +40,7 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: bytes, timeout: int) -> bytes:
+    def execute(self, command: bytes, timeout: int) -> None:
 
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
@@ -48,30 +48,19 @@ class tlsSocket:
 
         socket = self.socket
 
-        # Using the Python match/case statements to make decisions based on the value of command.
-        match command:
+        # Appends CTRL + A as the start of header.
+        command = b"\x01" + command
 
-            case b"exit":
-                self.__del__()
-                return b"Please exit by using CTRL + C."
+        socket.sendall(command)
+        time.sleep(timeout)
 
-            case b"help":
-                return  b"Refer to Veeder-Root Serial Interface Manual 576013-635 for function codes."
+        response = socket.recv(512)
 
-            case _:
-                # Appends CTRL + A as the start of header.
-                command = b"\x01" + command
+        # Error handling for 9999FF1B, occurs when an invalid command is used.
+        if b"FF1B" in response:
+            response = b"Unrecognized function code. Use the command format form of the function."
+        else:
+            # Removes sent command from output.
+            response = response[len(command)::]
 
-                socket.sendall(command)
-                time.sleep(timeout)
-
-                response = socket.recv(512)
-
-                # Error handling for 9999FF1B, occurs when an invalid command is used.
-                if b"FF1B" in response:
-                    response = b"Unrecognized function code. Use the command format form of the function."
-                else:
-                    # Removes sent command from output.
-                    response = response[len(command)::]
-
-                    return response
+        print(response)
