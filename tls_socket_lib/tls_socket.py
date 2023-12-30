@@ -1,4 +1,5 @@
-import socket, time
+import socket
+import time
 
 class tlsSocket:
     """
@@ -25,11 +26,6 @@ class tlsSocket:
     def __str__(self):
         # Code to run to make the class more human-readable when printed.
         return f"tlsSocket({self.ip}, {self.port}, {self.socket})"
-    
-    def __del__(self):
-        # Code to run when deleting this class.
-        socket = self.socket
-        socket.close()
 
     def __enter__(self):
         # Code to run when entering a with statement.
@@ -59,8 +55,9 @@ class tlsSocket:
         # Error handling for 9999FF1B, occurs when an invalid command is used.
         if b"FF1B" in response:
             response = b"Unrecognized function code. Use the command format form of the function."
+
+        # Return output without sent command included.
         else:
-            # Removes sent command from output.
             response = response[len(command)::]
 
         print(response)
