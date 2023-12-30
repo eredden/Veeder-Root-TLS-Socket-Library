@@ -35,7 +35,7 @@ You can also use the client.py file that I created for this library to interact 
 
 **Output:**
 
->```python
+>```
 > You are connected to 127.0.0.1 using port 10001.
 >
 > >>
