@@ -3,11 +3,10 @@ import argparse
 
 if __name__ == "__main__":
 
-    # Require IP address and port parameters when running this script.
+    # Require these parameters when running this script.
     parser = argparse.ArgumentParser()
     parser.add_argument("ip", help="IP address of the TLS system.", type=str)
     parser.add_argument("port", help="Port number used to connect to the serial interface remotely.", type=int)
-    parser.add_argument("--security_code", help="Six printable-character ASCII code prepended to commands for authentication.", type=str)
     parser.add_argument("--raw", help="Shows output from the TLS system as original, unaltered bytecode.", action="store_true")
     args = parser.parse_args()
 
@@ -31,7 +30,7 @@ if __name__ == "__main__":
             if args.raw == True:
                 print(output)
             else:
-                output = tls_socket.remove_command_headers(output, command)
+                output = tls_socket.remove_response_headers(output, command)
                 print(output)
 
         

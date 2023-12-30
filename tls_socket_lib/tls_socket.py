@@ -36,31 +36,19 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: str, timeout: int, security_code = "") -> bytes:
+    def execute(self, command: str, timeout: int) -> bytes:
 
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
 
         command - The function code you would like to execute. Make sure this is in computer format. \n
-        timeout - The amount of time to wait for a response from the host. Adjust this as needed. \n
-        display_format - Outputs values as strings instead of as bytecode.
+        timeout - The amount of time to wait for a response from the host. Adjust this as needed.
         """
 
         socket = self.socket
         command = bytes(command, "utf-8")
-
-        if validate_security_code(security_code):
-            security_code = bytes(security_code, "utf-8")
-        elif security_code == "":
-            security_code = bytes(security_code, "utf-8")
-        else:
-            response = b"Invalid security code. Must be six characters long and use printable ASCII characters."
-            print(response)
-            return response
-        
-
         # Appends CTRL + A as the start of header.
-        command = b"\x01" + security_code + command
+        command = b"\x01" + command
 
         # Send input, wait, receive output.
         socket.sendall(command)
@@ -75,7 +63,7 @@ class tlsSocket:
 
         return response
 
-def remove_command_headers(response: bytes, command: str) -> str:
+def remove_response_headers(response: bytes, command: str) -> str:
     """
     Takes output from any command and removes the SOH, originally sent command, and ETX.
 
@@ -101,27 +89,3 @@ def remove_command_headers(response: bytes, command: str) -> str:
         response = response[:-4]
 
     return response
-
-def validate_security_code(security_code: str) -> bool:
-
-    """
-    Checks if the RS-232 security code meets length (6 characters) and character (printable ASCII) requirements.
-
-    security_code - Security code used to authenticate to the TLS system.
-    """
-
-    # If a security code was not provided, simply return true.
-    if security_code == None:
-        return True
-
-    # Check if security code uses ASCII characters.
-    try:
-        security_code.encode('ascii')
-    except:
-        return False
-    
-    # Ensure that security code length is six characters.
-    if len(security_code) != 6:
-        return False
-    
-    return True
