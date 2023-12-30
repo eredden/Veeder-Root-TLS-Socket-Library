@@ -12,7 +12,7 @@ After reading through those, you can find the available functions and commands i
 
 ## Examples
 
-This script demonstrates how you can programmatically connect to a TLS-350 system and get a system status report. Note that the command in execute() is bytecode, not a string.
+This script demonstrates how you can programmatically connect to a TLS-350 system and get a system status report.
 
 **Script:**
 
@@ -20,16 +20,35 @@ This script demonstrates how you can programmatically connect to a TLS-350 syste
 > from tls_socket_lib import tls_socket
 >
 > tls = tls_socket.tlsSocket("127.0.0.1", 10001) # initial connection
-> tls.execute(b"i10100", 5, True) # get system status report
+> response = tls.execute("i10100", 5) # get system status report
+> 
+> print(response) # print the response of the command
 >```
 
 **Output:**
 
 >```python
-> b'2312292336020402&&FB2F\x03'
+> b'\x01i101002312301342020402&&FB3B\x03'
 >```
 
-The functions and outputs created by the TLS systems can be understood by looking through the Veeder-Root Serial Interface Manual for the TSI-300/350/350R Monitoring Systems. I plan on adding a feature that converts the computer formatted output into more human-readable text in the future.
+You can remove some of the filler headers and footers from this code by running the output through remove_response_headers(). The only downside about this process is that the command has to be provided a second time here so that it can be removed from the ouput.
+
+**Script:**
+
+>```python
+> results = tls_socket.remove_response_headers(response, "i10100")
+> print(results)
+>```
+
+**Output:**
+
+>```
+> 2312301351020402&&FB3B
+>```
+
+You can see that the start of header ``\x01``, end of transmission ``\0x3``, and the original command ``i10100`` have all been removed. Only the unique data is shown, and from here it can be split apart further to store the individual variables.
+
+# Using the TLS Client
 
 You can also use the client.py file that I created for this library to interact with the TLS systems manually, similar to how you would with systems through Telnet, SSH, or Putty.
 
@@ -69,4 +88,4 @@ From here, you can type in any function code to interact with the TLS system. As
 > >>
 > ```
 
-
+By default, the output of these commands will be shown without the SOH, ETX, and original command. If you would like to see that information as well, you can use the ``--raw`` flag when running the client.py file.
