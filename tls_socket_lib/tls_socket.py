@@ -59,9 +59,19 @@ class tlsSocket:
         # Error handling when an invalid command is used (9999FF1B).
         if b"FF1B" in response:
             response = b"Unrecognized function code. Use the command format form of the function."
+            # Prevents the above error from getting first and last letters removed.
+            display_format = False
 
         # Send output as string if display_format is enabled.
         if display_format: 
             response = response.decode("utf-8")
+            
+            # Removes SOH from being shown in output.
+            response = response[1::]
+            # Removes ETX from being shown in output.
+            response = response[:-1]
+            # Checks for newlines at end of output, removes if present.
+            if response[-4:] == "\r\n\r\n":
+                response = response[:-4]
 
         print(response)

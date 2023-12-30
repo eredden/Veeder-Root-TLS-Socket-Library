@@ -45,7 +45,7 @@ if __name__ == "__main__":
     # Start a connection with the desired host.
     with tls_socket.tlsSocket(args.ip, args.port) as tls:
         
-        print(f"You are connected to {args.ip} using port {args.port}.\n")
+        print(f"You are connected to {args.ip} using port {args.port}.")
 
         while True:
             command = input("\n>> ")
@@ -57,4 +57,4 @@ if __name__ == "__main__":
             command = bytes(f"{args.security_code}{command}", "utf-8")
             results = tls.execute(command, 5, args.display_format)
         
-        print("Connection ended.")
+        print("Connection ended.\n")
