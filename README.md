@@ -10,8 +10,6 @@ The commands used to interact with Veeder-Root TLS-300/350/350R systems can be f
 
 After reading through those, you can find the available functions and commands in Section 7.0. You will want to use either the Computer or Display format of the command as listed under the Command Format header (note that the SOH is automatically added by this program). For example, if you would like to use function code 101 (System Status Report) in the Display format, you would use the command ``I10100`` to do so. See the below examples for more information about the outputs of these commands.
 
-Section 7.0
-
 ## Examples
 
 This script demonstrates how you can programmatically connect to a TLS-350 system and get a system status report. Note that the command in execute() is bytecode, not a string.
