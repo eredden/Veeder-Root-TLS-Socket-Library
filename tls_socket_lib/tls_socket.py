@@ -65,13 +65,21 @@ class tlsSocket:
         # Send output as string if display_format is enabled.
         if display_format: 
             response = response.decode("utf-8")
+            command = command.decode("utf-8")[1:]
             
-            # Removes SOH from being shown in output.
-            response = response[1::]
-            # Removes ETX from being shown in output.
+            # Removes SOH, ETX, and command from being shown in output.
+            # This works for both Computer and Display format commands.
+            response = response[1:]
             response = response[:-1]
-            # Checks for newlines at end of output, removes if present.
+            response = response.replace(command, "")
+
+            # Checks for newlines at both ends of output, removes if present.
+            # Only applies to Display format commands.
+            if response[:2] == "\r\n":
+                response = response[2:]
+
             if response[-4:] == "\r\n\r\n":
                 response = response[:-4]
+
 
         print(response)
