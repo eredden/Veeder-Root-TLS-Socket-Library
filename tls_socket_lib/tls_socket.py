@@ -36,14 +36,14 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: bytes, timeout: int, output_as_string: bool) -> None:
+    def execute(self, command: bytes, timeout: int, display_format: bool) -> None:
 
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
 
         command - The function code you would like to execute. Make sure this is in computer format. \n
         timeout - The amount of time to wait for a response from the host. Adjust this as needed. \n
-        output_as_string - If enabled, output will be delivered as a string instead of as bytecode.
+        display_format - Outputs values as strings instead of as bytecode.
         """
 
         socket = self.socket
@@ -51,17 +51,18 @@ class tlsSocket:
         # Appends CTRL + A as the start of header.
         command = b"\x01" + command
 
+        # Send input, wait, receive output.
         socket.sendall(command)
         time.sleep(timeout)
-
         response = socket.recv(512)
 
-        # Error handling for 9999FF1B, occurs when an invalid command is used.
+        # Error handling when an invalid command is used (9999FF1B).
         if b"FF1B" in response:
             response = b"Unrecognized function code. Use the command format form of the function."
-
-        # Return output without sent command included.
         else:
             response = response[len(command)::]
+
+        # Send output as string if display_format is enabled.
+        if display_format: response = response.decode("utf-8")
 
         print(response)

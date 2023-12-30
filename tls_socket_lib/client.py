@@ -50,4 +50,4 @@ if __name__ == "__main__":
             command = input(">> ")
 
             command = bytes(f"{args.security_code}{command}", "utf-8")
-            results = tls.execute(command, 5)
+            results = tls.execute(command, 5, True)
