@@ -36,7 +36,7 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: bytes, timeout: int, display_format: bool) -> None:
+    def execute(self, command: str, timeout: int, security_code = "") -> bytes:
 
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
@@ -47,9 +47,20 @@ class tlsSocket:
         """
 
         socket = self.socket
+        command = bytes(command, "utf-8")
+
+        if validate_security_code(security_code):
+            security_code = bytes(security_code, "utf-8")
+        elif security_code == "":
+            security_code = bytes(security_code, "utf-8")
+        else:
+            response = b"Invalid security code. Must be six characters long and use printable ASCII characters."
+            print(response)
+            return response
+        
 
         # Appends CTRL + A as the start of header.
-        command = b"\x01" + command
+        command = b"\x01" + security_code + command
 
         # Send input, wait, receive output.
         socket.sendall(command)
@@ -59,27 +70,58 @@ class tlsSocket:
         # Error handling when an invalid command is used (9999FF1B).
         if b"FF1B" in response:
             response = b"Unrecognized function code. Use the command format form of the function."
-            # Prevents the above error from getting first and last letters removed.
-            display_format = False
+            print(response)
+            return response
 
-        # Send output as string if display_format is enabled.
-        if display_format: 
-            response = response.decode("utf-8")
-            command = command.decode("utf-8")[1:]
-            
-            # Removes SOH, ETX, and command from being shown in output.
-            # This works for both Computer and Display format commands.
-            response = response[1:]
-            response = response[:-1]
-            response = response.replace(command, "")
+        return response
 
-            # Checks for newlines at both ends of output, removes if present.
-            # Only applies to Display format commands.
-            if response[:2] == "\r\n":
-                response = response[2:]
+def remove_command_headers(response: bytes, command: str) -> str:
+    """
+    Takes output from any command and removes the SOH, originally sent command, and ETX.
 
-            if response[-4:] == "\r\n\r\n":
-                response = response[:-4]
+    response - Response/output from a command ran with execute() from the tlsSocket class.
+    command - The command used to get this output.
+    """
 
+    # Convert output to string.
+    response = response.decode("utf-8")
+    
+    # Removes SOH, ETX, and command from being shown in output.
+    # This works for both Computer and Display format commands.
+    response = response[1:]
+    response = response[:-1]
+    response = response.replace(command, "")
 
-        print(response)
+    # Checks for newlines at both ends of output, removes if present.
+    # Only applies to Display format commands.
+    if response[:2] == "\r\n":
+        response = response[2:]
+
+    if response[-4:] == "\r\n\r\n":
+        response = response[:-4]
+
+    return response
+
+def validate_security_code(security_code: str) -> bool:
+
+    """
+    Checks if the RS-232 security code meets length (6 characters) and character (printable ASCII) requirements.
+
+    security_code - Security code used to authenticate to the TLS system.
+    """
+
+    # If a security code was not provided, simply return true.
+    if security_code == None:
+        return True
+
+    # Check if security code uses ASCII characters.
+    try:
+        security_code.encode('ascii')
+    except:
+        return False
+    
+    # Ensure that security code length is six characters.
+    if len(security_code) != 6:
+        return False
+    
+    return True

@@ -20,12 +20,12 @@ This script demonstrates how you can programmatically connect to a TLS-350 syste
 > from tls_socket_lib import tls_socket
 >
 > tls = tls_socket.tlsSocket("127.0.0.1", 10001) # initial connection
-> tls.execute(b"i10100", 5) # get system status report, wait 5 seconds
+> tls.execute(b"i10100", 5, True) # get system status report
 >```
 
 **Output:**
 
->```
+>```python
 > b'2312292336020402&&FB2F\x03'
 >```
 
@@ -36,7 +36,7 @@ You can also use the client.py file that I created for this library to interact 
 **Script:**
 
 >```python
-> python client.py "127.0.0.1" 10001 --display_format
+> python client.py "127.0.0.1" 10001
 >```
 
 **Output:**
@@ -51,24 +51,22 @@ From here, you can type in any function code to interact with the TLS system. As
 
 > ```
 > >> i10100
-> ☺i101002312301113020402&&FB3F♥
-> >> I10100
-> ☺
-> I10100
-> DEC 30, 2023 11:13 AM
+> 2312301229020402&&FB37
 >
-> GAS STATION
-> 1234 GAS LANE
-> HOUSTON, TEXAS
+> >> I10100 
+>
+> DEC 30, 2023 12:29 PM
+>
+> THE COUNTRY MART
+> 2765 NORTHWESTERN PK
+> WINCHESTER, VA
 > H07188463105001
-> 
+>
 > SYSTEM STATUS REPORT
-> 
+>
 > T 2:OVERFILL ALARM
-> 
-> ♥
+>
+> >>
 > ```
 
-Note that the ``--display_format`` flag used when initializing the client does not dictate which format the command outputs, but is instead used to convert the bytecode output into string output. The case of the first letter dictates the true output format -- lowercase letters show computer format, uppercase letters show display format.
 
-Another interesting topic would be the ☺ and ♥ that appear at the beginning and end of the output for both commands. These are UTF-8 representations of CTRL + A (the start of header for each command) and CTRL + C (the end of text character). These exclusively appear when the ``--display_format`` flag is used, and are shown as ``\x01`` and ``\x03`` in computer format.
