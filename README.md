@@ -76,9 +76,9 @@ From here, you can type in any function code to interact with the TLS system. As
 >
 > DEC 30, 2023 12:29 PM
 >
-> THE COUNTRY MART
-> 2765 NORTHWESTERN PK
-> WINCHESTER, VA
+> GAS STATION
+> 1234 GAS LANE
+> HOUSTON, TX
 > H07188463105001
 >
 > SYSTEM STATUS REPORT
