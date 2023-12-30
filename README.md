@@ -4,6 +4,14 @@ This is an unofficial wrapper for Python's socket library used for interacting w
 
 If you believe there is something about this library that can be improved upon, please feel free to submit a issue or a pull request. I will do my best to respond to any inquiries promptly.
 
+## Commands
+
+The commands used to interact with Veeder-Root TLS-300/350/350R systems can be found in the "VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS-300 and TLS-350 UST Monitoring Systems and TLS-350R Environmental & Inventory Management System" manual. You will want to look through Section 5.0 to get a better idea of how commands are sent and Section 6.0 to see how the responses are formatted.
+
+After reading through those, you can find the available functions and commands in Section 7.0. You will want to use either the Computer or Display format of the command as listed under the Command Format header (note that the SOH is automatically added by this program). For example, if you would like to use function code 101 (System Status Report) in the Display format, you would use the command ``I10100`` to do so. See the below examples for more information about the outputs of these commands.
+
+Section 7.0
+
 ## Examples
 
 This script demonstrates how you can programmatically connect to a TLS-350 system and get a system status report. Note that the command in execute() is bytecode, not a string.
