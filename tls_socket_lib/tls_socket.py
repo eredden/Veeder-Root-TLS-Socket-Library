@@ -59,8 +59,6 @@ class tlsSocket:
         # Error handling when an invalid command is used (9999FF1B).
         if b"FF1B" in response:
             response = b"Unrecognized function code. Use the command format form of the function."
-        else:
-            response = response[len(command)::]
 
         # Send output as string if display_format is enabled.
         if display_format: 
