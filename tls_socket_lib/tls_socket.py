@@ -63,6 +63,7 @@ class tlsSocket:
             response = response[len(command)::]
 
         # Send output as string if display_format is enabled.
-        if display_format: response = response.decode("utf-8")
+        if display_format: 
+            response = response.decode("utf-8")
 
         print(response)
