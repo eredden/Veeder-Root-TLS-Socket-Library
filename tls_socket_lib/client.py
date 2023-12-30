@@ -32,6 +32,7 @@ if __name__ == "__main__":
     parser.add_argument("ip", help="IP address of the TLS system.", type=str)
     parser.add_argument("port", help="Port number used to connect to the serial interface remotely.", type=int)
     parser.add_argument("--security_code", help="Six printable-character ASCII code prepended to commands for authentication.", type=str)
+    parser.add_argument("--display_format", help="Shows output from the TLS system as strings. Better for display commands.", action="store_true")
     args = parser.parse_args()
 
     # Check if security code meets proper standards.
@@ -50,4 +51,4 @@ if __name__ == "__main__":
             command = input(">> ")
 
             command = bytes(f"{args.security_code}{command}", "utf-8")
-            results = tls.execute(command, 5, True)
+            results = tls.execute(command, 5, args.display_format)
