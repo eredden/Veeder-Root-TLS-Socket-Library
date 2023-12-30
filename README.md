@@ -51,9 +51,9 @@ From here, you can type in any function code to interact with the TLS system. As
 > I10100
 > DEC 30, 2023 11:13 AM
 >
-> THE COUNTRY MART
-> 2765 NORTHWESTERN PK
-> WINCHESTER, VA
+> GAS STATION
+> 1234 GAS LANE
+> HOUSTON, TEXAS
 > H07188463105001
 > 
 > SYSTEM STATUS REPORT
