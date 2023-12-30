@@ -2,6 +2,7 @@ import tls_socket
 import argparse
 
 def is_security_code_valid(security_code: str) -> bool:
+    
     """
     Checks if the user-provided RS-232 security code meets length and character requirements.
 
@@ -50,5 +51,3 @@ if __name__ == "__main__":
 
             command = bytes(f"{args.security_code}{command}", "utf-8")
             results = tls.execute(command, 5)
-
-            print("\n")
