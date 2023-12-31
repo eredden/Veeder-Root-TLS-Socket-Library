@@ -7,6 +7,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("ip", help="IP address of the TLS system.", type=str)
     parser.add_argument("port", help="Port number used to connect to the serial interface remotely.", type=int)
+    parser.add_argument("--timeout", help="Sets the delay in seconds between sending a command and storing output.", 
+                        nargs='?', default=1, type=int)
     parser.add_argument("--raw", help="Shows output from the TLS system as original, unaltered bytecode.", action="store_true")
     args = parser.parse_args()
 
@@ -25,7 +27,7 @@ if __name__ == "__main__":
 
             # If user typed in a command, execute it.
             if command != "":
-                output = tls.execute(command, 5)
+                output = tls.execute(command, args.timeout)
             
                 # Output raw data if the raw flag was used.
                 if args.raw == True:
