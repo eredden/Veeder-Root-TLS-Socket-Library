@@ -6,9 +6,9 @@ If you believe there is something about this library that can be improved upon, 
 
 ## Commands
 
-The commands used to interact with Veeder-Root TLS-300/350/350R systems can be found in the "VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS-300 and TLS-350 UST Monitoring Systems and TLS-350R Environmental & Inventory Management System" manual. You will want to look through Section 5.0 to get a better idea of how commands are sent and Section 6.0 to see how the responses are formatted.
+The commands used to interact with Veeder-Root TLS-300/350/350R systems can be found in the "VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS-300 and TLS-350 UST Monitoring Systems and TLS-350R Environmental & Inventory Management System" manual. You will want to look through Section 5 to get a better idea of how commands are sent, Section 6 to see how the responses are formatted, and Section 7 to see the available functions and their specific outputs.
 
-After reading through those, you can find the available functions and commands in Section 7.0. You will want to use either the Computer or Display format of the command as listed under the Command Format header (note that the SOH is automatically added by this program). For example, if you would like to use function code 101 (System Status Report) in the Display format, you would use the command ``I10100`` to do so. See the below examples for more information about the outputs of these commands.
+You will want to use either the Computer or Display format of the function as listed under the Command Format header. For example, if you would like to use function code 101 (System Status Report) in the Display format, you would use the command ``I10100`` to do so. You do not need to add the start of header ``CTRL + A`` or ``\x01`` to the command as this is automatically prepended when using my wrapper. If your TLS system needs security codes in front of the commands, you can simply type the security code before the command like this: ``abcdefI10100``.
 
 ## Examples
 
@@ -31,7 +31,7 @@ This script demonstrates how you can programmatically connect to a TLS-350 syste
 > b'\x01i101002312301342020402&&FB3B\x03'
 >```
 
-This output shows the unaltered bytecode response from the TLS system. You can see the start of header ``\0x1`` at the front, the command ``i10100`` we sent, the data ``2312301342020402``, then ``&&`` to separate the data from the checksum, ``FB3B``, and finally ``\0x3`` showing the end of transmission.
+This output shows the unaltered bytecode response from the TLS system. You can see the start of header ``\x01`` at the front, the command ``i10100`` we sent, the data ``2312301342020402``, then ``&&`` to separate the data from the checksum, ``FB3B``, and finally ``\x03`` showing the end of transmission.
 
 You can remove some of the filler headers and footers from this code by running the output through remove_response_headers(). The only downside about this process is that the command has to be provided a second time here so that it can be removed from the ouput.
 
@@ -48,7 +48,7 @@ You can remove some of the filler headers and footers from this code by running 
 > 2312301351020402&&FB3B
 >```
 
-You can see that the start of header ``\x01``, end of transmission ``\0x3``, and the original command ``i10100`` have all been removed. Only the unique data is shown, and from here it can be split apart further to store the individual variables. For example, the first ten numbers here represent the date and time.
+You can see that the start of header ``\x01``, end of transmission ``\x03``, and the original command ``i10100`` have all been removed. Only the unique data is shown, and from here it can be split apart further to store the individual variables. For example, the first ten numbers here represent the date and time.
 
 Review the "VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS-300 and TLS-350 UST Monitoring Systems and TLS-350R Environmental & Inventory Management System" manual for information about how this response data is structured for each function.
 
