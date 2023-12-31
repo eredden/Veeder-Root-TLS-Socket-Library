@@ -31,6 +31,8 @@ This script demonstrates how you can programmatically connect to a TLS-350 syste
 > b'\x01i101002312301342020402&&FB3B\x03'
 >```
 
+This output shows the unaltered bytecode response from the TLS system. You can see the start of header ``\0x1`` at the front, the command ``i10100`` we sent, the data ``2312301342020402``, then ``&&`` to separate the data from the checksum, ``FB3B``, and finally ``\0x3`` showing the end of transmission.
+
 You can remove some of the filler headers and footers from this code by running the output through remove_response_headers(). The only downside about this process is that the command has to be provided a second time here so that it can be removed from the ouput.
 
 **Script:**
@@ -46,7 +48,9 @@ You can remove some of the filler headers and footers from this code by running 
 > 2312301351020402&&FB3B
 >```
 
-You can see that the start of header ``\x01``, end of transmission ``\0x3``, and the original command ``i10100`` have all been removed. Only the unique data is shown, and from here it can be split apart further to store the individual variables.
+You can see that the start of header ``\x01``, end of transmission ``\0x3``, and the original command ``i10100`` have all been removed. Only the unique data is shown, and from here it can be split apart further to store the individual variables. For example, the first ten numbers here represent the date and time.
+
+Review the "VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS-300 and TLS-350 UST Monitoring Systems and TLS-350R Environmental & Inventory Management System" manual for information about how this response data is structured for each function.
 
 # Using the TLS Client
 
@@ -88,4 +92,4 @@ From here, you can type in any function code to interact with the TLS system. As
 > >>
 > ```
 
-By default, the output of these commands will be shown without the SOH, ETX, and original command. If you would like to see that information as well, you can use the ``--raw`` flag when running the client.py file.
+By default, the output of these commands will be shown without the SOH, ETX, and original command. If you want to see the unaltered bytecode responses instead, use the ``--raw`` flag when initializing client.py.
