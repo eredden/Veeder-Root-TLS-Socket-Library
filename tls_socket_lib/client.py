@@ -23,15 +23,17 @@ if __name__ == "__main__":
                 print("Disconnecting from host...")
                 break
 
-            # Run the command and save it to the output variable.
-            output = tls.execute(command, 5)
+            # If user typed in a command, execute it.
+            if command != "":
+                output = tls.execute(command, 5)
             
-            # Depending on whether or not the raw data was requested, output pretty or raw data.
-            if args.raw == True:
-                print(output)
-            else:
-                output = tls_socket.remove_response_headers(output, command)
-                print(output)
+                # Output raw data if the raw flag was used.
+                if args.raw == True:
+                    print(output)
+                else:
+                    # Remove SOH, ETX, original command from output.
+                    output = tls_socket.remove_response_headers(output, command)
+                    print(output)
 
         
         print("Connection ended.\n")
