@@ -63,7 +63,7 @@ class tlsSocket:
 
         return response
 
-def remove_response_headers(response: bytes, command: str) -> str:
+def tls_parser(response: bytes, command: str) -> str:
     """
     Takes output from any command and removes the SOH, originally sent command, and ETX.
 

@@ -33,12 +33,12 @@ This script demonstrates how you can programmatically connect to a TLS-350 syste
 
 This output shows the unaltered bytecode response from the TLS system. You can see the start of header ``\x01`` at the front, the command ``i10100`` we sent, the data ``2312301342020402``, then ``&&`` to separate the data from the checksum, ``FB3B``, and finally ``\x03`` showing the end of transmission.
 
-You can remove some of the filler headers and footers from this code by running the output through remove_response_headers(). The only downside about this process is that the command has to be provided a second time here so that it can be removed from the ouput.
+You can remove some of the filler headers and footers from this code by running the output through tls_parser(). The only downside about this process is that the command has to be provided a second time here so that it can be removed from the ouput.
 
 **Script:**
 
 >```python
-> results = tls_socket.remove_response_headers(response, "i10100")
+> results = tls_socket.tls_parser(response, "i10100")
 > print(results)
 >```
 

@@ -34,7 +34,7 @@ if __name__ == "__main__":
                     print(output)
                 else:
                     # Remove SOH, ETX, original command from output.
-                    output = tls_socket.remove_response_headers(output, command)
+                    output = tls_socket.tls_parser(output, command)
                     print(output)
 
         
