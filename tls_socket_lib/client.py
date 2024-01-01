@@ -30,7 +30,7 @@ if __name__ == "__main__":
                 output = tls.execute(command, args.timeout)
             
                 # Output raw data if the raw flag was used.
-                if args.raw == True:
+                if args.raw:
                     print(output)
                 else:
                     # Remove SOH, ETX, original command from output.
