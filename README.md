@@ -1,6 +1,6 @@
 # Veeder-Root ATG Socket Library
 
-This is an unofficial wrapper for Python's socket library used for interacting with Veeder-Root's automatic tank gauging systems remotely through their serial interfaces. This wrapper is primarily made to support the TLS-300 and TLS-350 and may provide limited support for the TLS-450 as well.
+This is an unofficial wrapper for Python's socket library used for interacting with Veeder-Root's automatic tank gauging systems remotely through the Internet. This wrapper is primarily made to support the TLS-300 and TLS-350 and likely supports most functions of the TLS-450 as well.
 
 If you believe there is something about this library that can be improved upon, please feel free to submit a issue or a pull request. I will do my best to respond to any inquiries promptly.
 
