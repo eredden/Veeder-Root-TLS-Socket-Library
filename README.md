@@ -52,9 +52,9 @@ You can see that the start of header ``\x01``, end of transmission ``\x03``, and
 
 Review the "VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS-300 and TLS-350 UST Monitoring Systems and TLS-350R Environmental & Inventory Management System" manual for information about how this response data is structured for each function.
 
-# Using the TLS Client
+# Using the ATG Client
 
-You can also use the client.py file that I created for this library to interact with the TLS systems manually, similar to how you would with systems through Telnet, SSH, or Putty.
+You can also use the client.py file that I created for this library to interact with the automatic tank gauge systems manually, similar to how you would with systems through Telnet, SSH, or Putty.
 
 **Script:**
 
