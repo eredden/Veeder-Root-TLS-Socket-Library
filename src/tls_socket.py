@@ -37,7 +37,6 @@ class tlsSocket:
         socket.close()
 
     def execute(self, command: str, timeout: int) -> bytes:
-
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
 

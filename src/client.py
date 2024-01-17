@@ -2,7 +2,6 @@ import tls_socket
 import argparse
 
 if __name__ == "__main__":
-
     # Require these parameters when running this script.
     parser = argparse.ArgumentParser()
     parser.add_argument("ip", help="IP address of the TLS system.", type=str)
@@ -14,7 +13,6 @@ if __name__ == "__main__":
 
     # Start a connection with the desired host.
     with tls_socket.tlsSocket(args.ip, args.port) as tls:
-        
         print(f"You are connected to {args.ip} using port {args.port}.")
 
         while True:
@@ -37,5 +35,4 @@ if __name__ == "__main__":
                     output = tls_socket.tls_parser(output, command)
                     print(output)
 
-        
         print("Connection ended.\n")
