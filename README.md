@@ -33,7 +33,7 @@ This script demonstrates how you can programmatically connect to a TLS-350 syste
 
 This output shows the unaltered bytecode response from the TLS system. You can see the start of header ``\x01`` at the front, the command ``i10100`` we sent, the data ``2312301342020402``, then ``&&`` to separate the data from the checksum, ``FB3B``, and finally ``\x03`` showing the end of transmission.
 
-You can remove some of the filler headers and footers from this code by running the output through tls_parser(). The only downside about this process is that the command has to be provided a second time here so that it can be removed from the ouput.
+You can also remove some of the filler headers and footers from this code by running the output through tls_parser(). The only downside about this process is that the command has to be provided a second time here so that it can be removed from the ouput. This is due to the fact that the bytecode output given by these systems do not make a definitive split between the initial command and the response from running that command.
 
 **Script:**
 
@@ -48,7 +48,7 @@ You can remove some of the filler headers and footers from this code by running 
 > 2312301351020402&&FB3B
 >```
 
-You can see that the start of header ``\x01``, end of transmission ``\x03``, and the original command ``i10100`` have all been removed. Only the unique data is shown, and from here it can be split apart further to store the individual variables. For example, the first ten numbers here represent the date and time.
+You can see that the start of header ``\x01``, end of transmission ``\x03``, and the original command ``i10100`` have all been removed. Only the unique response and checksum are shown, and from here it can be split apart further to store the individual variables. For example, the first ten numbers here represent the date and time on the system when I ran this command.
 
 Review the "VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS-300 and TLS-350 UST Monitoring Systems and TLS-350R Environmental & Inventory Management System" manual for information about how this response data is structured for each function.
 

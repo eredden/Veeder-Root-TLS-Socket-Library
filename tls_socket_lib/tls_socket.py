@@ -75,7 +75,7 @@ def tls_parser(response: bytes, command: str) -> str:
     response = response.decode("utf-8")
     
     # Removes SOH, ETX, and command from being shown in output.
-    # This works for both Computer and Display format commands.
+    # This applies to both Computer and Display format commands.
     response = response[1:]
     response = response[:-1]
     response = response.replace(command, "")
