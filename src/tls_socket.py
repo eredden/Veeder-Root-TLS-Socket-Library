@@ -9,11 +9,9 @@ class tlsSocket:
     """
 
     def __init__(self, ip: str, port: int):
-        # Code to run when the class is created.
         self.ip = ip
         self.port = port
 
-        # Sets up socket and attempts connection, throws exception if that fails.
         socket_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         try:
@@ -24,15 +22,12 @@ class tlsSocket:
             raise exception
         
     def __str__(self):
-        # Code to run to make the class more human-readable when printed.
         return f"tlsSocket({self.ip}, {self.port}, {self.socket})"
 
     def __enter__(self):
-        # Code to run when entering a with statement.
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        # Code to run when exiting a with statement, including cleanup.
         socket = self.socket
         socket.close()
 
@@ -45,17 +40,16 @@ class tlsSocket:
         """
 
         socket = self.socket
-        command = bytes(command, "utf-8")
-        # Appends CTRL + A as the start of header.
-        command = b"\x01" + command
+        start_of_header = b"\x01"
+        invalid_command_error = b"FF1B"
+        
+        command = start_of_header + bytes(command, "utf-8")
 
-        # Send input, wait, receive output.
         socket.sendall(command)
         time.sleep(timeout)
         response = socket.recv(512)
 
-        # Error handling when an invalid command is used (9999FF1B).
-        if b"FF1B" in response:
+        if invalid_command_error in response:
             response = b"Unrecognized function code. Use the command format form of the function."
             print(response)
             return response
@@ -70,7 +64,6 @@ def tls_parser(response: bytes, command: str) -> str:
     command - The command used to get this output.
     """
 
-    # Convert output to string.
     response = response.decode("utf-8")
     
     # Removes SOH, ETX, and command from being shown in output.
@@ -79,7 +72,7 @@ def tls_parser(response: bytes, command: str) -> str:
     response = response[:-1]
     response = response.replace(command, "")
 
-    # Checks for newlines at both ends of output, removes if present.
+    # Checks for and removes newlines at both ends of output, removes if present.
     # Only applies to Display format commands.
     if response[:2] == "\r\n":
         response = response[2:]
