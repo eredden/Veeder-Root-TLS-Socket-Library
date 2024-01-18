@@ -22,7 +22,7 @@ This script demonstrates how you can programmatically connect to a TLS-350 syste
 > tls = tls_socket.tlsSocket("127.0.0.1", 10001) # initial connection
 > response = tls.execute("i10100", 5) # get system status report
 > 
-> print(response) # print the response of the command
+> print(response)
 >```
 
 **Output:**
