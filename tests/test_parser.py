@@ -3,7 +3,7 @@ from src.tls_socket import tls_parser
 
 # Verify that tls_parser() correctly parses bytecode output.
 class test_tls_parser(unittest.TestCase):
-    def test_example(self):
+    def test_parser(self):
         command = "i10100"
         response = b'\x01i101002312301342020402&&FB3B\x03'
         expected_response = "2312301342020402&&FB3B"
