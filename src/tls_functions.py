@@ -1,6 +1,5 @@
 import math
 from tls_socket import tlsSocket
-from tls_socket import tls_parser
 
 def get_standard_values(output: str) -> dict:
     """
@@ -61,8 +60,7 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     command = "i101" + tank
 
-    raw_output = tls.execute(command, timeout)
-    output = tls_parser(raw_output, command)
+    output = tls.execute(command, timeout)
     data = get_standard_values(output)
 
     # split tank reports
@@ -103,8 +101,7 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     command = "i201" + tank
 
-    raw_output = tls.execute(command, timeout)
-    output = tls_parser(raw_output, command)
+    output = tls.execute(command, timeout)
     data = get_standard_values(output)
 
     # split tank reports

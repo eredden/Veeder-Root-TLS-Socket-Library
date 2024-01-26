@@ -7,7 +7,6 @@ if __name__ == "__main__":
     parser.add_argument("port", help="Port number used to connect to the serial interface remotely.", type=int)
     parser.add_argument("--timeout", help="Sets the delay in seconds between sending a command and storing output.", 
                         nargs='?', default=1, type=int)
-    parser.add_argument("--raw", help="Shows output from the TLS system as original, unaltered bytecode.", action="store_true")
     args = parser.parse_args()
 
     with tls_socket.tlsSocket(args.ip, args.port) as tls:
@@ -22,11 +21,6 @@ if __name__ == "__main__":
 
             if command != "":
                 output = tls.execute(command, args.timeout)
-            
-                if args.raw:
-                    print(output)
-                else:
-                    output = tls_socket.tls_parser(output, command)
-                    print(output)
+                print(output)
 
         print("Connection ended.\n")

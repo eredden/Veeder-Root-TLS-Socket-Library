@@ -31,7 +31,7 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: str, timeout: int) -> bytes:
+    def execute(self, byte_command: str, timeout: int) -> bytes:
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
 
@@ -43,41 +43,31 @@ class tlsSocket:
         start_of_header = b"\x01"
         invalid_command_error = b"FF1B"
         
-        command = start_of_header + bytes(command, "utf-8")
+        byte_command = start_of_header + bytes(byte_command, "utf-8")
 
-        socket.sendall(command)
+        socket.sendall(byte_command)
         time.sleep(timeout)
-        response = socket.recv(512)
+        byte_response = socket.recv(512)
 
-        if invalid_command_error in response:
-            response = b"Unrecognized function code. Use the command format form of the function."
-            print(response)
-            return response
+        if invalid_command_error in byte_response:
+            byte_response = b"Unrecognized function code. Use the command format form of the function."
+            print(byte_response)
+            return byte_response
+        
+        # Removes SOH and ETX from being shown in output.
+        # This applies to both Computer and Display format commands.
+        response = byte_response.decode("utf-8")[1:][:-1]
+        command = byte_command.decode("utf-8")[1:]
+
+        # Removes the command from being shown in output.
+        response = response.replace(command, "")
+
+        # Checks for and removes newlines at both ends of output, removes if present.
+        # Only applies to Display format commands.
+        if response[:4] == "\r\n\r\n":
+            response = response[4:]
+
+        if response[-4:] == "\r\n\r\n":
+            response = response[:-4]
 
         return response
-
-def tls_parser(response: bytes, command: str) -> str:
-    """
-    Takes output from any command and removes the SOH, originally sent command, and ETX.
-
-    response - Response/output from a command ran with execute() from the tlsSocket class.
-    command - The command used to get this output.
-    """
-
-    response = response.decode("utf-8")
-    
-    # Removes SOH, ETX, and command from being shown in output.
-    # This applies to both Computer and Display format commands.
-    response = response[1:]
-    response = response[:-1]
-    response = response.replace(command, "")
-
-    # Checks for and removes newlines at both ends of output, removes if present.
-    # Only applies to Display format commands.
-    if response[:2] == "\r\n":
-        response = response[2:]
-
-    if response[-4:] == "\r\n\r\n":
-        response = response[:-4]
-
-    return response
