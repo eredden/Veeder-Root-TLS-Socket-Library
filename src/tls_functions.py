@@ -83,7 +83,8 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     # strip generic values from data, then split into individual chunks
     remaining_data = response[10:-6]
-    split_remaining_data = split_data(remaining_data, 6)
+    expected_data_length = 6
+    split_remaining_data = split_data(remaining_data, expected_data_length)
     
     data["alarms"] = {}
     alarms = data["alarms"]
@@ -116,7 +117,8 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     # strip generic values from data, then split into individual chunks
     remaining_data = response[10:-6]
-    split_remaining_data = split_data(remaining_data, 65)
+    expected_data_length = 65
+    split_remaining_data = split_data(remaining_data, expected_data_length)
 
     # split values from within each individual tank report
     for value in split_remaining_data:
