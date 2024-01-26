@@ -3,7 +3,7 @@ from tls_socket import tlsSocket
 
 def get_standard_values(output: str) -> dict:
     """
-    Get standard values from a command response; date, time, checksum.
+    Get standard values from a command response; date, time, checksum. Return as a dict.
 
     output - Output of a command sent to a TLS system as a string.
     """
@@ -17,6 +17,24 @@ def get_standard_values(output: str) -> dict:
     data["minute"] = int(output[8:10])
     data["checksum"] = output[-4:]
 
+    return data
+
+def split_data(output: str, report_length: int) -> list:
+    """
+    Split apart repeating reports from a command response and return as a list.
+
+    output - Output of a command sent to a TLS system as a string. This should only contain the repeating data.
+    report_length - The expected length of each repeating report.
+    """
+
+    data = []
+
+    for i, value in enumerate(output):
+        array_position = math.floor(i / report_length)
+
+        if i % report_length == 0: data.append(value)
+        else: data[array_position] = data[array_position] + value
+    
     return data
 
 def hex_to_float(hex: str) -> float:
@@ -63,23 +81,15 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     output = tls.execute(command, timeout)
     data = get_standard_values(output)
 
-    # split tank reports
-    data_without_date = output[10:-6]
-    split_data = []
-    volume_length = 6
-
-    for i, value in enumerate(data_without_date):
-        array_position = math.floor(i / volume_length)
-
-        if i % volume_length == 0:
-            split_data.append(value)
-        else:
-            split_data[array_position] = split_data[array_position] + value
+    # strip generic values from data, then split into individual chunks
+    remaining_data = output[10:-6]
+    split_remaining_data = split_data(remaining_data, 6)
     
     data["alarms"] = {}
     alarms = data["alarms"]
-    
-    for i, value in enumerate(split_data):
+
+    # split values from within each individual tank report
+    for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
 
@@ -104,21 +114,12 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     output = tls.execute(command, timeout)
     data = get_standard_values(output)
 
-    # split tank reports
-    data_without_date = output[10:-6]
-    split_data = []
-    volume_length = 65
-
-    for i, value in enumerate(data_without_date):
-        array_position = math.floor(i / volume_length)
-
-        if i % volume_length == 0:
-            split_data.append(value)
-        else:
-            split_data[array_position] = split_data[array_position] + value
+    # strip generic values from data, then split into individual chunks
+    remaining_data = output[10:-6]
+    split_remaining_data = split_data(remaining_data, 65)
 
     # split values from within each individual tank report
-    for value in split_data:
+    for value in split_remaining_data:
         tank_number = value[0:2]
         data["tank_" + tank_number] = {}
     
