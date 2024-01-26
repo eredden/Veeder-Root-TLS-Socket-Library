@@ -101,6 +101,35 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     return data
         
+def function_102(tls: tlsSocket, timeout: int) -> dict:
+    """
+    Runs function 102 on a given Veeder-Root TLS device and returns a dict with report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    timeout - Time to wait for a response from the socket after executing the command.
+    """
+
+    command = "i10200"
+
+    response = tls.execute(command, timeout)
+    data = get_standard_values(response)
+
+    # strip generic values from data, then split into individual chunks
+    remaining_data = response[12:-6]
+    expected_data_length = 20
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    # split values from within each individual tank report
+    for slot_number, value in enumerate(split_remaining_data):
+        data[slot_number] = {}
+    
+        slot_data = data[slot_number]
+        slot_data["type_of_module"] = value[2:4]
+        slot_data["power_on_reset"] = hex_to_float(value[4:12])
+        slot_data["current_io_reading"] = hex_to_float(value[12:19])
+
+    return data
+
 def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
     Runs function 201 on a given Veeder-Root TLS device and returns a dict with report info.

@@ -31,7 +31,7 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, byte_command: str, timeout: int) -> bytes:
+    def execute(self, byte_command: str, timeout: int) -> str:
         """
         Sends a command to a socket connection using the command format from the Veeder-Root Serial Interface Manual 576013-635.
 
@@ -50,9 +50,8 @@ class tlsSocket:
         byte_response = socket.recv(512)
 
         if invalid_command_error in byte_response:
-            byte_response = b"Unrecognized function code. Use the command format form of the function."
-            print(byte_response)
-            return byte_response
+            response = "Unrecognized function code. Use the command format form of the function."
+            return response
         
         # Removes SOH and ETX from being shown in output.
         # This applies to both Computer and Display format commands.
