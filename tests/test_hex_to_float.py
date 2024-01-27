@@ -1,5 +1,5 @@
 import unittest
-from src.tls_socket import hex_to_float
+from src.tls_functions import hex_to_float
 
 # Verify that hex_to_float() correctly makes IEEE floats out of hexadecimal codes.
 class test_hex_to_float(unittest.TestCase):
