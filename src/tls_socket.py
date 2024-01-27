@@ -47,7 +47,7 @@ class tlsSocket:
 
         socket.sendall(byte_command)
         time.sleep(timeout)
-        byte_response = socket.recv(512)
+        byte_response = socket.recv(65536)
 
         if invalid_command_error in byte_response:
             response = "Unrecognized function code. Use the command format form of the function."

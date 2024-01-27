@@ -77,8 +77,13 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i101" + tank
-
     response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either partially completed or failed."
+    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
@@ -89,15 +94,18 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     data["alarms"] = {}
     alarms = data["alarms"]
 
+    if len(remaining_data) < expected_data_length:
+        return data
+
     # split values from within each individual tank report
     for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
 
         alarm_data = alarms["alarm_" + alarm_number]
-        alarm_data["alarm_category"] = value[0:2]
-        alarm_data["alarm_type"] = value[2:4]
-        alarm_data["tank_number"] = value[4:6]
+        alarm_data["alarm_category"] = int(value[0:2])
+        alarm_data["alarm_type"] = int(value[2:4])
+        alarm_data["tank_number"] = int(value[4:6])
 
     return data
         
@@ -110,8 +118,13 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i10200"
-
     response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either partially completed or failed."
+    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
@@ -119,14 +132,69 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
     expected_data_length = 20
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    # split values from within each individual tank report
-    for slot_number, value in enumerate(split_remaining_data):
-        data[slot_number] = {}
+    if len(remaining_data) < expected_data_length:
+        return data
     
-        slot_data = data[slot_number]
+    data["slots"] = {}
+    slots = data["slots"]
+
+    # split values from within each individual tank report
+    for i, value in enumerate(split_remaining_data):
+        slot_number = str(i + 1)
+        slots["slot_" + slot_number] = {}
+    
+        slot_data = slots["slot_" + slot_number]
         slot_data["type_of_module"] = value[2:4]
         slot_data["power_on_reset"] = hex_to_float(value[4:12])
         slot_data["current_io_reading"] = hex_to_float(value[12:19])
+
+    return data
+
+def function_111(tls: tlsSocket, timeout: int) -> dict:
+    """
+    Runs function 111 on a given Veeder-Root TLS device and returns a dict with report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    timeout - Time to wait for a response from the socket after executing the command.
+    """
+
+    command = "i11100"
+    response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either partially completed or failed."
+    
+    data = get_standard_values(response)
+
+    # strip generic values from data, then split into individual chunks
+    remaining_data = response[10:-6]
+    expected_data_length = 20
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    if len(remaining_data) < expected_data_length:
+        return data
+    
+    data["alarms"] = {}
+    alarms = data["alarms"]
+
+    # split values from within each individual tank report
+    for i, value in enumerate(split_remaining_data):
+        alarm_number = str(i + 1)
+        alarms["alarm_" + alarm_number] = {}
+    
+        alarm_data = alarms["alarm_" + alarm_number]
+        alarm_data["alarm_category"] = int(value[0:2])
+        alarm_data["sensor_category"] = int(value[2:4])
+        alarm_data["alarm_type"] = int(value[4:6])
+        alarm_data["tank_number"] = int(value[6:8])
+        alarm_data["alarm_state"] = int(value[8:10])
+        alarm_data["year"] = int(value[10:12])
+        alarm_data["month"] = int(value[12:14])
+        alarm_data["day"] = int(value[14:16])
+        alarm_data["hour"] = int(value[16:18])
+        alarm_data["minute"] = int(value[18:20])
 
     return data
 
@@ -140,14 +208,22 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i201" + tank
-
     response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either partially completed or failed."
+    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
     remaining_data = response[10:-6]
     expected_data_length = 65
     split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    if len(remaining_data) < expected_data_length:
+        return data
 
     # split values from within each individual tank report
     for value in split_remaining_data:
@@ -166,3 +242,12 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
         tank_data["water_volume"] = hex_to_float(value[57:65])
 
     return data
+
+if __name__ == "__main__":
+    ip = "50.77.184.85"
+    port = 10001
+    timeout = 3
+
+    tls = tlsSocket(ip, port)
+    data = function_102(tls, timeout)
+    print(data)
