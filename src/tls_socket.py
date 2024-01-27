@@ -3,7 +3,7 @@ import time
 
 class tlsSocket:
     """
-    Defines a socket for the TLS-3XX and TLS-4XX systems manufactured by Veeder-Root.
+    Defines a socket for the TLS-3XX automatic tank gauges manufactured by Veeder-Root.
 
     execute() - Used to send a command and view the output in accordance with Veeder-Root Serial Interface Manual 576013-635.
     """
