@@ -242,12 +242,3 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
         tank_data["water_volume"] = hex_to_float(value[57:65])
 
     return data
-
-if __name__ == "__main__":
-    ip = "50.77.184.85"
-    port = 10001
-    timeout = 3
-
-    tls = tlsSocket(ip, port)
-    data = function_102(tls, timeout)
-    print(data)
