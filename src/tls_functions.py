@@ -198,6 +198,54 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
+def function_112(tls: tlsSocket, timeout: int) -> dict:
+    """
+    Runs function 112 on a given Veeder-Root TLS device and returns a dict with report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    timeout - Time to wait for a response from the socket after executing the command.
+    """
+
+    command = "i11200"
+    response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either partially completed or failed."
+    
+    data = get_standard_values(response)
+
+    # strip generic values from data, then split into individual chunks
+    remaining_data = response[10:-6]
+    expected_data_length = 20
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    if len(remaining_data) < expected_data_length:
+        return data
+    
+    data["alarms"] = {}
+    alarms = data["alarms"]
+
+    # split values from within each individual tank report
+    for i, value in enumerate(split_remaining_data):
+        alarm_number = str(i + 1)
+        alarms["alarm_" + alarm_number] = {}
+    
+        alarm_data = alarms["alarm_" + alarm_number]
+        alarm_data["alarm_category"] = int(value[0:2])
+        alarm_data["sensor_category"] = int(value[2:4])
+        alarm_data["alarm_type"] = int(value[4:6])
+        alarm_data["tank_number"] = int(value[6:8])
+        alarm_data["alarm_state"] = int(value[8:10])
+        alarm_data["year"] = int(value[10:12])
+        alarm_data["month"] = int(value[12:14])
+        alarm_data["day"] = int(value[14:16])
+        alarm_data["hour"] = int(value[16:18])
+        alarm_data["minute"] = int(value[18:20])
+
+    return data
+
 def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
     Runs function 201 on a given Veeder-Root TLS device and returns a dict with report info.

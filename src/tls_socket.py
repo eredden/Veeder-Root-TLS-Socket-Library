@@ -53,16 +53,14 @@ class tlsSocket:
             response = "Unrecognized function code. Use the command format form of the function."
             return response
         
-        # Removes SOH and ETX from being shown in output.
-        # This applies to both Computer and Display format commands.
+        # removes SOH and ETX from being shown in output
         response = byte_response.decode("utf-8")[1:][:-1]
         command = byte_command.decode("utf-8")[1:]
 
         # Removes the command from being shown in output.
         response = response.replace(command, "")
 
-        # Checks for and removes newlines at both ends of output, removes if present.
-        # Only applies to Display format commands.
+        # checks for and removes newlines at both ends of output, removes if present
         if response[:4] == "\r\n\r\n":
             response = response[4:]
 
