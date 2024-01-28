@@ -458,6 +458,60 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
+def function_119(tls: tlsSocket, start_date: str, end_date: str, timeout: int) -> dict:
+    """
+    Runs function 119 on a given Veeder-Root TLS device and returns a dict with report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    start_date - The beginning of the range of time to look through with this command (yymmdd format).
+    end_date - The end of the range of time to look through with this command (yymmdd format).
+    timeout - Time to wait for a response from the socket after executing the command.
+    """
+
+    # this command can take a date range optionally
+    if start_date != "" and end_date != "":
+        command = "i11900" + start_date + end_date
+    else: command = "i11900"
+
+    response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either partially completed or failed."
+    
+    data = get_standard_values(response)
+
+    # store extra non-repeated info from this response
+    data["number_of_records"] = int(response[10:14])
+
+    # strip generic values from data, then split into individual chunks
+    remaining_data = response[14:-6]
+    expected_data_length = 18
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    data["records"] = {}
+    records = data["records"]
+
+    if len(remaining_data) < expected_data_length:
+        return data
+
+    # split values from within each individual tank report
+    for i, value in enumerate(split_remaining_data):
+        record_number = str(i + 1)
+        records["record_" + record_number] = {}
+    
+        record_data = records["record_" + record_number]
+        record_data["year"] = int(value[0:2])
+        record_data["month"] = int(value[2:4])
+        record_data["day"] = int(value[4:6])
+        record_data["hour"] = int(value[6:8])
+        record_data["minute"] = int(value[8:10])
+        record_data["record_type"] = value[10:12]
+        record_data["data_field"] = value[12:18]
+
+    return data
+
 def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
     Runs function 201 on a given Veeder-Root TLS device and returns a dict with report info.
