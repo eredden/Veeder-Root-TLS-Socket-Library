@@ -406,6 +406,58 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
+def function_116(tls: tlsSocket, timeout: int) -> dict:
+    """
+    Runs function 116 on a given Veeder-Root TLS device and returns a dict with report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    timeout - Time to wait for a response from the socket after executing the command.
+    """
+
+    command = "i11600"
+    response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either partially completed or failed."
+    
+    data = get_standard_values(response)
+
+    # store extra non-repeated info from this response
+    data["station_header_1"] = response[10:30].strip()
+    data["station_header_2"] = response[30:50].strip()
+    data["station_header_3"] = response[50:70].strip()
+    data["station_header_4"] = response[70:90].strip()
+    data["number_of_records"] = int(response[90:92])
+
+    # strip generic values from data, then split into individual chunks
+    remaining_data = response[90:-6]
+    expected_data_length = 25
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    data["reports"] = {}
+    reports = data["reports"]
+
+    if len(remaining_data) < expected_data_length:
+        return data
+
+    # split values from within each individual tank report
+    for i, value in enumerate(split_remaining_data):
+        report_number = str(i + 1)
+        reports["report_" + report_number] = {}
+    
+        report_data = reports["report_" + report_number]
+        report_data["year"] = int(value[0:2])
+        report_data["month"] = int(value[2:4])
+        report_data["day"] = int(value[4:6])
+        report_data["hour"] = int(value[6:8])
+        report_data["minute"] = int(value[8:10])
+        report_data["service_id"] = value[10:20].strip()
+        report_data["service_code"] = value[20:25].strip()
+
+    return data
+
 def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
     Runs function 201 on a given Veeder-Root TLS device and returns a dict with report info.
