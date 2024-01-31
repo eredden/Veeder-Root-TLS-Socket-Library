@@ -1,7 +1,7 @@
 import unittest
 from src.tls_3xx_functions import hex_to_float
 
-# Verify that hex_to_float() correctly makes IEEE floats out of hexadecimal codes.
+# Verify that hex_to_float() correctly makes IEEE floats from hexadecimal codes.
 class test_hex_to_float(unittest.TestCase):
     def test_hex_to_float(self):
         hex = "B8D1B717"
