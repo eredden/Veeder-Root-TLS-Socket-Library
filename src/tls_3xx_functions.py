@@ -90,8 +90,8 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -134,8 +134,8 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -178,8 +178,8 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -229,8 +229,8 @@ def function_112(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -280,8 +280,8 @@ def function_113(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -336,8 +336,8 @@ def function_114(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -392,8 +392,8 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -448,8 +448,8 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -514,8 +514,8 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -565,8 +565,8 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -616,8 +616,8 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
@@ -678,8 +678,8 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     # verify that data came through completely
     checksum_marker = response[-6:-4]
     if checksum_marker != "&&":
-        return "Checksum missing from command response, transmission either " \
-            "partially completed or failed."
+        raise ValueError("Checksum missing from command response. " \
+             "Transmission either partially completed or failed.")
     
     data = get_standard_values(response)
 
