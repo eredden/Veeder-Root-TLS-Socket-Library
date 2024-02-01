@@ -56,8 +56,8 @@ class tlsSocket:
         byte_response = socket.recv(65536)
 
         if invalid_command_error in byte_response:
-            response = "Unrecognized function code. \
-                Use the command format form of the function."
+            response = "Unrecognized function code. " \
+                "Use the command format form of the function."
             return response
         
         # removes SOH and ETX from being shown in output
