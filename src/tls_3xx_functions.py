@@ -460,8 +460,6 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
     data["station_header_4"] = response[70:90].strip()
     data["number_of_records"] = int(response[90:92])
 
-    if data["number_of_records"] == 0: return data
-
     # strip generic values from data, then split into individual chunks
     remaining_data = response[90:-6]
     expected_data_length = 25
@@ -524,8 +522,6 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
     # store extra non-repeated info from this response
     data["number_of_records"] = int(response[10:14])
 
-    if data["number_of_records"] == 0: return data
-
     # strip generic values from data, then split into individual chunks
     remaining_data = response[14:-6]
     expected_data_length = 18
@@ -577,8 +573,6 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
     # store extra non-repeated info from this response
     data["number_of_records"] = int(response[10:12])
 
-    if data["number_of_records"] == 0: return data
-
     # strip generic values from data, then split into individual chunks
     remaining_data = response[12:-6]
     expected_data_length = 20
@@ -602,6 +596,66 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
         report_data["minute"] = int(value[8:10])
         report_data["service_id"] = value[10:16].strip()
         report_data["service_code"] = value[16:20].strip()
+
+    return data
+
+def function_11B(tls: tlsSocket, timeout: int) -> dict:
+    """
+    Runs function 11B on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    timeout - Time to wait for a response from the socket after executing the 
+    command.
+    """
+
+    command = "i11B00"
+    response = tls.execute(command, timeout)
+
+    # verify that data came through completely
+    data_termination_flag = response[-6:-4]
+    if data_termination_flag != "&&":
+        return "Checksum missing from command response, transmission either " \
+            "partially completed or failed."
+    
+    data = get_standard_values(response)
+
+    # store extra non-repeated info from this response
+    data["service_notice_session"] = int(response[10:11])
+    data["start_year"] = int(response[11:13])
+    data["start_month"] = int(response[13:15])
+    data["start_day"] = int(response[15:17])
+    data["start_hour"] = int(response[17:19])
+    data["start_minute"] = int(response[19:21])
+    data["number_of_records"] = int(response[21:23], 16)
+
+    # strip generic values from data, then split into individual chunks
+    remaining_data = response[23:-6]
+    expected_data_length = 20
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    data["reports"] = {}
+    reports = data["reports"]
+
+    if len(remaining_data) < expected_data_length: return data
+
+    # split values from within each individual tank report
+    for i, value in enumerate(split_remaining_data):
+        report_number = str(i + 1)
+        reports["report_" + report_number] = {}
+    
+        report_data = reports["report_" + report_number]
+        report_data["start_year"] = int(value[0:2])
+        report_data["start_month"] = int(value[2:4])
+        report_data["start_day"] = int(value[4:6])
+        report_data["start_hour"] = int(value[6:8])
+        report_data["start_minute"] = int(value[8:10])
+        report_data["end_year"] = int(value[10:12])
+        report_data["end_month"] = int(value[12:14])
+        report_data["end_day"] = int(value[14:16])
+        report_data["end_hour"] = int(value[16:18])
+        report_data["end_minute"] = int(value[18:20])
 
     return data
 
