@@ -88,8 +88,8 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -132,8 +132,8 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -176,8 +176,8 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -227,8 +227,8 @@ def function_112(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -278,8 +278,8 @@ def function_113(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -334,8 +334,8 @@ def function_114(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -390,8 +390,8 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -446,8 +446,8 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -512,8 +512,8 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -563,8 +563,8 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -614,8 +614,8 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
@@ -676,8 +676,8 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     response = tls.execute(command, timeout)
 
     # verify that data came through completely
-    data_termination_flag = response[-6:-4]
-    if data_termination_flag != "&&":
+    checksum_marker = response[-6:-4]
+    if checksum_marker != "&&":
         return "Checksum missing from command response, transmission either " \
             "partially completed or failed."
     
