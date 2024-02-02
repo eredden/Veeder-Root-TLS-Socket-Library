@@ -62,8 +62,9 @@ class tlsSocket:
         
         if not is_display_command:
             checksum_separator = b"&&"
+            checksum_separator_position = byte_response[-7:-5]
 
-            if checksum_separator not in byte_response:
+            if checksum_separator not in checksum_separator_position:
                 raise ValueError("Checksum missing from command response. " \
                     "Transmission either partially completed or failed.")
 
