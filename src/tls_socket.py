@@ -69,7 +69,8 @@ class tlsSocket:
                     "Transmission either partially completed or failed.")
 
             if not data_integrity_check(byte_response):
-                raise ValueError("Incorrect checksum, data integrity invalidated.")
+                raise ValueError("Incorrect checksum, data integrity " \
+                    "invalidated.")
         
         # removes SOH and ETX from being shown in output
         response = byte_response.decode("utf-8")[1:][:-1]
