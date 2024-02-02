@@ -33,7 +33,7 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, byte_command: str, timeout: int) -> str:
+    def execute(self, command: str, timeout: int) -> str:
         """
         Sends a command to a socket connection using the command 
         format from the Veeder-Root Serial Interface Manual 576013-635.
@@ -47,18 +47,28 @@ class tlsSocket:
 
         socket = self.socket
         start_of_header = b"\x01"
+        byte_command = start_of_header + bytes(command, "utf-8")
+
+        is_display_command = command[0].isupper()
         invalid_command_error = b"FF1B"
-        
-        byte_command = start_of_header + bytes(byte_command, "utf-8")
 
         socket.sendall(byte_command)
         time.sleep(timeout)
         byte_response = socket.recv(65536)
 
         if invalid_command_error in byte_response:
-            response = "Unrecognized function code. " \
-                "Use the command format form of the function."
-            return response
+            raise ValueError("Unrecognized function code. " \
+                "Use the command format form of the function.")
+        
+        if not is_display_command:
+            checksum_separator = b"&&"
+
+            if checksum_separator not in byte_response:
+                raise ValueError("Checksum missing from command response. " \
+                    "Transmission either partially completed or failed.")
+
+            if not data_integrity_check(byte_response):
+                raise ValueError("Incorrect checksum, data integrity invalidated.")
         
         # removes SOH and ETX from being shown in output
         response = byte_response.decode("utf-8")[1:][:-1]
@@ -75,3 +85,35 @@ class tlsSocket:
             response = response[:-4]
 
         return response
+
+def data_integrity_check(response: bytes) -> bool:
+    """
+    Verifies whether or not a command response retains its integrity
+    after transmission by comparing it against the response checksum.
+
+    response - Full command response up the checksum itself. Must include
+    the start of header, command, response data, and the && separator.
+
+    checksum - The checksum contained in-between the && separator and the
+    end of transmission character.
+    """
+
+    response = response.decode()
+    message = response[:-5]
+    checksum = response[-5:-1]
+
+    # calculate the 16-bit binary count of the message
+    message_int = sum(ord(char) for char in message) & 0xFFFF
+
+    # convert message integer to twos complement integer
+    message_int = (message_int & 0xFFFF) + (message_int >> 16)
+    message_int = message_int & 0xFFFF 
+
+    # convert checksum hexadecimal string into integer
+    checksum_int = int(checksum, 16)
+
+    # compare sum of checksum and message to expected result
+    integrity_threshold = "0b10000000000000000"
+    binary_sum = bin(message_int + checksum_int)
+    
+    return bool(binary_sum == integrity_threshold)

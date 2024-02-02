@@ -85,14 +85,7 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i101" + tank
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
@@ -129,14 +122,7 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i10200"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
@@ -173,14 +159,7 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11100"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
@@ -224,14 +203,7 @@ def function_112(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11200"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
@@ -276,13 +248,6 @@ def function_113(tls: tlsSocket, timeout: int) -> dict:
 
     command = "i11300"
     response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
     data = get_standard_values(response)
 
     # store extra non-repeated info from this response
@@ -331,14 +296,7 @@ def function_114(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11400"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # store extra non-repeated info from this response
@@ -387,14 +345,7 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11500"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # store extra non-repeated info from this response
@@ -443,14 +394,7 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11600"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # store extra non-repeated info from this response
@@ -509,14 +453,7 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
         command = "i11900" + start_date + end_date
     else: command = "i11900"
 
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # store extra non-repeated info from this response
@@ -560,14 +497,7 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11A00"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # store extra non-repeated info from this response
@@ -611,14 +541,7 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11B00"
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # store extra non-repeated info from this response
@@ -673,14 +596,7 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i201" + tank
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks
@@ -723,14 +639,7 @@ def function_202(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i202" + tank
-    response = tls.execute(command, timeout)
-
-    # verify that data came through completely
-    checksum_marker = response[-6:-4]
-    if checksum_marker != "&&":
-        raise ValueError("Checksum missing from command response. " \
-             "Transmission either partially completed or failed.")
-    
+    response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
     # strip generic values from data, then split into individual chunks

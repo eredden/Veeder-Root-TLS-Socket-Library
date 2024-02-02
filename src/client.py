@@ -20,8 +20,13 @@ if __name__ == "__main__":
                 print("Disconnecting from host...")
                 break
 
-            if command != "":
+            if command == "":
+                continue
+
+            try:
                 output = tls.execute(command, args.timeout)
                 print(output)
+            except ValueError as err:
+                print(err.args[0])
 
         print("Connection ended.\n")
