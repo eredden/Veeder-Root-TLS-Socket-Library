@@ -37,12 +37,12 @@ Review the Veeder-Root Serial Interface manual provided with your model of autom
 
 # Using the TLS Client
 
-You can also use the client.py file that I created for this library to interact with the automatic tank gauge systems through a command line interface, similar to how you would with other systems through Telnet, SSH, or Putty.
+You can also use the tls_client.py file that I created for this library to interact with the automatic tank gauge systems through a command line interface, similar to how you would with other systems through Telnet, SSH, or Putty.
 
 **Script:**
 
 >```python
-> python client.py "127.0.0.1" 10001
+> python tls_client.py "127.0.0.1" 10001
 >```
 
 **Output:**
@@ -74,7 +74,7 @@ From here, you can type in any function code to interact with the TLS system. As
 > >>
 > ```
 
-You may notice that a few of the responses from your TLS system do not fully appear. This can sometimes occur if the time between the program sending the command to the TLS system and listening back for it is too short, as these systems tend to have a bit of a delay with longer responses. This timeout is preset by default to one second to provide a fast experience out the box, and can be adjusted to wait longer by using the ``--timeout`` flag when executing client.py. You need to enter an integer after this flag like ``3`` to indicate the amount of seconds to wait for a response.
+You may notice that a few of the responses from your TLS system do not fully appear. This can sometimes occur if the time between the program sending the command to the TLS system and listening back for it is too short, as these systems tend to have a bit of a delay with longer responses. This timeout is preset by default to one second to provide a fast experience out the box, and can be adjusted to wait longer by using the ``--timeout`` flag when executing tls_client.py. You need to enter an integer after this flag like ``3`` to indicate the amount of seconds to wait for a response.
 
 ## What's Next?
 
