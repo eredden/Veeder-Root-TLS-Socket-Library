@@ -108,8 +108,8 @@ def data_integrity_check(response: bytes) -> bool:
     message_int = sum(ord(char) for char in message) & 0xFFFF
 
     # convert message integer to twos complement integer
-    message_int = (message_int & 0xFFFF) + (message_int >> 16)
-    message_int = message_int & 0xFFFF 
+    message_int = message_int + (message_int >> 16)
+    message_int = message_int
 
     # convert checksum hexadecimal string into integer
     checksum_int = int(checksum, 16)
