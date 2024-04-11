@@ -6,7 +6,7 @@ If you believe there is something about this library that can be improved upon, 
 
 ## Commands
 
-The commands used to interact with Veeder-Root TLS 4 series systems can be found in the [VEEDER - ROOT SERIAL INTERFACE MANUAL for TLS4 Series, TLS-450 Series, TLS-450Plus Series Environmental & Inventory Management System](https://accuflo.com/pdf/veeder/577013-950.pdf) manual. You will want to look through Section 5 to get a better idea of how commands are sent, Section 6 to see how the responses are formatted, and Section 7 to see the available functions and their specific outputs. This is exactly the same for the TLS 3 series apart from the available functions.
+The commands used to interact with Veeder-Root TLS-4XX series systems can be found in the Serial Interface Manual in the `docs` directory of this repository. You will want to look through Section 5 to get a better idea of how commands are sent, Section 6 to see how the responses are formatted, and Section 7 to see the available functions and their specific outputs. This is exactly the same for the TLS-3XX series apart from the available functions.
 
 You will want to use either the Computer or Display format of the function as listed under the Command Format header. For example, if you would like to use function code 101 (System Status Report) in the Display format, you would use the command ``I10100`` to do so. You do not need to add the start of header ``CTRL + A`` to the command as this is automatically prepended when using my wrapper, as is the end of tranmission character ``CTRL + C``. If your TLS system needs security codes in front of the commands, then you would simply type the security code before the command.
 
