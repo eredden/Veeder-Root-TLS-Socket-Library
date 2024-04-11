@@ -33,7 +33,7 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: str, timeout: int) -> str:
+    def execute(self, command: str, soh: bytes = b"\x01") -> str:
         """
         Sends a command to a socket connection using the command 
         format from the Veeder-Root Serial Interface Manual 576013-635.
@@ -41,30 +41,44 @@ class tlsSocket:
         command - The function code you would like to execute. 
         Make sure this is in computer format.
 
-        timeout - The amount of time to wait for a response from the host. 
-        Adjust this as needed.
+        soh - Start of header for commands. Veeder-Root allows you to change
+        this for tank gauges so it is optional here. Default value is ASCII 001.
         """
 
         socket = self.socket
-        start_of_header = b"\x01"
-        byte_command = start_of_header + bytes(command, "utf-8")
+        etx = b"\x03"
 
+        byte_command  = soh + bytes(command, "utf-8")
         is_display_command = command[0].isupper()
-        invalid_command_error = b"FF1B"
+
+        # Send command and repeatedly receive data in chunks until ETX is found.
+        byte_response = b""
+        retries   = 30
+        timeout   = 1
+        data_size = 4098
 
         socket.sendall(byte_command)
-        time.sleep(timeout)
-        byte_response = socket.recv(65536)
 
-        if invalid_command_error in byte_response:
-            raise ValueError("Unrecognized function code. " \
-                "Use the command format form of the function.")
+        for iterator in range(1, retries + 1):
+            time.sleep(timeout)
+            chunk = socket.recv(data_size)
+
+            byte_response += chunk
+
+            if etx in chunk:
+                break
+
+            if iterator == retries:
+                raise ValueError("Transmission either partially completed" \
+                    " or failed.")
         
-        if not is_display_command:
-            checksum_separator = b"&&"
-            checksum_separator_position = byte_response[-7:-5]
+        # The error code checked below is caused by invalid commands.
+        if byte_response == b"\x019999FF1B\x03":
+            raise ValueError("Invalid command.")
 
-            if checksum_separator not in checksum_separator_position:
+        if not is_display_command:
+            # Check if the checksum separator is present and in right position.
+            if b"&&" not in byte_response[-7:-5]:
                 raise ValueError("Checksum missing from command response. " \
                     "Transmission either partially completed or failed.")
 
@@ -101,7 +115,7 @@ def data_integrity_check(response: bytes) -> bool:
     """
 
     response = response.decode()
-    message = response[:-5]
+    message  = response[:-5]
     checksum = response[-5:-1]
 
     # Calculate the 16-bit binary count of the message.

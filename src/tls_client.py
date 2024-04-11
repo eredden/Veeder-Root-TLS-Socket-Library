@@ -6,8 +6,6 @@ if __name__ == "__main__":
     parser.add_argument("ip", help="IP address of the TLS system.", type=str)
     parser.add_argument("port", help="Port number used to connect to the" \
         "serial interface remotely.", type=int)
-    parser.add_argument("--timeout", help="Sets the delay in seconds between" \
-        "sending a command and storing output.", nargs='?', default=1, type=int)
     args = parser.parse_args()
 
     with tls_socket.tlsSocket(args.ip, args.port) as tls:
@@ -24,7 +22,7 @@ if __name__ == "__main__":
                 continue
 
             try:
-                output = tls.execute(command, args.timeout)
+                output = tls.execute(command)
                 print(output)
             except ValueError as err:
                 print(err.args[0])

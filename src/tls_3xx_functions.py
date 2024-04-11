@@ -71,7 +71,7 @@ def hex_to_float(hex: str) -> float:
 
     return decimal
 
-def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
+def function_101(tls: tlsSocket, tank: str) -> dict:
     """
     Runs function 101 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -85,7 +85,7 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i101" + tank
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Strip generic values from data, then split into individual chunks..
@@ -110,7 +110,7 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     return data
         
-def function_102(tls: tlsSocket, timeout: int) -> dict:
+def function_102(tls: tlsSocket) -> dict:
     """
     Runs function 102 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -122,7 +122,7 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i10200"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Strip generic values from data, then split into individual chunks.
@@ -147,7 +147,7 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_111(tls: tlsSocket, timeout: int) -> dict:
+def function_111(tls: tlsSocket) -> dict:
     """
     Runs function 111 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -159,7 +159,7 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11100"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Strip generic values from data, then split into individual chunks.
@@ -191,7 +191,7 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_112(tls: tlsSocket, timeout: int) -> dict:
+def function_112(tls: tlsSocket) -> dict:
     """
     Runs function 112 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -203,7 +203,7 @@ def function_112(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11200"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Strip generic values from data, then split into individual chunks.
@@ -235,7 +235,7 @@ def function_112(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_113(tls: tlsSocket, timeout: int) -> dict:
+def function_113(tls: tlsSocket) -> dict:
     """
     Runs function 113 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -247,7 +247,7 @@ def function_113(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11300"
-    response = tls.execute(command, timeout)
+    response = tls.execute(command)
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -284,7 +284,7 @@ def function_113(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_114(tls: tlsSocket, timeout: int) -> dict:
+def function_114(tls: tlsSocket) -> dict:
     """
     Runs function 114 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -296,7 +296,7 @@ def function_114(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11400"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -334,7 +334,7 @@ def function_114(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_115(tls: tlsSocket, timeout: int) -> dict:
+def function_115(tls: tlsSocket) -> dict:
     """
     Runs function 115 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -345,7 +345,7 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11500"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -382,7 +382,7 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_116(tls: tlsSocket, timeout: int) -> dict:
+def function_116(tls: tlsSocket) -> dict:
     """
     Runs function 116 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -394,7 +394,7 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11600"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -453,7 +453,7 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
         command = "i11900" + start_date + end_date
     else: command = "i11900"
 
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -485,7 +485,7 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
 
     return data
 
-def function_11A(tls: tlsSocket, timeout: int) -> dict:
+def function_11A(tls: tlsSocket) -> dict:
     """
     Runs function 11A on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -497,7 +497,7 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11A00"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -529,7 +529,7 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_11B(tls: tlsSocket, timeout: int) -> dict:
+def function_11B(tls: tlsSocket) -> dict:
     """
     Runs function 11B on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -541,7 +541,7 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
     """
 
     command = "i11B00"
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -582,7 +582,7 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
 
     return data
 
-def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
+def function_201(tls: tlsSocket, tank: str) -> dict:
     """
     Runs function 201 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -596,7 +596,7 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i201" + tank
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Strip generic values from data, then split into individual chunks.
@@ -625,7 +625,7 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     return data
 
 # NON-FUNCTIONAL, still being worked on due to checksum issues.
-def function_202(tls: tlsSocket, tank: str, timeout: int) -> dict:
+def function_202(tls: tlsSocket, tank: str) -> dict:
     """
     Runs function 202 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -639,7 +639,7 @@ def function_202(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
 
     command = "i202" + tank
-    response = tls.execute(command, timeout)    
+    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Strip generic values from data, then split into individual chunks.
