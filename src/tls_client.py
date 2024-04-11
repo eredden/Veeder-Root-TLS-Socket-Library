@@ -14,17 +14,10 @@ if __name__ == "__main__":
         while True:
             command = input("\n>> ")
 
-            if command.lower() == "exit":
-                print("Disconnecting from host...")
-                break
+            if command.lower() == "exit": break
+            if command         ==     "": continue
 
-            if command == "":
-                continue
-
-            try:
-                output = tls.execute(command)
-                print(output)
-            except ValueError as err:
-                print(err.args[0])
+            try:                        print(tls.execute(command))
+            except ValueError as error: print(error.args[0])
 
         print("Connection ended.\n")
