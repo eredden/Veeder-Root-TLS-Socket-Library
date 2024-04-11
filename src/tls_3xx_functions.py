@@ -88,7 +88,7 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks..
     remaining_data = response[10:-6]
     expected_data_length = 6
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -98,7 +98,7 @@ def function_101(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
@@ -125,7 +125,7 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[12:-6]
     expected_data_length = 20
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -135,7 +135,7 @@ def function_102(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         slot_number = str(i + 1)
         slots["slot_" + slot_number] = {}
@@ -162,7 +162,7 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[10:-6]
     expected_data_length = 20
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -172,7 +172,7 @@ def function_111(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
@@ -206,7 +206,7 @@ def function_112(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[10:-6]
     expected_data_length = 20
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -216,7 +216,7 @@ def function_112(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
@@ -250,13 +250,13 @@ def function_113(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)
     data = get_standard_values(response)
 
-    # store extra non-repeated info from this response
+    # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
     data["station_header_2"] = response[30:50].strip()
     data["station_header_3"] = response[50:70].strip()
     data["station_header_4"] = response[70:90].strip()
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[90:-6]
     expected_data_length = 18
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -266,7 +266,7 @@ def function_113(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
@@ -299,13 +299,13 @@ def function_114(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # store extra non-repeated info from this response
+    # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
     data["station_header_2"] = response[30:50].strip()
     data["station_header_3"] = response[50:70].strip()
     data["station_header_4"] = response[70:90].strip()
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[90:-6]
     expected_data_length = 20
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -315,7 +315,7 @@ def function_114(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
@@ -348,13 +348,13 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # store extra non-repeated info from this response
+    # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
     data["station_header_2"] = response[30:50].strip()
     data["station_header_3"] = response[50:70].strip()
     data["station_header_4"] = response[70:90].strip()
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[90:-6]
     expected_data_length = 18
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -364,7 +364,7 @@ def function_115(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         alarm_number = str(i + 1)
         alarms["alarm_" + alarm_number] = {}
@@ -397,14 +397,14 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # store extra non-repeated info from this response
+    # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
     data["station_header_2"] = response[30:50].strip()
     data["station_header_3"] = response[50:70].strip()
     data["station_header_4"] = response[70:90].strip()
     data["number_of_records"] = int(response[90:92])
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[90:-6]
     expected_data_length = 25
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -414,7 +414,7 @@ def function_116(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         report_number = str(i + 1)
         reports["report_" + report_number] = {}
@@ -448,7 +448,7 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
     command.
     """
 
-    # this command can take a date range optionally
+    # This command can take a date range optionally.
     if start_date != "" and end_date != "":
         command = "i11900" + start_date + end_date
     else: command = "i11900"
@@ -456,10 +456,10 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # store extra non-repeated info from this response
+    # Store extra non-repeated info from this response.
     data["number_of_records"] = int(response[10:14])
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[14:-6]
     expected_data_length = 18
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -469,7 +469,7 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         record_number = str(i + 1)
         records["record_" + record_number] = {}
@@ -500,10 +500,10 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # store extra non-repeated info from this response
+    # Store extra non-repeated info from this response.
     data["number_of_records"] = int(response[10:12])
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[12:-6]
     expected_data_length = 20
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -513,7 +513,7 @@ def function_11A(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         report_number = str(i + 1)
         reports["report_" + report_number] = {}
@@ -544,7 +544,7 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # store extra non-repeated info from this response
+    # Store extra non-repeated info from this response.
     data["service_notice_session"] = int(response[10:11])
     data["start_year"] = int(response[11:13])
     data["start_month"] = int(response[13:15])
@@ -553,7 +553,7 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
     data["start_minute"] = int(response[19:21])
     data["number_of_records"] = int(response[21:23], 16)
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[23:-6]
     expected_data_length = 20
     split_remaining_data = split_data(remaining_data, expected_data_length)
@@ -563,7 +563,7 @@ def function_11B(tls: tlsSocket, timeout: int) -> dict:
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for i, value in enumerate(split_remaining_data):
         report_number = str(i + 1)
         reports["report_" + report_number] = {}
@@ -599,14 +599,14 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[10:-6]
     expected_data_length = 65
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for value in split_remaining_data:
         tank_number = value[0:2]
         data["tank_" + tank_number] = {}
@@ -624,7 +624,7 @@ def function_201(tls: tlsSocket, tank: str, timeout: int) -> dict:
 
     return data
 
-# NON-FUNCTIONAL, still being worked on due to checksum issues
+# NON-FUNCTIONAL, still being worked on due to checksum issues.
 def function_202(tls: tlsSocket, tank: str, timeout: int) -> dict:
     """
     Runs function 202 on a given Veeder-Root TLS device and returns a dict with 
@@ -642,14 +642,14 @@ def function_202(tls: tlsSocket, tank: str, timeout: int) -> dict:
     response = tls.execute(command, timeout)    
     data = get_standard_values(response)
 
-    # strip generic values from data, then split into individual chunks
+    # Strip generic values from data, then split into individual chunks.
     remaining_data = response[10:-6]
     expected_data_length = 107
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
     if len(remaining_data) < expected_data_length: return data
 
-    # split values from within each individual tank report
+    # Split values from within each individual tank report.
     for value in split_remaining_data:
         tank_number = value[0:2]
         data["tank_" + tank_number] = {}

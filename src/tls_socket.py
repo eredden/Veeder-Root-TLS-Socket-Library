@@ -3,7 +3,7 @@ import time
 
 class tlsSocket:
     """
-    Defines a socket for the TLS-3XX automatic tank gauges 
+    Defines a socket for the TLS automatic tank gauges 
     manufactured by Veeder-Root.
 
     execute() - Used to send a command and view the output in accordance with 
@@ -72,14 +72,14 @@ class tlsSocket:
                 raise ValueError("Incorrect checksum, data integrity " \
                     "invalidated.")
         
-        # removes SOH and ETX from being shown in output
+        # Removes SOH and ETX from being shown in output.
         response = byte_response.decode("utf-8")[1:][:-1]
         command = byte_command.decode("utf-8")[1:]
 
         # Removes the command from being shown in output.
         response = response.replace(command, "")
 
-        # checks for and removes newlines at both ends of output
+        # Checks for and removes newlines at both ends of output.
         if response[:4] == "\r\n\r\n":
             response = response[4:]
 
@@ -104,17 +104,17 @@ def data_integrity_check(response: bytes) -> bool:
     message = response[:-5]
     checksum = response[-5:-1]
 
-    # calculate the 16-bit binary count of the message
+    # Calculate the 16-bit binary count of the message.
     message_int = sum(ord(char) for char in message) & 0xFFFF
 
-    # convert message integer to twos complement integer
+    # Convert message integer to twos complement integer.
     message_int = message_int + (message_int >> 16)
     message_int = message_int
 
-    # convert checksum hexadecimal string into integer
+    # Convert checksum hexadecimal string into integer.
     checksum_int = int(checksum, 16)
 
-    # compare sum of checksum and message to expected result
+    # Compare sum of checksum and message to expected result.
     integrity_threshold = "0b10000000000000000"
     binary_sum = bin(message_int + checksum_int)
     
