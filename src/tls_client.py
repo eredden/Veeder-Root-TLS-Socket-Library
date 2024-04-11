@@ -15,9 +15,11 @@ if __name__ == "__main__":
             command = input("\n>> ")
 
             if command.lower() == "exit": break
-            if command         ==     "": continue
+            if command.lower() == "":  continue
 
-            try:                        print(tls.execute(command))
-            except ValueError as error: print(error.args[0])
+            try:                      output = tls.execute(command)
+            except ValueError as err: output = err.args[0] 
+
+            print(output)
 
         print("Connection ended.\n")
