@@ -33,7 +33,7 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: str, soh: bytes = b"\x01") -> str:
+    def execute(self, command: str, etx: bytes = b"\x03") -> str:
         """
         Sends a command to a socket connection using the command 
         format from the Veeder-Root Serial Interface Manual 576013-635.
@@ -46,7 +46,7 @@ class tlsSocket:
         """
 
         socket = self.socket
-        etx    = b"\x03"
+        soh    = b"\x01"
 
         byte_command = soh + bytes(command, "utf-8")
         is_display   = command[0].isupper()
