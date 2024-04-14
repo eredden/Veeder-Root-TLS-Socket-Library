@@ -41,8 +41,8 @@ class tlsSocket:
         command - The function code you would like to execute. 
         Make sure this is in computer format.
 
-        soh - This has a default value (ASCII code 001) and should only be 
-        changed if your TLS system is set to use a different start of header.
+        etx - This has a default value (ASCII code 001) and should only be 
+        changed if your ATG is set to use a different end of transmission.
         """
 
         socket = self.socket
@@ -66,10 +66,8 @@ class tlsSocket:
             chunk = socket.recv(data_size)
             byte_response += chunk
 
-            if etx in chunk: break
-
-            if retry_count == retries: 
-                raise ValueError("Transmission failed.")
+            if etx in chunk:           break
+            if retry_count == retries: raise ValueError("Transmission failed.")
     
         return self.__handle_response(byte_response, 
                                       byte_command,
