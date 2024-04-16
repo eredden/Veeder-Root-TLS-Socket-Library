@@ -20,7 +20,7 @@ This script demonstrates how you can programmatically connect to an automatic ta
 > from tls_socket_lib import tls_socket
 >
 > tls = tls_socket.tlsSocket("127.0.0.1", 10001) # initial connection
-> response = tls.execute("i10100", 3) # get system status report
+> response = tls.execute("i10100") # get system status report
 > 
 > print(response)
 >```
@@ -74,7 +74,7 @@ From here, you can type in any function code to interact with the TLS system. As
 > >>
 > ```
 
-You may notice that a few of the responses from your TLS system do not fully appear. This can sometimes occur if the time between the program sending the command to the TLS system and listening back for it is too short, as these systems tend to have a bit of a delay with longer responses. This timeout is preset by default to one second to provide a fast experience out the box, and can be adjusted to wait longer by using the ``--timeout`` flag when executing tls_client.py. You need to enter an integer after this flag like ``3`` to indicate the amount of seconds to wait for a response.
+The time between responses will vary based on how large the responses are. The response for a command like `i10100` will be significantly smaller than that of `I11100`. I have implemented a dynamic waiting function to stop receiving response data once the end of transmission character ``CTRL + C``, also known as ASCII code 3 is hit. If this is not hit, the program will continue to wait for thirty seconds and will raise an error after that point.
 
 ## What's Next?
 
