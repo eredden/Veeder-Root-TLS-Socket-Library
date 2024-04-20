@@ -79,9 +79,6 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
     tls - A socket for a TLS device, should be created with the tlsSocket class.
 
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i101" + tank
@@ -116,9 +113,6 @@ def function_102(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i10200"
@@ -153,9 +147,6 @@ def function_111(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11100"
@@ -197,9 +188,6 @@ def function_112(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11200"
@@ -241,9 +229,6 @@ def function_113(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11300"
@@ -290,9 +275,6 @@ def function_114(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11400"
@@ -340,8 +322,6 @@ def function_115(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11500"
@@ -388,9 +368,6 @@ def function_116(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11600"
@@ -430,8 +407,7 @@ def function_116(tls: tlsSocket) -> dict:
 
     return data
 
-def function_119(tls: tlsSocket, start_date: str, end_date: str, 
-                 timeout: int) -> dict:
+def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
     """
     Runs function 119 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -443,9 +419,6 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str,
 
     end_date - The end of the range of time to look through with this command 
     (yymmdd format).
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     # This command can take a date range optionally.
@@ -491,9 +464,6 @@ def function_11A(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11A00"
@@ -535,9 +505,6 @@ def function_11B(tls: tlsSocket) -> dict:
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i11B00"
@@ -590,9 +557,6 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
     tls - A socket for a TLS device, should be created with the tlsSocket class.
 
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i201" + tank
@@ -633,9 +597,6 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
     tls - A socket for a TLS device, should be created with the tlsSocket class.
 
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
-
-    timeout - Time to wait for a response from the socket after executing the 
-    command.
     """
 
     command = "i202" + tank
