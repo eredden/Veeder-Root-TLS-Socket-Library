@@ -137,7 +137,6 @@ class tlsSocket:
 
         # Convert message integer to twos complement integer.
         message_int = message_int + (message_int >> 16)
-        message_int = message_int
 
         # Convert checksum hexadecimal string into integer.
         checksum_int = int(checksum, 16)
