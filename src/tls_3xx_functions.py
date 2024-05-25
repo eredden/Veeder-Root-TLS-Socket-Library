@@ -87,7 +87,7 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
     
     split_remaining_data = split_data(remaining_data, data_length)
     
-    # Get values from within each individual alarm.
+    # Get values from each alarm.
     data["alarms"] = []
 
     for value in split_remaining_data:
@@ -107,29 +107,29 @@ def function_102(tls: tlsSocket) -> dict:
     tls - A socket for a TLS device, should be created with the tlsSocket class.
     """
 
-    command = "i10200"
-    response = tls.execute(command)    
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i10200")    
     data = get_standard_values(response)
 
-    # Strip generic values from data, then split into individual chunks.
+    # Get values from the remaining data, split up slots.
     remaining_data = response[12:-6]
     expected_data_length = 20
+
+    if len(remaining_data) < expected_data_length: 
+        return data
+    
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    data["slots"] = {}
-    slots = data["slots"]
+    # Get values from each slot.
+    data["slots"] = []
 
-    if len(remaining_data) < expected_data_length: return data
-
-    # Split values from within each individual tank report.
-    for i, value in enumerate(split_remaining_data):
-        slot_number = str(i + 1)
-        slots["slot_" + slot_number] = {}
-    
-        slot_data = slots["slot_" + slot_number]
-        slot_data["type_of_module"] = value[2:4]
-        slot_data["power_on_reset"] = hex_to_float(value[4:12])
-        slot_data["current_io_reading"] = hex_to_float(value[12:19])
+    for value in split_remaining_data:
+        data["slots"].append({
+            "slot_number":        int(value[0:2], 16),
+            "type_of_module":     value[2:4],
+            "power_on_reset":     hex_to_float(value[4:12]),
+            "current_io_reading": hex_to_float(value[12:19])
+        })
 
     return data
 
