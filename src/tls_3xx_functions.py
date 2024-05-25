@@ -1,4 +1,3 @@
-import math
 from tls_socket import tlsSocket
 
 def get_standard_values(output: str) -> dict:
@@ -9,16 +8,14 @@ def get_standard_values(output: str) -> dict:
     output - Output of a command sent to a TLS system as a string.
     """
 
-    data = {}
-
-    data["year"] = int(output[0:2])
-    data["month"] = int(output[2:4])
-    data["day"] = int(output[4:6])
-    data["hour"] = int(output[6:8])
-    data["minute"] = int(output[8:10])
-    data["checksum"] = output[-4:]
-
-    return data
+    return {
+        "year":     int(output[0:2]),
+        "month":    int(output[2:4]),
+        "day":      int(output[4:6]),
+        "hour":     int(output[6:8]),
+        "minute":   int(output[8:10]),
+        "checksum": output[-4:]
+    }
 
 def split_data(data: str, length: int) -> list:
     """
