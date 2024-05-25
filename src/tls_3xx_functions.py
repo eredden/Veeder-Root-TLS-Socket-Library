@@ -20,25 +20,21 @@ def get_standard_values(output: str) -> dict:
 
     return data
 
-def split_data(output: str, report_length: int) -> list:
+def split_data(data: str, length: int) -> list:
     """
-    Split apart repeating reports from a command response and return as a list.
+    Split a string into specified length chunks.
 
-    output - Output of a command sent to a TLS system as a string. This should 
-    only contain the repeating data.
+    data - The data to be split.
 
-    report_length - The expected length of each repeating report.
+    length - The maximum length of each split chunk of data.
     """
 
-    data = []
+    out = []
 
-    for i, value in enumerate(output):
-        array_position = math.floor(i / report_length)
-
-        if i % report_length == 0: data.append(value)
-        else: data[array_position] = data[array_position] + value
+    for index in range(0, len(data), length):
+        out.append(data[index:index + length])
     
-    return data
+    return out
 
 def hex_to_float(hex: str) -> float:
     """
