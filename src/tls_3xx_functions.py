@@ -576,7 +576,6 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-# NON-FUNCTIONAL, still being worked on due to checksum issues.
 def function_202(tls: tlsSocket, tank: str) -> dict:
     """
     Runs function 202 on a given Veeder-Root TLS device and returns a dict with 
