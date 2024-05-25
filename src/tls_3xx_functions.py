@@ -74,29 +74,28 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    command = "i101" + tank
-    response = tls.execute(command)    
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i101" + tank)    
     data = get_standard_values(response)
 
-    # Strip generic values from data, then split into individual chunks..
+    # Get values from the remaining data, split up alarms.
     remaining_data = response[10:-6]
-    expected_data_length = 6
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    data_length = 6
+
+    if len(remaining_data) < data_length: 
+        return data
     
-    data["alarms"] = {}
-    alarms = data["alarms"]
+    split_remaining_data = split_data(remaining_data, data_length)
+    
+    # Get values from within each individual alarm.
+    data["alarms"] = []
 
-    if len(remaining_data) < expected_data_length: return data
-
-    # Split values from within each individual tank report.
-    for i, value in enumerate(split_remaining_data):
-        alarm_number = str(i + 1)
-        alarms["alarm_" + alarm_number] = {}
-
-        alarm_data = alarms["alarm_" + alarm_number]
-        alarm_data["alarm_category"] = int(value[0:2])
-        alarm_data["alarm_type"] = int(value[2:4])
-        alarm_data["tank_number"] = int(value[4:6])
+    for value in split_remaining_data:
+        data["alarms"].append({
+            "alarm_category": int(value[0:2]),
+            "alarm_type":     int(value[2:4]),
+            "tank_number":    int(value[4:6])
+        })
 
     return data
         
