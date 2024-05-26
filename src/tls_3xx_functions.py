@@ -407,40 +407,39 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
     (yymmdd format).
     """
 
-    # This command can take a date range optionally.
+    # Execute the command and extract common values from it immediately.
     if start_date != "" and end_date != "":
-        command = "i11900" + start_date + end_date
-    else: command = "i11900"
+        response = tls.execute("i11900" + start_date + end_date) 
+    else: 
+        response = tls.execute("i11900")
 
-    response = tls.execute(command)    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
     data["number_of_records"] = int(response[10:14])
+    data["records"] = []
 
-    # Strip generic values from data, then split into individual chunks.
+    # Get values from the remaining data, split up records.
     remaining_data = response[14:-6]
     expected_data_length = 18
+
+    if len(remaining_data) < expected_data_length: 
+        return data
+
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    data["records"] = {}
-    records = data["records"]
-
-    if len(remaining_data) < expected_data_length: return data
-
-    # Split values from within each individual tank report.
-    for i, value in enumerate(split_remaining_data):
-        record_number = str(i + 1)
-        records["record_" + record_number] = {}
-    
-        record_data = records["record_" + record_number]
-        record_data["year"] = int(value[0:2])
-        record_data["month"] = int(value[2:4])
-        record_data["day"] = int(value[4:6])
-        record_data["hour"] = int(value[6:8])
-        record_data["minute"] = int(value[8:10])
-        record_data["record_type"] = value[10:12]
-        record_data["data_field"] = value[12:18]
+    # Get values from each record.
+    for value in split_remaining_data:
+        data["records"].append({
+            "year": int(value[0:2]),
+            "month": int(value[2:4]),
+            "day": int(value[4:6]),
+            "hour": int(value[6:8]),
+            "minute": int(value[8:10]),
+            "record_type": value[10:12],
+            "data_field": value[12:18]
+        })
+        
 
     return data
 
