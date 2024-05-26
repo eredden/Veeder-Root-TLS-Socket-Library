@@ -541,33 +541,36 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    command = "i201" + tank
-    response = tls.execute(command)    
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i201" + tank)    
     data = get_standard_values(response)
 
-    # Strip generic values from data, then split into individual chunks.
+    data["tanks"] = []
+
+    # Get values from the remaining data, split up tank reports.
     remaining_data = response[10:-6]
     expected_data_length = 65
+
+    if len(remaining_data) < expected_data_length:
+        return data
+
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    if len(remaining_data) < expected_data_length: return data
-
-    # Split values from within each individual tank report.
+    # Get values from each tank report.
     for value in split_remaining_data:
-        tank_number = value[0:2]
-        data["tank_" + tank_number] = {}
+        data["tanks"].append({
+            "tank_number":      value[0:2],
+            "product_code":     value[2:3],
+            "tank_status_bits": int(value[3:7]),
+            "volume":           hex_to_float(value[9:17]),
+            "tc_volume":        hex_to_float(value[17:25]),
+            "ullage":           hex_to_float(value[25:33]),
+            "height":           hex_to_float(value[33:41]),
+            "water":            hex_to_float(value[41:49]),
+            "temperature":      hex_to_float(value[49:57]),
+            "water_volume":     hex_to_float(value[57:65])
+        })
     
-        tank_data = data["tank_" + tank_number]
-        tank_data["product_code"] = value[2:3]
-        tank_data["tank_status_bits"] = int(value[3:7])
-        tank_data["volume"] = hex_to_float(value[9:17])
-        tank_data["tc_volume"] = hex_to_float(value[17:25])
-        tank_data["ullage"] = hex_to_float(value[25:33])
-        tank_data["height"] = hex_to_float(value[33:41])
-        tank_data["water"] = hex_to_float(value[41:49])
-        tank_data["temperature"] = hex_to_float(value[49:57])
-        tank_data["water_volume"] = hex_to_float(value[57:65])
-
     return data
 
 def function_202(tls: tlsSocket, tank: str) -> dict:
