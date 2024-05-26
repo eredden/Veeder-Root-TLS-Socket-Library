@@ -583,44 +583,50 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    command = "i202" + tank
-    response = tls.execute(command)    
+    if len(tank) != 2:
+        raise ValueError("Argument 'tank' must be exactly two digits long.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i202" + tank)    
     data = get_standard_values(response)
 
-    # Strip generic values from data, then split into individual chunks.
+    data["tanks"] = []
+
+    # Get values from the remaining data, split up tank reports.
     remaining_data = response[10:-6]
     expected_data_length = 107
+
+    if len(remaining_data) < expected_data_length:
+        return data
+
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    if len(remaining_data) < expected_data_length: return data
-
-    # Split values from within each individual tank report.
+    # Get values from each tank report.
     for value in split_remaining_data:
-        tank_number = value[0:2]
-        data["tank_" + tank_number] = {}
-    
-        tank_data = data["tank_" + tank_number]
-        tank_data["product_code"] = value[2:3]
-        tank_data["number_of_deliveries"] = int(value[3:5])
-        tank_data["start_year"] = int(value[5:7])
-        tank_data["start_month"] = int(value[7:9])
-        tank_data["start_day"] = int(value[9:11])
-        tank_data["start_hour"] = int(value[11:13])
-        tank_data["start_minute"] = int(value[13:15])
-        tank_data["end_year"] = int(value[15:17])
-        tank_data["end_month"] = int(value[17:19])
-        tank_data["end_day"] = int(value[19:21])
-        tank_data["end_hour"] = int(value[21:23])
-        tank_data["end_minute"] = int(value[23:25])
-        tank_data["starting_volume"] = hex_to_float(value[27:35])
-        tank_data["starting_tc_volume"] = hex_to_float(value[35:43])
-        tank_data["starting_water"] = hex_to_float(value[43:51])
-        tank_data["starting_temp"] = hex_to_float(value[51:59])
-        tank_data["ending_volume"] = hex_to_float(value[59:67])
-        tank_data["ending_tc_volume"] = hex_to_float(value[67:75])
-        tank_data["ending_water"] = hex_to_float(value[75:83])
-        tank_data["ending_temp"] = hex_to_float(value[83:91])
-        tank_data["starting_height"] = hex_to_float(value[91:99])
-        tank_data["ending_height"] = hex_to_float(value[99:107])
+        data["tanks"].append({
+            "tank_number":          value[0:2],
+            "product_code":         value[2:3],
+            "number_of_deliveries": int(value[3:5]),
+            "start_year":           int(value[5:7]),
+            "start_month":          int(value[7:9]),
+            "start_day":            int(value[9:11]),
+            "start_hour":           int(value[11:13]),
+            "start_minute":         int(value[13:15]),
+            "end_year":             int(value[15:17]),
+            "end_month":            int(value[17:19]),
+            "end_day":              int(value[19:21]),
+            "end_hour":             int(value[21:23]),
+            "end_minute":           int(value[23:25]),
+            "starting_volume":      hex_to_float(value[27:35]),
+            "starting_tc_volume":   hex_to_float(value[35:43]),
+            "starting_water":       hex_to_float(value[43:51]),
+            "starting_temp":        hex_to_float(value[51:59]),
+            "ending_volume":        hex_to_float(value[59:67]),
+            "ending_tc_volume":     hex_to_float(value[67:75]),
+            "ending_water":         hex_to_float(value[75:83]),
+            "ending_temp":          hex_to_float(value[83:91]),
+            "starting_height":      hex_to_float(value[91:99]),
+            "ending_height":        hex_to_float(value[99:107])
+        })
 
     return data
