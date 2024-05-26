@@ -362,10 +362,10 @@ def function_116(tls: tlsSocket) -> dict:
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
-    data["station_header_1"] = response[10:30].strip()
-    data["station_header_2"] = response[30:50].strip()
-    data["station_header_3"] = response[50:70].strip()
-    data["station_header_4"] = response[70:90].strip()
+    data["station_header_1"] =  response[10:30].strip()
+    data["station_header_2"] =  response[30:50].strip()
+    data["station_header_3"] =  response[50:70].strip()
+    data["station_header_4"] =  response[70:90].strip()
     data["number_of_records"] = int(response[90:92])
 
     data["reports"] = []
@@ -496,12 +496,12 @@ def function_11B(tls: tlsSocket) -> dict:
 
     # Store extra non-repeated info from this response.
     data["service_notice_session"] = int(response[10:11])
-    data["start_year"] = int(response[11:13])
-    data["start_month"] = int(response[13:15])
-    data["start_day"] = int(response[15:17])
-    data["start_hour"] = int(response[17:19])
-    data["start_minute"] = int(response[19:21])
-    data["number_of_records"] = int(response[21:23], 16)
+    data["start_year"] =             int(response[11:13])
+    data["start_month"] =            int(response[13:15])
+    data["start_day"] =              int(response[15:17])
+    data["start_hour"] =             int(response[17:19])
+    data["start_minute"] =           int(response[19:21])
+    data["number_of_records"] =      int(response[21:23], 16)
 
     data["reports"] = []
 
