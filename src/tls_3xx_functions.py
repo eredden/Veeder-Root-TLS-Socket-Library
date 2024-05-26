@@ -469,7 +469,7 @@ def function_11A(tls: tlsSocket) -> dict:
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
     # Get values from each tank report.
-    for i, value in enumerate(split_remaining_data):
+    for value in split_remaining_data:
         data["reports"].append({
             "year":         int(value[0:2]),
             "month":        int(value[2:4]),
@@ -490,8 +490,8 @@ def function_11B(tls: tlsSocket) -> dict:
     tls - A socket for a TLS device, should be created with the tlsSocket class.
     """
 
-    command = "i11B00"
-    response = tls.execute(command)    
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i11B00")    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -503,32 +503,31 @@ def function_11B(tls: tlsSocket) -> dict:
     data["start_minute"] = int(response[19:21])
     data["number_of_records"] = int(response[21:23], 16)
 
-    # Strip generic values from data, then split into individual chunks.
+    data["reports"] = []
+
+    # Get values from the remaining data, split up reports.
     remaining_data = response[23:-6]
     expected_data_length = 20
+
+    if len(remaining_data) < expected_data_length: 
+        return data
+
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    data["reports"] = {}
-    reports = data["reports"]
-
-    if len(remaining_data) < expected_data_length: return data
-
-    # Split values from within each individual tank report.
-    for i, value in enumerate(split_remaining_data):
-        report_number = str(i + 1)
-        reports["report_" + report_number] = {}
-    
-        report_data = reports["report_" + report_number]
-        report_data["start_year"] = int(value[0:2])
-        report_data["start_month"] = int(value[2:4])
-        report_data["start_day"] = int(value[4:6])
-        report_data["start_hour"] = int(value[6:8])
-        report_data["start_minute"] = int(value[8:10])
-        report_data["end_year"] = int(value[10:12])
-        report_data["end_month"] = int(value[12:14])
-        report_data["end_day"] = int(value[14:16])
-        report_data["end_hour"] = int(value[16:18])
-        report_data["end_minute"] = int(value[18:20])
+    # Get values from each tank report.
+    for value in split_remaining_data:
+        data["reports"].append({
+            "start_year":   int(value[0:2]),
+            "start_month":  int(value[2:4]),
+            "start_day":    int(value[4:6]),
+            "start_hour":   int(value[6:8]),
+            "start_minute": int(value[8:10]),
+            "end_year":     int(value[10:12]),
+            "end_month":    int(value[12:14]),
+            "end_day":      int(value[14:16]),
+            "end_hour":     int(value[16:18]),
+            "end_minute":   int(value[18:20])
+        })
 
     return data
 
