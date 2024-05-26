@@ -357,8 +357,8 @@ def function_116(tls: tlsSocket) -> dict:
     tls - A socket for a TLS device, should be created with the tlsSocket class.
     """
 
-    command = "i11600"
-    response = tls.execute(command)    
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i11600")    
     data = get_standard_values(response)
 
     # Store extra non-repeated info from this response.
@@ -368,30 +368,29 @@ def function_116(tls: tlsSocket) -> dict:
     data["station_header_4"] = response[70:90].strip()
     data["number_of_records"] = int(response[90:92])
 
-    # Strip generic values from data, then split into individual chunks.
+    data["reports"] = []
+
+    # Get values from the remaining data, split up reports.
     remaining_data = response[90:-6]
     expected_data_length = 25
+    
+    if len(remaining_data) < expected_data_length: 
+        return data
+    
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    data["reports"] = {}
-    reports = data["reports"]
-
-    if len(remaining_data) < expected_data_length: return data
-
-    # Split values from within each individual tank report.
-    for i, value in enumerate(split_remaining_data):
-        report_number = str(i + 1)
-        reports["report_" + report_number] = {}
-    
-        report_data = reports["report_" + report_number]
-        report_data["year"] = int(value[0:2])
-        report_data["month"] = int(value[2:4])
-        report_data["day"] = int(value[4:6])
-        report_data["hour"] = int(value[6:8])
-        report_data["minute"] = int(value[8:10])
-        report_data["service_id"] = value[10:20].strip()
-        report_data["service_code"] = value[20:25].strip()
-
+    # Get values from each reports.
+    for value in split_remaining_data:
+        data["reports"].append({
+            "year": int(value[0:2]),
+            "month": int(value[2:4]),
+            "day": int(value[4:6]),
+            "hour": int(value[6:8]),
+            "minute": int(value[8:10]),
+            "service_id": value[10:20].strip(),
+            "service_code": value[20:25].strip()
+        })
+        
     return data
 
 def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
