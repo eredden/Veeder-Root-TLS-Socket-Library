@@ -1,6 +1,6 @@
 # Veeder-Root TLS Socket Library
 
-This is an unofficial wrapper for Python's socket library used to interact with Veeder-Root's automatic tank gauges remotely through the Internet. This wrapper is primarily made to support the TLS-3xx and TLS-4xx series of automatic tank gauges.
+This is an unofficial Python sockets wrapper for querying Veeder-Root automatic tank gauges remotely through the Internet. This wrapper is primarily made to support the TLS-3xx and TLS-4xx series of automatic tank gauges.
 
 If you believe there is something about this library that can be improved upon, please feel free to submit a issue or a pull request. I will do my best to respond to any inquiries promptly.
 
@@ -17,7 +17,7 @@ This script demonstrates how you can programmatically connect to an automatic ta
 **Script:**
 
 >```python
-> from tls_socket_lib import tls_socket
+> from Veeder-Root-TLS-Socket-Library-Source-Folder import tls_socket
 >
 > tls = tls_socket.tlsSocket("127.0.0.1", 10001) # initial connection
 > response = tls.execute("i10100") # get system status report
@@ -33,11 +33,11 @@ This script demonstrates how you can programmatically connect to an automatic ta
 
 This output shows the response from the TLS system. The data ``2312301342020402``, separator ``&&``, and checksum ``FB3B`` are all provided to you through the ``execute()`` function as a string. You can see that the start of header ``\x01``, end of transmission ``\x03``, and the original command ``i10100`` have all been automatically removed by this library for your convenience.
 
-Review the Veeder-Root Serial Interface manual provided with your model of automatic tank gauge for information about how response data is structured for each function. The serial interface manual for the TLS-3XX systems is linked at the beginning of this Markdown file.
+Review the Veeder-Root Serial Interface manual provided with your model of automatic tank gauge for information about how response data is structured for each function. The serial interface manual for the TLS-4XX systems is linked at the beginning of this Markdown file.
 
 # Using the TLS Client
 
-You can also use the tls_client.py file that I created for this library to interact with the automatic tank gauge systems through a command line interface, similar to how you would with other systems through Telnet, SSH, or Putty.
+You can also use the tls_client.py file that I created for this library to interact with the automatic tank gauge systems through a command line interface, similar to how you would with other systems through Telnet, SSH, or Putty except a lot of the redundant data is stripped out.
 
 **Script:**
 
@@ -76,6 +76,35 @@ From here, you can type in any function code to interact with the TLS system. As
 
 The time between responses will vary based on how large the responses are. The response for a command like `i10100` will be significantly smaller than that of `I11100`. I have implemented a dynamic waiting function to stop receiving response data once the end of transmission character ``CTRL + C``, also known as ASCII code 3 is hit. If this is not hit, the program will continue to wait for thirty seconds and will raise an error after that point.
 
-## What's Next?
+## Using The TLS-3XX Functions
 
-I am currently working on making more Pythonic functions for executing the commands on these TLS systems in tls_3xx_functions.py. These will be used to more easily store the response data from these functions as dict variables in Python programs. These functions are still being tested and should not be used in a production environment in their current state.
+I have also created `tls_3xx_functions.py` which contains various functions that can be used to query information from TLS-3XX systems and output a Python dict object rather than the raw output that is typically given by these systems. This serves well for extracting specific bits of data from these commands (e.g. the ullage of a specific tank).
+
+**Script:**
+
+> ```python
+> from Veeder-Root-TLS-Socket-Library-Source-Folder import tls_3xx_functions
+>
+> tls = tlsSocket("127.0.0.1", 10001) # initial connection
+> response = tls_3xx_functions.function_101(tls, "00") # function_101() used instead of execute("i10100")
+>
+> print(response)
+> ```
+
+**Output:**
+
+> ```python
+> {
+>   'year': 24, 
+>   'month': 5,
+>   'day': 26,
+>   'hour': 16,
+>   'minute': 14,
+>   'checksum': 'FB31',
+>   'alarms': [{'alarm_category': 2, 'alarm_type': 5, 'tank_number': 1}]
+> }
+> ```
+
+For reference, the regular output for command `i10100` looks like `2312301229020402&&FB37`. By using these dedicated functions, you can have this data more readily accessible through a Python `dict` object. Another notable upside of this is that strings and floats are converted by these functions as well, so you do not have to worry about implementing your own IEEE-compliant hex to float function like I did.
+
+The downside of this is that not every TLS-3XX function has been added yet. Please feel free to submit a feature request or pull request with additional functions if you would like them added to my library.
