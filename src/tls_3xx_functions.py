@@ -336,15 +336,15 @@ def function_115(tls: tlsSocket) -> dict:
     # Get values from each alarm.
     for value in split_remaining_data:
         data["alarms"].append({
-            "alarm_category": int(value[0:2]),
+            "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
-            "alarm_type": int(value[4:6]),
-            "tank_number": int(value[6:8]),
-            "year": int(value[8:10]),
-            "month": int(value[10:12]),
-            "day": int(value[12:14]),
-            "hour": int(value[14:16]),
-            "minute": int(value[16:18])
+            "alarm_type":      int(value[4:6]),
+            "tank_number":     int(value[6:8]),
+            "year":            int(value[8:10]),
+            "month":           int(value[10:12]),
+            "day":             int(value[12:14]),
+            "hour":            int(value[14:16]),
+            "minute":          int(value[16:18])
         })
 
     return data
@@ -382,12 +382,12 @@ def function_116(tls: tlsSocket) -> dict:
     # Get values from each reports.
     for value in split_remaining_data:
         data["reports"].append({
-            "year": int(value[0:2]),
-            "month": int(value[2:4]),
-            "day": int(value[4:6]),
-            "hour": int(value[6:8]),
-            "minute": int(value[8:10]),
-            "service_id": value[10:20].strip(),
+            "year":         int(value[0:2]),
+            "month":        int(value[2:4]),
+            "day":          int(value[4:6]),
+            "hour":         int(value[6:8]),
+            "minute":       int(value[8:10]),
+            "service_id":   value[10:20].strip(),
             "service_code": value[20:25].strip()
         })
         
@@ -431,13 +431,13 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
     # Get values from each record.
     for value in split_remaining_data:
         data["records"].append({
-            "year": int(value[0:2]),
-            "month": int(value[2:4]),
-            "day": int(value[4:6]),
-            "hour": int(value[6:8]),
-            "minute": int(value[8:10]),
+            "year":        int(value[0:2]),
+            "month":       int(value[2:4]),
+            "day":         int(value[4:6]),
+            "hour":        int(value[6:8]),
+            "minute":      int(value[8:10]),
             "record_type": value[10:12],
-            "data_field": value[12:18]
+            "data_field":  value[12:18]
         })
         
 
