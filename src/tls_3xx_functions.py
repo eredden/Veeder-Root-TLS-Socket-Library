@@ -541,6 +541,9 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
+    if len(tank) != 2:
+        raise ValueError("Argument 'tank' must be exactly two digits long.")
+
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i201" + tank)    
     data = get_standard_values(response)
@@ -627,6 +630,59 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
             "ending_temp":          hex_to_float(value[83:91]),
             "starting_height":      hex_to_float(value[91:99]),
             "ending_height":        hex_to_float(value[99:107])
+        })
+
+    return data
+
+def function_203(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 202 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if len(tank) != 2:
+        raise ValueError("Argument 'tank' must be exactly two digits long.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i203" + tank)    
+    data = get_standard_values(response)
+
+    data["tanks"] = []
+
+    # Get values from the remaining data, split up tank reports.
+    remaining_data = response[10:-6]
+    expected_data_length = 57
+
+    if len(remaining_data) < expected_data_length:
+        return data
+
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    # Get values from each tank report.
+    for value in split_remaining_data:
+        data["tanks"].append({
+            "tank_number":     value[0:2],
+            "product_code":    value[2:3],
+            "start_year":      int(value[3:5]),
+            "start_month":     int(value[5:7]),
+            "start_day":       int(value[7:9]),
+            "start_hour":      int(value[9:11]),
+            "start_minute":    int(value[11:13]),
+            "test_duration":   int(value[13:15]),
+
+            # TO-DO: Make this function check if these values are actually present 
+            # based on the data fields count provided by command output.
+            # This will likely cause issues if the system monitors more than three tanks, 
+            # as 17*4 = 68 which exceeds the remaining data length check.
+            "starting_temp":   hex_to_float(value[17:25]),
+            "ending_temp":     hex_to_float(value[25:33]),
+            "starting_volume": hex_to_float(value[33:41]),
+            "ending_rate":     hex_to_float(value[41:49]),
+            "hourly_changes":  hex_to_float(value[49:57])
         })
 
     return data
