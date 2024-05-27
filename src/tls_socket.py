@@ -67,6 +67,7 @@ class tlsSocket:
             byte_response += chunk
 
             if etx in chunk:           break
+            if b"9999FF1B\n" in chunk: raise ValueError("Invalid command.")
             if retry_count == retries: raise ValueError("Transmission failed.")
     
         return self.__handle_response(byte_response, 
@@ -84,12 +85,6 @@ class tlsSocket:
 
         is_display - Used to determine if the command uses Display format.
         """
-
-        # The error code checked below is caused by invalid commands.
-        invalid_command_error = b"\x019999FF1B\x03"
-
-        if byte_response == invalid_command_error: 
-            raise ValueError("Invalid command.")
 
         # Check checksum position & value if non-Display format command is used.
         if not is_display:
