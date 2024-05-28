@@ -93,7 +93,7 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
         data["alarms"].append({
             "alarm_category": int(value[0:2]),
             "alarm_type":     int(value[2:4]),
-            "tank_number":    int(value[4:6])
+            "tank_number":    value[4:6]
         })
 
     return data
@@ -161,7 +161,7 @@ def function_111(tls: tlsSocket) -> dict:
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
             "alarm_type":      int(value[4:6]),
-            "tank_number":     int(value[6:8]),
+            "tank_number":     value[6:8],
             "alarm_state":     int(value[8:10]),
             "year":            int(value[10:12]),
             "month":           int(value[12:14]),
@@ -201,7 +201,7 @@ def function_112(tls: tlsSocket) -> dict:
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
             "alarm_type":      int(value[4:6]),
-            "tank_number":     int(value[6:8]),
+            "tank_number":     value[6:8],
             "alarm_state":     int(value[8:10]),
             "year":            int(value[10:12]),
             "month":           int(value[12:14]),
@@ -247,7 +247,7 @@ def function_113(tls: tlsSocket) -> dict:
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
             "alarm_type":      int(value[4:6]),
-            "tank_number":     int(value[6:8]),
+            "tank_number":     value[6:8],
             "year":            int(value[8:10]),
             "month":           int(value[10:12]),
             "day":             int(value[12:14]),
@@ -292,7 +292,7 @@ def function_114(tls: tlsSocket) -> dict:
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
             "alarm_type":      int(value[4:6]),
-            "tank_number":     int(value[6:8]),
+            "tank_number":     value[6:8],
             "alarm_state":     int(value[8:10]),
             "year":            int(value[10:12]),
             "month":           int(value[12:14]),
@@ -338,7 +338,7 @@ def function_115(tls: tlsSocket) -> dict:
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
             "alarm_type":      int(value[4:6]),
-            "tank_number":     int(value[6:8]),
+            "tank_number":     value[6:8],
             "year":            int(value[8:10]),
             "month":           int(value[10:12]),
             "day":             int(value[12:14]),
@@ -770,7 +770,7 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
         data["alarms"].append({
             "tank_number":      value[0:2],
             "number_of_alarms": int(value[2:4]),
-            "alarm_type":       value[4:6],
+            "alarm_type":       int(value[4:6]),
         })
 
     return data
