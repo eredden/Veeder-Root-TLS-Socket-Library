@@ -706,7 +706,7 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
 
     data["inventory"] = []
 
-    # Get values from the remaining data, split up tank reports.
+    # Get values from the remaining data, split up the inventory.
     remaining_data = response[10:-6]
     expected_data_length = 111
 
@@ -715,7 +715,7 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
 
     split_remaining_data = split_data(remaining_data, expected_data_length)
 
-    # Get values from each tank report.
+    # Get values from each inventory log.
     for value in split_remaining_data:
         data["inventory"].append({
             "tank_number":       value[0:2],
@@ -734,6 +734,44 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
             "end_water":         hex_to_float(value[87:95]),
             "end_temperature":   hex_to_float(value[95:103]),
             "total_value":       hex_to_float(value[103:111])
+        })
+
+    return data
+
+def function_205(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 205 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if len(tank) != 2:
+        raise ValueError("Argument 'tank' must be exactly two digits long.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i205" + tank)    
+    data = get_standard_values(response)
+
+    data["alarms"] = []
+
+    # Get values from the remaining data, split up alarms.
+    remaining_data = response[10:-6]
+    expected_data_length = 6
+
+    if len(remaining_data) < expected_data_length:
+        return data
+
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    # Get values from each alarm.
+    for value in split_remaining_data:
+        data["alarms"].append({
+            "tank_number":      value[0:2],
+            "number_of_alarms": int(value[2:4]),
+            "alarm_type":       value[4:6],
         })
 
     return data
