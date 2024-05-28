@@ -28,16 +28,16 @@ This script demonstrates how you can programmatically connect to an automatic ta
 **Output:**
 
 >```python
-> "2312301342020402&&FB3B"
+> "2312301342020402"
 >```
 
-This output shows the response from the TLS system. The data ``2312301342020402``, separator ``&&``, and checksum ``FB3B`` are all provided to you through the ``execute()`` function as a string. You can see that the start of header ``\x01``, end of transmission ``\x03``, and the original command ``i10100`` have all been automatically removed by this library for your convenience.
+This output shows the response from the TLS system. The data ``2312301342020402`` is provided to you through the ``execute()`` function as a string. You can see that the start of header ``\x01``, the original command ``i10100``,  the checksum separator ``&&``, the checksum ``FB3B``, and the end of transmission ``\x03`` have all been automatically stripped from the output for your convenience. The checksum is automatically checked against the output and a ``ValueError`` is produced if the integrity check fails.
 
 Review the Veeder-Root Serial Interface manual provided with your model of automatic tank gauge for information about how response data is structured for each function. The serial interface manual for the TLS-4XX systems is linked at the beginning of this Markdown file.
 
 # Using the TLS Client
 
-You can also use the tls_client.py file that I created for this library to interact with the automatic tank gauge systems through a command line interface, similar to how you would with other systems through Telnet, SSH, or Putty except a lot of the redundant data is stripped out.
+You can also use the tls_client.py file that I created for this library to interact with the automatic tank gauge systems through a command line interface, similar to how you would with other systems through Telnet, SSH, or Putty.
 
 **Script:**
 
@@ -57,7 +57,7 @@ From here, you can type in any function code to interact with the TLS system. As
 
 > ```
 > >> i10100
-> 2312301229020402&&FB37
+> 2312301229020402
 >
 > >> I10100 
 > DEC 30, 2023 12:29 PM
@@ -74,7 +74,7 @@ From here, you can type in any function code to interact with the TLS system. As
 > >>
 > ```
 
-The time between responses will vary based on how large the responses are. The response for a command like `i10100` will be significantly smaller than that of `I11100`. I have implemented a dynamic waiting function to stop receiving response data once the end of transmission character ``CTRL + C``, also known as ASCII code 3 is hit. If this is not hit, the program will continue to wait for thirty seconds and will raise an error after that point.
+The time between responses will vary based on how large the responses are. The response for a command like `i10100` will be significantly smaller than that of `I11100`. I have implemented a dynamic waiting function to stop receiving response data once the end of transmission character is hit. If this is not hit, the program will continue to wait for thirty seconds and will raise an error after that point.
 
 ## Using The TLS-3XX Functions
 
@@ -100,11 +100,10 @@ I have also created `tls_3xx_functions.py` which contains various functions that
 >   'day': 26,
 >   'hour': 16,
 >   'minute': 14,
->   'checksum': 'FB31',
 >   'alarms': [{'alarm_category': 2, 'alarm_type': 5, 'tank_number': 1}]
 > }
 > ```
 
-For reference, the regular output for command `i10100` looks like `2312301229020402&&FB37`. By using these dedicated functions, you can have this data more readily accessible through a Python `dict` object. Another notable upside of this is that strings and floats are converted by these functions as well, so you do not have to worry about implementing your own IEEE-compliant hex to float function like I did.
+This looks much more readable than a string of numbers! By using these dedicated functions, you can have this data more readily accessible through a Python `dict` object. Another notable upside of this is that strings and floats are converted by these functions as well, so you do not have to worry about implementing your own IEEE-compliant hex to float function like I did.
 
 The downside of this is that not every TLS-3XX function has been added yet. Please feel free to submit a feature request or pull request with additional functions if you would like them added to my library.

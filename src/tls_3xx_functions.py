@@ -2,10 +2,10 @@ from tls_socket import tlsSocket
 
 def get_standard_values(output: str) -> dict:
     """
-    Get standard values from a command response; date, time, checksum. 
+    Get standard values such as date and time from a command response.
     Returns as a dict.
 
-    output - Output of a command sent to a TLS system as a string.
+    output - Output of a command sent from a TLS system.
     """
 
     return {
@@ -13,8 +13,7 @@ def get_standard_values(output: str) -> dict:
         "month":    int(output[2:4]),
         "day":      int(output[4:6]),
         "hour":     int(output[6:8]),
-        "minute":   int(output[8:10]),
-        "checksum": output[-4:]
+        "minute":   int(output[8:10])
     }
 
 def split_data(data: str, length: int) -> list:
@@ -775,3 +774,9 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
         })
 
     return data
+
+if __name__ == "__main__":
+    tls = tlsSocket("71.162.4.38", 10001)
+
+    print(tls.execute("I10100"))
+    print(function_101(tls, "00"))
