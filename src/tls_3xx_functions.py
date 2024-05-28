@@ -636,7 +636,7 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
 
 def function_203(tls: tlsSocket, tank: str) -> dict:
     """
-    Runs function 202 on a given Veeder-Root TLS device and returns a dict with 
+    Runs function 203 on a given Veeder-Root TLS device and returns a dict with 
     report info.
 
     tls - A socket for a TLS device, should be created with the tlsSocket class.
@@ -683,6 +683,57 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
             "starting_volume": hex_to_float(value[33:41]),
             "ending_rate":     hex_to_float(value[41:49]),
             "hourly_changes":  hex_to_float(value[49:57])
+        })
+
+    return data
+
+def function_204(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 204 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if len(tank) != 2:
+        raise ValueError("Argument 'tank' must be exactly two digits long.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i204" + tank)    
+    data = get_standard_values(response)
+
+    data["inventory"] = []
+
+    # Get values from the remaining data, split up tank reports.
+    remaining_data = response[10:-6]
+    expected_data_length = 111
+
+    if len(remaining_data) < expected_data_length:
+        return data
+
+    split_remaining_data = split_data(remaining_data, expected_data_length)
+
+    # Get values from each tank report.
+    for value in split_remaining_data:
+        data["inventory"].append({
+            "tank_number":       value[0:2],
+            "product_code":      value[2:3],
+            "shift_number":      value[3:5],
+            "start_volume":      hex_to_float(value[7:15]),
+            "start_ullage":      hex_to_float(value[15:23]),
+            "start_tc_volume":   hex_to_float(value[23:31]),
+            "start_height":      hex_to_float(value[31:39]),
+            "start_water":       hex_to_float(value[39:47]),
+            "start_temperature": hex_to_float(value[47:55]),
+            "end_volume":        hex_to_float(value[55:63]),
+            "end_ullage":        hex_to_float(value[63:71]),
+            "end_tc_volume":     hex_to_float(value[71:79]),
+            "end_height":        hex_to_float(value[79:87]),
+            "end_water":         hex_to_float(value[87:95]),
+            "end_temperature":   hex_to_float(value[95:103]),
+            "total_value":       hex_to_float(value[103:111])
         })
 
     return data
