@@ -597,40 +597,52 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
 
     # Get values from the remaining data, split up tank reports.
     remaining_data = response[10:]
-    expected_data_length = 107
-
-    if len(remaining_data) < expected_data_length:
-        return data
-
-    split_remaining_data = split_data(remaining_data, expected_data_length)
 
     # Get values from each tank report.
-    for value in split_remaining_data:
-        data["tanks"].append({
-            "tank_number":          value[0:2],
-            "product_code":         value[2:3],
-            "number_of_deliveries": int(value[3:5]),
-            "start_year":           int(value[5:7]),
-            "start_month":          int(value[7:9]),
-            "start_day":            int(value[9:11]),
-            "start_hour":           int(value[11:13]),
-            "start_minute":         int(value[13:15]),
-            "end_year":             int(value[15:17]),
-            "end_month":            int(value[17:19]),
-            "end_day":              int(value[19:21]),
-            "end_hour":             int(value[21:23]),
-            "end_minute":           int(value[23:25]),
-            "starting_volume":      hex_to_float(value[27:35]),
-            "starting_tc_volume":   hex_to_float(value[35:43]),
-            "starting_water":       hex_to_float(value[43:51]),
-            "starting_temp":        hex_to_float(value[51:59]),
-            "ending_volume":        hex_to_float(value[59:67]),
-            "ending_tc_volume":     hex_to_float(value[67:75]),
-            "ending_water":         hex_to_float(value[75:83]),
-            "ending_temp":          hex_to_float(value[83:91]),
-            "starting_height":      hex_to_float(value[91:99]),
-            "ending_height":        hex_to_float(value[99:107])
-        })
+    while remaining_data:
+        if len(remaining_data) < 107: break
+
+        # Collecting all necessary non-repeated values.
+        delivery_count = int(remaining_data[3:5])
+
+        tank = {
+            "tank_number":  remaining_data[0:2],
+            "product_code": remaining_data[2:3],
+            "deliveries":   []
+        }
+
+        # Slicing off the previously collected values, now getting all deliveries.
+        remaining_data = remaining_data[5:]
+
+        for _ in range(0, delivery_count):
+            if len(remaining_data) < 100: break
+
+            tank["deliveries"].append({
+                "start_year":           int(remaining_data[0:2]),
+                "start_month":          int(remaining_data[2:4]),
+                "start_day":            int(remaining_data[4:6]),
+                "start_hour":           int(remaining_data[6:8]),
+                "start_minute":         int(remaining_data[8:10]),
+                "end_year":             int(remaining_data[10:12]),
+                "end_month":            int(remaining_data[12:14]),
+                "end_day":              int(remaining_data[14:16]),
+                "end_hour":             int(remaining_data[16:18]),
+                "end_minute":           int(remaining_data[18:20]),
+                "starting_volume":      hex_to_float(remaining_data[22:30]),
+                "starting_tc_volume":   hex_to_float(remaining_data[30:38]),
+                "starting_water":       hex_to_float(remaining_data[38:46]),
+                "starting_temp":        hex_to_float(remaining_data[46:54]),
+                "ending_volume":        hex_to_float(remaining_data[54:62]),
+                "ending_tc_volume":     hex_to_float(remaining_data[62:70]),
+                "ending_water":         hex_to_float(remaining_data[70:78]),
+                "ending_temp":          hex_to_float(remaining_data[78:86]),
+                "starting_height":      hex_to_float(remaining_data[86:94]),
+                "ending_height":        hex_to_float(remaining_data[94:102])
+            })
+
+            remaining_data = remaining_data[102:]
+        
+        data["tanks"].append(tank)
 
     return data
 
