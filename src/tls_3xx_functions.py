@@ -770,13 +770,58 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
         data["alarms"].append({
             "tank_number":      value[0:2],
             "number_of_alarms": int(value[2:4]),
-            "alarm_type":       int(value[4:6]),
+            "alarm_type":       int(value[4:6])
         })
 
     return data
 
-if __name__ == "__main__":
-    tls = tlsSocket("71.162.4.38", 10001)
+def function_206(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 206 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
 
-    print(tls.execute("I10100"))
-    print(function_101(tls, "00"))
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if len(tank) != 2:
+        raise ValueError("Argument 'tank' must be exactly two digits long.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i206" + tank)    
+    data = get_standard_values(response)
+
+    data["tanks"] = {}
+
+    # Get the list of alarms for each tank after finding how many alarms each tank has.
+    remaining_data = response[10:-6]
+
+    while remaining_data:
+        if len(remaining_data) < 18: break
+
+        # Collect tank number and alarm count, then slice them out of the current data.
+        tank_number = remaining_data[0:2]
+        alarm_count = int(remaining_data[2:4])
+
+        remaining_data = remaining_data[4:]
+
+        # Create a dictionary for the tank and add the alarms into an associated list.
+        data["tanks"][tank_number] = []
+    
+        for _ in range(0, alarm_count):
+            if len(remaining_data) < 14: break
+            
+            data["tanks"][tank_number].append({
+                "year":       int(remaining_data[0:2]),
+                "month":      int(remaining_data[2:4]),
+                "day":        int(remaining_data[4:6]),
+                "hour":       int(remaining_data[6:8]),
+                "minute":     int(remaining_data[8:10]),
+                "alarm_type": remaining_data[10:14]
+            })
+
+            # Slice off values that have already been added.
+            remaining_data = remaining_data[14:]
+
+    return data
