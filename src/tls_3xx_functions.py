@@ -73,6 +73,10 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i101" + tank)    
     data = get_standard_values(response)
@@ -407,10 +411,15 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
     """
 
     # Execute the command and extract common values from it immediately.
-    if start_date != "" and end_date != "":
-        response = tls.execute("i11900" + start_date + end_date) 
-    else: 
+    if len(start_date) == 6 and len(end_date) == 6:
+        if start_date.isdigit() and end_date.isdigit():
+            response = tls.execute("i11900" + start_date + end_date) 
+        else:
+            raise ValueError("The 'start_date' and 'end_date' arguments must be in the format 'YYMMDD'.")
+    elif len(start_date) == 0 and len(end_date) == 0: 
         response = tls.execute("i11900")
+    else:
+        raise ValueError("Both 'start_date' and 'end_date' must either be six digits long or empty.")
 
     data = get_standard_values(response)
 
@@ -540,8 +549,9 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    if len(tank) != 2:
-        raise ValueError("Argument 'tank' must be exactly two digits long.")
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i201" + tank)    
@@ -586,8 +596,9 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    if len(tank) != 2:
-        raise ValueError("Argument 'tank' must be exactly two digits long.")
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i202" + tank)    
@@ -656,8 +667,9 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    if len(tank) != 2:
-        raise ValueError("Argument 'tank' must be exactly two digits long.")
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i203" + tank)    
@@ -709,8 +721,9 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    if len(tank) != 2:
-        raise ValueError("Argument 'tank' must be exactly two digits long.")
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i204" + tank)    
@@ -760,8 +773,9 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    if len(tank) != 2:
-        raise ValueError("Argument 'tank' must be exactly two digits long.")
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i205" + tank)    
@@ -798,8 +812,9 @@ def function_206(tls: tlsSocket, tank: str) -> dict:
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
     """
 
-    if len(tank) != 2:
-        raise ValueError("Argument 'tank' must be exactly two digits long.")
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i206" + tank)    
