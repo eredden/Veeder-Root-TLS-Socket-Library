@@ -80,7 +80,7 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
     data_length = 6
 
     if len(remaining_data) < data_length: 
@@ -113,7 +113,7 @@ def function_102(tls: tlsSocket) -> dict:
     data["slots"] = []
 
     # Get values from the remaining data, split up slots.
-    remaining_data = response[12:-6]
+    remaining_data = response[12:]
     expected_data_length = 20
 
     if len(remaining_data) < expected_data_length: 
@@ -147,7 +147,7 @@ def function_111(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
     expected_data_length = 20
 
     if len(remaining_data) < expected_data_length: 
@@ -187,7 +187,7 @@ def function_112(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
     expected_data_length = 20
 
     if len(remaining_data) < expected_data_length: 
@@ -233,7 +233,7 @@ def function_113(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[90:-6]
+    remaining_data = response[90:]
     expected_data_length = 18
 
     if len(remaining_data) < expected_data_length: 
@@ -278,7 +278,7 @@ def function_114(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[90:-6]
+    remaining_data = response[90:]
     expected_data_length = 20
 
     if len(remaining_data) < expected_data_length: 
@@ -324,7 +324,7 @@ def function_115(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[90:-6]
+    remaining_data = response[90:]
     expected_data_length = 18
 
     if len(remaining_data) < expected_data_length: 
@@ -370,7 +370,7 @@ def function_116(tls: tlsSocket) -> dict:
     data["reports"] = []
 
     # Get values from the remaining data, split up reports.
-    remaining_data = response[90:-6]
+    remaining_data = response[90:]
     expected_data_length = 25
     
     if len(remaining_data) < expected_data_length: 
@@ -419,7 +419,7 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
     data["records"] = []
 
     # Get values from the remaining data, split up records.
-    remaining_data = response[14:-6]
+    remaining_data = response[14:]
     expected_data_length = 18
 
     if len(remaining_data) < expected_data_length: 
@@ -459,7 +459,7 @@ def function_11A(tls: tlsSocket) -> dict:
     data["reports"] = []
 
     # Get values from the remaining data, split up reports.
-    remaining_data = response[12:-6]
+    remaining_data = response[12:]
     expected_data_length = 20
 
     if len(remaining_data) < expected_data_length: 
@@ -505,7 +505,7 @@ def function_11B(tls: tlsSocket) -> dict:
     data["reports"] = []
 
     # Get values from the remaining data, split up reports.
-    remaining_data = response[23:-6]
+    remaining_data = response[23:]
     expected_data_length = 20
 
     if len(remaining_data) < expected_data_length: 
@@ -550,7 +550,8 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
+    print(remaining_data)
     expected_data_length = 65
 
     if len(remaining_data) < expected_data_length:
@@ -595,7 +596,7 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
     expected_data_length = 107
 
     if len(remaining_data) < expected_data_length:
@@ -653,7 +654,7 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
     expected_data_length = 57
 
     if len(remaining_data) < expected_data_length:
@@ -706,7 +707,7 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
     data["inventory"] = []
 
     # Get values from the remaining data, split up the inventory.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
     expected_data_length = 111
 
     if len(remaining_data) < expected_data_length:
@@ -757,7 +758,7 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
     expected_data_length = 6
 
     if len(remaining_data) < expected_data_length:
@@ -795,7 +796,7 @@ def function_206(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = {}
 
     # Get the list of alarms for each tank after finding how many alarms each tank has.
-    remaining_data = response[10:-6]
+    remaining_data = response[10:]
 
     while remaining_data:
         if len(remaining_data) < 18: break
