@@ -84,16 +84,16 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:]
+    response = response[10:]
     data_length = 6
 
-    if len(remaining_data) < data_length: 
+    if len(response) < data_length: 
         return data
     
-    split_remaining_data = split_data(remaining_data, data_length)
+    split_response = split_data(response, data_length)
     
     # Get values from each alarm.
-    for value in split_remaining_data:
+    for value in split_response:
         data["alarms"].append({
             "alarm_category": int(value[0:2]),
             "alarm_type":     int(value[2:4]),
@@ -117,16 +117,16 @@ def function_102(tls: tlsSocket) -> dict:
     data["slots"] = []
 
     # Get values from the remaining data, split up slots.
-    remaining_data = response[12:]
+    response = response[12:]
     expected_data_length = 20
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
     
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each slot.
-    for value in split_remaining_data:
+    for value in split_response:
         data["slots"].append({
             "slot_number":        int(value[0:2], 16),
             "type_of_module":     value[2:4],
@@ -151,16 +151,16 @@ def function_111(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:]
+    response = response[10:]
     expected_data_length = 20
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each alarm.
-    for value in split_remaining_data:
+    for value in split_response:
         data["alarms"].append({
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
@@ -191,16 +191,16 @@ def function_112(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:]
+    response = response[10:]
     expected_data_length = 20
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
     
     # Get values from each alarm.
-    for value in split_remaining_data:
+    for value in split_response:
         data["alarms"].append({
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
@@ -237,16 +237,16 @@ def function_113(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[90:]
+    response = response[90:]
     expected_data_length = 18
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each alarm.
-    for value in split_remaining_data:
+    for value in split_response:
         data["alarms"].append({
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
@@ -282,16 +282,16 @@ def function_114(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[90:]
+    response = response[90:]
     expected_data_length = 20
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
     
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each alarm.
-    for value in split_remaining_data:
+    for value in split_response:
         data["alarms"].append({
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
@@ -328,16 +328,16 @@ def function_115(tls: tlsSocket) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[90:]
+    response = response[90:]
     expected_data_length = 18
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
     
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each alarm.
-    for value in split_remaining_data:
+    for value in split_response:
         data["alarms"].append({
             "alarm_category":  int(value[0:2]),
             "sensor_category": int(value[2:4]),
@@ -374,16 +374,16 @@ def function_116(tls: tlsSocket) -> dict:
     data["reports"] = []
 
     # Get values from the remaining data, split up reports.
-    remaining_data = response[90:]
+    response = response[90:]
     expected_data_length = 25
     
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
     
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each reports.
-    for value in split_remaining_data:
+    for value in split_response:
         data["reports"].append({
             "year":         int(value[0:2]),
             "month":        int(value[2:4]),
@@ -396,7 +396,7 @@ def function_116(tls: tlsSocket) -> dict:
         
     return data
 
-def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
+def function_119(tls: tlsSocket, start_date: str = "", end_date: str = "") -> dict:
     """
     Runs function 119 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -428,16 +428,16 @@ def function_119(tls: tlsSocket, start_date: str, end_date: str) -> dict:
     data["records"] = []
 
     # Get values from the remaining data, split up records.
-    remaining_data = response[14:]
+    response = response[14:]
     expected_data_length = 18
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each record.
-    for value in split_remaining_data:
+    for value in split_response:
         data["records"].append({
             "year":        int(value[0:2]),
             "month":       int(value[2:4]),
@@ -468,16 +468,16 @@ def function_11A(tls: tlsSocket) -> dict:
     data["reports"] = []
 
     # Get values from the remaining data, split up reports.
-    remaining_data = response[12:]
+    response = response[12:]
     expected_data_length = 20
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each tank report.
-    for value in split_remaining_data:
+    for value in split_response:
         data["reports"].append({
             "year":         int(value[0:2]),
             "month":        int(value[2:4]),
@@ -514,16 +514,16 @@ def function_11B(tls: tlsSocket) -> dict:
     data["reports"] = []
 
     # Get values from the remaining data, split up reports.
-    remaining_data = response[23:]
+    response = response[23:]
     expected_data_length = 20
 
-    if len(remaining_data) < expected_data_length: 
+    if len(response) < expected_data_length: 
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each tank report.
-    for value in split_remaining_data:
+    for value in split_response:
         data["reports"].append({
             "start_year":   int(value[0:2]),
             "start_month":  int(value[2:4]),
@@ -560,17 +560,17 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
-    remaining_data = response[10:]
-    print(remaining_data)
+    response = response[10:]
+    print(response)
     expected_data_length = 65
 
-    if len(remaining_data) < expected_data_length:
+    if len(response) < expected_data_length:
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each tank report.
-    for value in split_remaining_data:
+    for value in split_response:
         data["tanks"].append({
             "tank_number":      value[0:2],
             "product_code":     value[2:3],
@@ -607,51 +607,51 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
-    remaining_data = response[10:]
+    response = response[10:]
 
     # Get values from each tank report.
-    while remaining_data:
-        if len(remaining_data) < 107: break
+    while response:
+        if len(response) < 107: break
 
         # Collecting all necessary non-repeated values.
-        delivery_count = int(remaining_data[3:5])
+        delivery_count = int(response[3:5])
 
         tank = {
-            "tank_number":  remaining_data[0:2],
-            "product_code": remaining_data[2:3],
+            "tank_number":  response[0:2],
+            "product_code": response[2:3],
             "deliveries":   []
         }
 
         # Slicing off the previously collected values, now getting all deliveries.
-        remaining_data = remaining_data[5:]
+        response = response[5:]
 
         for _ in range(0, delivery_count):
-            if len(remaining_data) < 100: break
+            if len(response) < 100: break
 
             tank["deliveries"].append({
-                "start_year":           int(remaining_data[0:2]),
-                "start_month":          int(remaining_data[2:4]),
-                "start_day":            int(remaining_data[4:6]),
-                "start_hour":           int(remaining_data[6:8]),
-                "start_minute":         int(remaining_data[8:10]),
-                "end_year":             int(remaining_data[10:12]),
-                "end_month":            int(remaining_data[12:14]),
-                "end_day":              int(remaining_data[14:16]),
-                "end_hour":             int(remaining_data[16:18]),
-                "end_minute":           int(remaining_data[18:20]),
-                "starting_volume":      hex_to_float(remaining_data[22:30]),
-                "starting_tc_volume":   hex_to_float(remaining_data[30:38]),
-                "starting_water":       hex_to_float(remaining_data[38:46]),
-                "starting_temp":        hex_to_float(remaining_data[46:54]),
-                "ending_volume":        hex_to_float(remaining_data[54:62]),
-                "ending_tc_volume":     hex_to_float(remaining_data[62:70]),
-                "ending_water":         hex_to_float(remaining_data[70:78]),
-                "ending_temp":          hex_to_float(remaining_data[78:86]),
-                "starting_height":      hex_to_float(remaining_data[86:94]),
-                "ending_height":        hex_to_float(remaining_data[94:102])
+                "start_year":           int(response[0:2]),
+                "start_month":          int(response[2:4]),
+                "start_day":            int(response[4:6]),
+                "start_hour":           int(response[6:8]),
+                "start_minute":         int(response[8:10]),
+                "end_year":             int(response[10:12]),
+                "end_month":            int(response[12:14]),
+                "end_day":              int(response[14:16]),
+                "end_hour":             int(response[16:18]),
+                "end_minute":           int(response[18:20]),
+                "starting_volume":      hex_to_float(response[22:30]),
+                "starting_tc_volume":   hex_to_float(response[30:38]),
+                "starting_water":       hex_to_float(response[38:46]),
+                "starting_temp":        hex_to_float(response[46:54]),
+                "ending_volume":        hex_to_float(response[54:62]),
+                "ending_tc_volume":     hex_to_float(response[62:70]),
+                "ending_water":         hex_to_float(response[70:78]),
+                "ending_temp":          hex_to_float(response[78:86]),
+                "starting_height":      hex_to_float(response[86:94]),
+                "ending_height":        hex_to_float(response[94:102])
             })
 
-            remaining_data = remaining_data[102:]
+            response = response[102:]
         
         data["tanks"].append(tank)
 
@@ -678,16 +678,16 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
-    remaining_data = response[10:]
+    response = response[10:]
     expected_data_length = 57
 
-    if len(remaining_data) < expected_data_length:
+    if len(response) < expected_data_length:
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each tank report.
-    for value in split_remaining_data:
+    for value in split_response:
         data["tanks"].append({
             "tank_number":     value[0:2],
             "product_code":    value[2:3],
@@ -727,16 +727,16 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
     data["inventory"] = []
 
     # Get values from the remaining data, split up the inventory.
-    remaining_data = response[10:]
+    response = response[10:]
     expected_data_length = 111
 
-    if len(remaining_data) < expected_data_length:
+    if len(response) < expected_data_length:
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each inventory log.
-    for value in split_remaining_data:
+    for value in split_response:
         data["inventory"].append({
             "tank_number":       value[0:2],
             "product_code":      value[2:3],
@@ -779,16 +779,16 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
-    remaining_data = response[10:]
+    response = response[10:]
     expected_data_length = 6
 
-    if len(remaining_data) < expected_data_length:
+    if len(response) < expected_data_length:
         return data
 
-    split_remaining_data = split_data(remaining_data, expected_data_length)
+    split_response = split_data(response, expected_data_length)
 
     # Get values from each alarm.
-    for value in split_remaining_data:
+    for value in split_response:
         data["alarms"].append({
             "tank_number":      value[0:2],
             "number_of_alarms": int(value[2:4]),
@@ -818,34 +818,34 @@ def function_206(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = {}
 
     # Get the list of alarms for each tank after finding how many alarms each tank has.
-    remaining_data = response[10:]
+    response = response[10:]
 
-    while remaining_data:
-        if len(remaining_data) < 18: break
+    while response:
+        if len(response) < 18: break
 
         # Collect tank number and alarm count, then slice them out of the current data.
-        tank_number = remaining_data[0:2]
-        alarm_count = int(remaining_data[2:4])
+        tank_number = response[0:2]
+        alarm_count = int(response[2:4])
 
-        remaining_data = remaining_data[4:]
+        response = response[4:]
 
         # Create a dictionary for the tank and add the alarms into an associated list.
         data["tanks"][tank_number] = []
     
         for _ in range(0, alarm_count):
-            if len(remaining_data) < 14: break
+            if len(response) < 14: break
             
             data["tanks"][tank_number].append({
-                "year":       int(remaining_data[0:2]),
-                "month":      int(remaining_data[2:4]),
-                "day":        int(remaining_data[4:6]),
-                "hour":       int(remaining_data[6:8]),
-                "minute":     int(remaining_data[8:10]),
-                "alarm_type": remaining_data[10:14]
+                "year":       int(response[0:2]),
+                "month":      int(response[2:4]),
+                "day":        int(response[4:6]),
+                "hour":       int(response[6:8]),
+                "minute":     int(response[8:10]),
+                "alarm_type": response[10:14]
             })
 
             # Slice off values that have already been added.
-            remaining_data = remaining_data[14:]
+            response = response[14:]
 
     return data
 
@@ -870,38 +870,38 @@ def function_207(tls: tlsSocket, tank: str) -> dict:
     data["tanks"] = {}
 
     # Get the list of alarms for each tank after finding how many tests each tank has.
-    remaining_data = response[10:]
+    response = response[10:]
 
-    while remaining_data:
-        if len(remaining_data) < 44: break
+    while response:
+        if len(response) < 44: break
 
         # Collect tank number and test count, then slice them out of the current data.
-        tank_number = remaining_data[0:2]
-        test_count = int(remaining_data[2:4], 16)
+        tank_number = response[0:2]
+        test_count = int(response[2:4], 16)
 
-        remaining_data = remaining_data[4:]
+        response = response[4:]
 
         # Create a dictionary for the tank and add the tests into an associated list.
         data["tanks"][tank_number] = []
     
         for _ in range(0, test_count):
-            if len(remaining_data) < 40: break
+            if len(response) < 40: break
             
             data["tanks"][tank_number].append({
-                "report_type":         remaining_data[0:2],
-                "leak_history_number": remaining_data[2:4],
-                "test_type":           remaining_data[4:6],
-                "year":                int(remaining_data[6:8]),
-                "month":               int(remaining_data[8:10]),
-                "day":                 int(remaining_data[10:12]),
-                "hour":                int(remaining_data[12:14]),
-                "minute":              int(remaining_data[14:16]),
-                "duration":            hex_to_float(remaining_data[16:24]),
-                "volume":              hex_to_float(remaining_data[24:32]),
-                "volume_percentage":   hex_to_float(remaining_data[32:40])
+                "report_type":         response[0:2],
+                "leak_history_number": response[2:4],
+                "test_type":           response[4:6],
+                "year":                int(response[6:8]),
+                "month":               int(response[8:10]),
+                "day":                 int(response[10:12]),
+                "hour":                int(response[12:14]),
+                "minute":              int(response[14:16]),
+                "duration":            hex_to_float(response[16:24]),
+                "volume":              hex_to_float(response[24:32]),
+                "volume_percentage":   hex_to_float(response[32:40])
             })
 
             # Slice off values that have already been added.
-            remaining_data = remaining_data[40:]
+            response = response[40:]
 
     return data
