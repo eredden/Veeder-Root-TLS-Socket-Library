@@ -697,11 +697,6 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
             "start_hour":      int(value[9:11]),
             "start_minute":    int(value[11:13]),
             "test_duration":   int(value[13:15]),
-
-            # TO-DO: Make this function check if these values are actually present 
-            # based on the data fields count provided by command output.
-            # This will likely cause issues if the system monitors more than three tanks, 
-            # as 17*4 = 68 which exceeds the remaining data length check.
             "starting_temp":   hex_to_float(value[17:25]),
             "ending_temp":     hex_to_float(value[25:33]),
             "starting_volume": hex_to_float(value[33:41]),
