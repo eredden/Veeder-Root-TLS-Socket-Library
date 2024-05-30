@@ -1,21 +1,5 @@
 from tls_socket import tlsSocket
 
-def get_standard_values(output: str) -> dict:
-    """
-    Get standard values such as date and time from a command response.
-    Returns as a dict.
-
-    output - Output of a command sent from a TLS system.
-    """
-
-    return {
-        "year":     int(output[0:2]),
-        "month":    int(output[2:4]),
-        "day":      int(output[4:6]),
-        "hour":     int(output[6:8]),
-        "minute":   int(output[8:10])
-    }
-
 def split_data(data: str, length: int) -> list:
     """
     Split a string into specified length chunks.
@@ -79,7 +63,13 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i101" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
     
     data["alarms"] = []
 
@@ -87,18 +77,14 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
     response = response[10:]
     data_length = 6
 
-    if len(response) < data_length: 
-        return data
-    
-    split_response = split_data(response, data_length)
-    
     # Get values from each alarm.
-    for value in split_response:
-        data["alarms"].append({
-            "alarm_category": int(value[0:2]),
-            "alarm_type":     int(value[2:4]),
-            "tank_number":    value[4:6]
-        })
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["alarms"].append({
+                "alarm_category": int(value[0:2]),
+                "alarm_type":     int(value[2:4]),
+                "tank_number":    value[4:6]
+            })
 
     return data
         
@@ -112,27 +98,29 @@ def function_102(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i10200")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
     
     data["slots"] = []
 
     # Get values from the remaining data, split up slots.
     response = response[12:]
-    expected_data_length = 20
-
-    if len(response) < expected_data_length: 
-        return data
-    
-    split_response = split_data(response, expected_data_length)
+    data_length = 20
 
     # Get values from each slot.
-    for value in split_response:
-        data["slots"].append({
-            "slot_number":        int(value[0:2], 16),
-            "type_of_module":     value[2:4],
-            "power_on_reset":     hex_to_float(value[4:12]),
-            "current_io_reading": hex_to_float(value[12:19])
-        })
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["slots"].append({
+                "slot_number":        int(value[0:2], 16),
+                "type_of_module":     value[2:4],
+                "power_on_reset":     hex_to_float(value[4:12]),
+                "current_io_reading": hex_to_float(value[12:19])
+            })
 
     return data
 
@@ -146,33 +134,35 @@ def function_111(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11100")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
     
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
     response = response[10:]
-    expected_data_length = 20
-
-    if len(response) < expected_data_length: 
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 20
 
     # Get values from each alarm.
-    for value in split_response:
-        data["alarms"].append({
-            "alarm_category":  int(value[0:2]),
-            "sensor_category": int(value[2:4]),
-            "alarm_type":      int(value[4:6]),
-            "tank_number":     value[6:8],
-            "alarm_state":     int(value[8:10]),
-            "year":            int(value[10:12]),
-            "month":           int(value[12:14]),
-            "day":             int(value[14:16]),
-            "hour":            int(value[16:18]),
-            "minute":          int(value[18:20])
-        })
+    if len(response) >= data_length:
+        for value in split_data(response, data_length):
+            data["alarms"].append({
+                "alarm_category":  int(value[0:2]),
+                "sensor_category": int(value[2:4]),
+                "alarm_type":      int(value[4:6]),
+                "tank_number":     value[6:8],
+                "alarm_state":     int(value[8:10]),
+                "year":            int(value[10:12]),
+                "month":           int(value[12:14]),
+                "day":             int(value[14:16]),
+                "hour":            int(value[16:18]),
+                "minute":          int(value[18:20])
+            })
         
     return data
 
@@ -186,33 +176,35 @@ def function_112(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11200")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
     
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
     response = response[10:]
-    expected_data_length = 20
+    data_length = 20
 
-    if len(response) < expected_data_length: 
-        return data
-
-    split_response = split_data(response, expected_data_length)
-    
     # Get values from each alarm.
-    for value in split_response:
-        data["alarms"].append({
-            "alarm_category":  int(value[0:2]),
-            "sensor_category": int(value[2:4]),
-            "alarm_type":      int(value[4:6]),
-            "tank_number":     value[6:8],
-            "alarm_state":     int(value[8:10]),
-            "year":            int(value[10:12]),
-            "month":           int(value[12:14]),
-            "day":             int(value[14:16]),
-            "hour":            int(value[16:18]),
-            "minute":          int(value[18:20])
-        })
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["alarms"].append({
+                "alarm_category":  int(value[0:2]),
+                "sensor_category": int(value[2:4]),
+                "alarm_type":      int(value[4:6]),
+                "tank_number":     value[6:8],
+                "alarm_state":     int(value[8:10]),
+                "year":            int(value[10:12]),
+                "month":           int(value[12:14]),
+                "day":             int(value[14:16]),
+                "hour":            int(value[16:18]),
+                "minute":          int(value[18:20])
+            })
     
     return data
 
@@ -226,7 +218,13 @@ def function_113(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11300")
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
@@ -238,26 +236,22 @@ def function_113(tls: tlsSocket) -> dict:
 
     # Get values from the remaining data, split up alarms.
     response = response[90:]
-    expected_data_length = 18
-
-    if len(response) < expected_data_length: 
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 18
 
     # Get values from each alarm.
-    for value in split_response:
-        data["alarms"].append({
-            "alarm_category":  int(value[0:2]),
-            "sensor_category": int(value[2:4]),
-            "alarm_type":      int(value[4:6]),
-            "tank_number":     value[6:8],
-            "year":            int(value[8:10]),
-            "month":           int(value[10:12]),
-            "day":             int(value[12:14]),
-            "hour":            int(value[14:16]),
-            "minute":          int(value[16:18])
-        })    
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["alarms"].append({
+                "alarm_category":  int(value[0:2]),
+                "sensor_category": int(value[2:4]),
+                "alarm_type":      int(value[4:6]),
+                "tank_number":     value[6:8],
+                "year":            int(value[8:10]),
+                "month":           int(value[10:12]),
+                "day":             int(value[12:14]),
+                "hour":            int(value[14:16]),
+                "minute":          int(value[16:18])
+            })    
 
     return data
 
@@ -271,7 +265,13 @@ def function_114(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11400")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
@@ -283,27 +283,23 @@ def function_114(tls: tlsSocket) -> dict:
 
     # Get values from the remaining data, split up alarms.
     response = response[90:]
-    expected_data_length = 20
-
-    if len(response) < expected_data_length: 
-        return data
-    
-    split_response = split_data(response, expected_data_length)
+    data_length = 20
 
     # Get values from each alarm.
-    for value in split_response:
-        data["alarms"].append({
-            "alarm_category":  int(value[0:2]),
-            "sensor_category": int(value[2:4]),
-            "alarm_type":      int(value[4:6]),
-            "tank_number":     value[6:8],
-            "alarm_state":     int(value[8:10]),
-            "year":            int(value[10:12]),
-            "month":           int(value[12:14]),
-            "day":             int(value[14:16]),
-            "hour":            int(value[16:18]),
-            "minute":          int(value[18:20])
-        })
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["alarms"].append({
+                "alarm_category":  int(value[0:2]),
+                "sensor_category": int(value[2:4]),
+                "alarm_type":      int(value[4:6]),
+                "tank_number":     value[6:8],
+                "alarm_state":     int(value[8:10]),
+                "year":            int(value[10:12]),
+                "month":           int(value[12:14]),
+                "day":             int(value[14:16]),
+                "hour":            int(value[16:18]),
+                "minute":          int(value[18:20])
+            })
 
     return data
 
@@ -317,7 +313,13 @@ def function_115(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11500")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
@@ -329,26 +331,22 @@ def function_115(tls: tlsSocket) -> dict:
 
     # Get values from the remaining data, split up alarms.
     response = response[90:]
-    expected_data_length = 18
-
-    if len(response) < expected_data_length: 
-        return data
-    
-    split_response = split_data(response, expected_data_length)
+    data_length = 18
 
     # Get values from each alarm.
-    for value in split_response:
-        data["alarms"].append({
-            "alarm_category":  int(value[0:2]),
-            "sensor_category": int(value[2:4]),
-            "alarm_type":      int(value[4:6]),
-            "tank_number":     value[6:8],
-            "year":            int(value[8:10]),
-            "month":           int(value[10:12]),
-            "day":             int(value[12:14]),
-            "hour":            int(value[14:16]),
-            "minute":          int(value[16:18])
-        })
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["alarms"].append({
+                "alarm_category":  int(value[0:2]),
+                "sensor_category": int(value[2:4]),
+                "alarm_type":      int(value[4:6]),
+                "tank_number":     value[6:8],
+                "year":            int(value[8:10]),
+                "month":           int(value[10:12]),
+                "day":             int(value[12:14]),
+                "hour":            int(value[14:16]),
+                "minute":          int(value[16:18])
+            })
 
     return data
 
@@ -362,7 +360,13 @@ def function_116(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11600")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] =  response[10:30].strip()
@@ -375,25 +379,21 @@ def function_116(tls: tlsSocket) -> dict:
 
     # Get values from the remaining data, split up reports.
     response = response[90:]
-    expected_data_length = 25
+    data_length = 25
     
-    if len(response) < expected_data_length: 
-        return data
-    
-    split_response = split_data(response, expected_data_length)
-
-    # Get values from each reports.
-    for value in split_response:
-        data["reports"].append({
-            "year":         int(value[0:2]),
-            "month":        int(value[2:4]),
-            "day":          int(value[4:6]),
-            "hour":         int(value[6:8]),
-            "minute":       int(value[8:10]),
-            "service_id":   value[10:20].strip(),
-            "service_code": value[20:25].strip()
-        })
-        
+    # Get values from each report.
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["reports"].append({
+                "year":         int(value[0:2]),
+                "month":        int(value[2:4]),
+                "day":          int(value[4:6]),
+                "hour":         int(value[6:8]),
+                "minute":       int(value[8:10]),
+                "service_id":   value[10:20].strip(),
+                "service_code": value[20:25].strip()
+            })
+            
     return data
 
 def function_119(tls: tlsSocket, start_date: str = "", end_date: str = "") -> dict:
@@ -421,7 +421,13 @@ def function_119(tls: tlsSocket, start_date: str = "", end_date: str = "") -> di
     else:
         raise ValueError("Both 'start_date' and 'end_date' must either be six digits long or empty.")
 
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     # Store extra non-repeated info from this response.
     data["number_of_records"] = int(response[10:14])
@@ -429,25 +435,20 @@ def function_119(tls: tlsSocket, start_date: str = "", end_date: str = "") -> di
 
     # Get values from the remaining data, split up records.
     response = response[14:]
-    expected_data_length = 18
-
-    if len(response) < expected_data_length: 
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 18
 
     # Get values from each record.
-    for value in split_response:
-        data["records"].append({
-            "year":        int(value[0:2]),
-            "month":       int(value[2:4]),
-            "day":         int(value[4:6]),
-            "hour":        int(value[6:8]),
-            "minute":      int(value[8:10]),
-            "record_type": value[10:12],
-            "data_field":  value[12:18]
-        })
-        
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["records"].append({
+                "year":        int(value[0:2]),
+                "month":       int(value[2:4]),
+                "day":         int(value[4:6]),
+                "hour":        int(value[6:8]),
+                "minute":      int(value[8:10]),
+                "record_type": value[10:12],
+                "data_field":  value[12:18]
+            })
 
     return data
 
@@ -461,7 +462,13 @@ def function_11A(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11A00")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     # Store extra non-repeated info from this response.
     data["number_of_records"] = int(response[10:12])
@@ -469,24 +476,20 @@ def function_11A(tls: tlsSocket) -> dict:
 
     # Get values from the remaining data, split up reports.
     response = response[12:]
-    expected_data_length = 20
-
-    if len(response) < expected_data_length: 
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 20
 
     # Get values from each tank report.
-    for value in split_response:
-        data["reports"].append({
-            "year":         int(value[0:2]),
-            "month":        int(value[2:4]),
-            "day":          int(value[4:6]),
-            "hour":         int(value[6:8]),
-            "minute":       int(value[8:10]),
-            "service_id":   value[10:16].strip(),
-            "service_code": value[16:20].strip()
-        })
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["reports"].append({
+                "year":         int(value[0:2]),
+                "month":        int(value[2:4]),
+                "day":          int(value[4:6]),
+                "hour":         int(value[6:8]),
+                "minute":       int(value[8:10]),
+                "service_id":   value[10:16].strip(),
+                "service_code": value[16:20].strip()
+            })
         
     return data
 
@@ -500,7 +503,13 @@ def function_11B(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11B00")    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     # Store extra non-repeated info from this response.
     data["service_notice_session"] = int(response[10:11])
@@ -515,27 +524,23 @@ def function_11B(tls: tlsSocket) -> dict:
 
     # Get values from the remaining data, split up reports.
     response = response[23:]
-    expected_data_length = 20
-
-    if len(response) < expected_data_length: 
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 20
 
     # Get values from each tank report.
-    for value in split_response:
-        data["reports"].append({
-            "start_year":   int(value[0:2]),
-            "start_month":  int(value[2:4]),
-            "start_day":    int(value[4:6]),
-            "start_hour":   int(value[6:8]),
-            "start_minute": int(value[8:10]),
-            "end_year":     int(value[10:12]),
-            "end_month":    int(value[12:14]),
-            "end_day":      int(value[14:16]),
-            "end_hour":     int(value[16:18]),
-            "end_minute":   int(value[18:20])
-        })
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["reports"].append({
+                "start_year":   int(value[0:2]),
+                "start_month":  int(value[2:4]),
+                "start_day":    int(value[4:6]),
+                "start_hour":   int(value[6:8]),
+                "start_minute": int(value[8:10]),
+                "end_year":     int(value[10:12]),
+                "end_month":    int(value[12:14]),
+                "end_day":      int(value[14:16]),
+                "end_hour":     int(value[16:18]),
+                "end_minute":   int(value[18:20])
+            })
 
     return data
 
@@ -555,34 +560,36 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i201" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
     response = response[10:]
     print(response)
-    expected_data_length = 65
-
-    if len(response) < expected_data_length:
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 65
 
     # Get values from each tank report.
-    for value in split_response:
-        data["tanks"].append({
-            "tank_number":      value[0:2],
-            "product_code":     value[2:3],
-            "tank_status_bits": int(value[3:7]),
-            "volume":           hex_to_float(value[9:17]),
-            "tc_volume":        hex_to_float(value[17:25]),
-            "ullage":           hex_to_float(value[25:33]),
-            "height":           hex_to_float(value[33:41]),
-            "water":            hex_to_float(value[41:49]),
-            "temperature":      hex_to_float(value[49:57]),
-            "water_volume":     hex_to_float(value[57:65])
-        })
+    if len(response) >= data_length:
+        for value in split_data(response, data_length):
+            data["tanks"].append({
+                "tank_number":      value[0:2],
+                "product_code":     value[2:3],
+                "tank_status_bits": int(value[3:7]),
+                "volume":           hex_to_float(value[9:17]),
+                "tc_volume":        hex_to_float(value[17:25]),
+                "ullage":           hex_to_float(value[25:33]),
+                "height":           hex_to_float(value[33:41]),
+                "water":            hex_to_float(value[41:49]),
+                "temperature":      hex_to_float(value[49:57]),
+                "water_volume":     hex_to_float(value[57:65])
+            })
     
     return data
 
@@ -602,7 +609,13 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i202" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     data["tanks"] = []
 
@@ -673,36 +686,38 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i203" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     data["tanks"] = []
 
     # Get values from the remaining data, split up tank reports.
     response = response[10:]
-    expected_data_length = 57
-
-    if len(response) < expected_data_length:
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 57
 
     # Get values from each tank report.
-    for value in split_response:
-        data["tanks"].append({
-            "tank_number":     value[0:2],
-            "product_code":    value[2:3],
-            "start_year":      int(value[3:5]),
-            "start_month":     int(value[5:7]),
-            "start_day":       int(value[7:9]),
-            "start_hour":      int(value[9:11]),
-            "start_minute":    int(value[11:13]),
-            "test_duration":   int(value[13:15]),
-            "starting_temp":   hex_to_float(value[17:25]),
-            "ending_temp":     hex_to_float(value[25:33]),
-            "starting_volume": hex_to_float(value[33:41]),
-            "ending_rate":     hex_to_float(value[41:49]),
-            "hourly_changes":  hex_to_float(value[49:57])
-        })
+    if len(response) >= data_length:
+        for value in split_data(response, data_length):
+            data["tanks"].append({
+                "tank_number":     value[0:2],
+                "product_code":    value[2:3],
+                "start_year":      int(value[3:5]),
+                "start_month":     int(value[5:7]),
+                "start_day":       int(value[7:9]),
+                "start_hour":      int(value[9:11]),
+                "start_minute":    int(value[11:13]),
+                "test_duration":   int(value[13:15]),
+                "starting_temp":   hex_to_float(value[17:25]),
+                "ending_temp":     hex_to_float(value[25:33]),
+                "starting_volume": hex_to_float(value[33:41]),
+                "ending_rate":     hex_to_float(value[41:49]),
+                "hourly_changes":  hex_to_float(value[49:57])
+            })
 
     return data
 
@@ -722,39 +737,41 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i204" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     data["inventory"] = []
 
     # Get values from the remaining data, split up the inventory.
     response = response[10:]
-    expected_data_length = 111
-
-    if len(response) < expected_data_length:
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 111
 
     # Get values from each inventory log.
-    for value in split_response:
-        data["inventory"].append({
-            "tank_number":       value[0:2],
-            "product_code":      value[2:3],
-            "shift_number":      value[3:5],
-            "start_volume":      hex_to_float(value[7:15]),
-            "start_ullage":      hex_to_float(value[15:23]),
-            "start_tc_volume":   hex_to_float(value[23:31]),
-            "start_height":      hex_to_float(value[31:39]),
-            "start_water":       hex_to_float(value[39:47]),
-            "start_temperature": hex_to_float(value[47:55]),
-            "end_volume":        hex_to_float(value[55:63]),
-            "end_ullage":        hex_to_float(value[63:71]),
-            "end_tc_volume":     hex_to_float(value[71:79]),
-            "end_height":        hex_to_float(value[79:87]),
-            "end_water":         hex_to_float(value[87:95]),
-            "end_temperature":   hex_to_float(value[95:103]),
-            "total_value":       hex_to_float(value[103:111])
-        })
+    if len(response) >= data_length:
+        for value in split_data(response, data_length):
+            data["inventory"].append({
+                "tank_number":       value[0:2],
+                "product_code":      value[2:3],
+                "shift_number":      value[3:5],
+                "start_volume":      hex_to_float(value[7:15]),
+                "start_ullage":      hex_to_float(value[15:23]),
+                "start_tc_volume":   hex_to_float(value[23:31]),
+                "start_height":      hex_to_float(value[31:39]),
+                "start_water":       hex_to_float(value[39:47]),
+                "start_temperature": hex_to_float(value[47:55]),
+                "end_volume":        hex_to_float(value[55:63]),
+                "end_ullage":        hex_to_float(value[63:71]),
+                "end_tc_volume":     hex_to_float(value[71:79]),
+                "end_height":        hex_to_float(value[79:87]),
+                "end_water":         hex_to_float(value[87:95]),
+                "end_temperature":   hex_to_float(value[95:103]),
+                "total_value":       hex_to_float(value[103:111])
+            })
 
     return data
 
@@ -774,26 +791,28 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i205" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     data["alarms"] = []
 
     # Get values from the remaining data, split up alarms.
     response = response[10:]
-    expected_data_length = 6
-
-    if len(response) < expected_data_length:
-        return data
-
-    split_response = split_data(response, expected_data_length)
+    data_length = 6
 
     # Get values from each alarm.
-    for value in split_response:
-        data["alarms"].append({
-            "tank_number":      value[0:2],
-            "number_of_alarms": int(value[2:4]),
-            "alarm_type":       int(value[4:6])
-        })
+    if len(response) >= data_length:
+        for value in split_data(response, data_length):
+            data["alarms"].append({
+                "tank_number":      value[0:2],
+                "number_of_alarms": int(value[2:4]),
+                "alarm_type":       int(value[4:6])
+            })
 
     return data
 
@@ -813,7 +832,13 @@ def function_206(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i206" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     data["tanks"] = {}
 
@@ -865,7 +890,13 @@ def function_207(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i207" + tank)    
-    data = get_standard_values(response)
+    data = {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
 
     data["tanks"] = {}
 
