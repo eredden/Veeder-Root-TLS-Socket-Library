@@ -848,3 +848,60 @@ def function_206(tls: tlsSocket, tank: str) -> dict:
             remaining_data = remaining_data[14:]
 
     return data
+
+def function_207(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 207 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i207" + tank)    
+    data = get_standard_values(response)
+
+    data["tanks"] = {}
+
+    # Get the list of alarms for each tank after finding how many tests each tank has.
+    remaining_data = response[10:]
+
+    while remaining_data:
+        if len(remaining_data) < 44: break
+
+        # Collect tank number and test count, then slice them out of the current data.
+        tank_number = remaining_data[0:2]
+        test_count = int(remaining_data[2:4], 16)
+
+        remaining_data = remaining_data[4:]
+
+        # Create a dictionary for the tank and add the tests into an associated list.
+        data["tanks"][tank_number] = []
+    
+        for _ in range(0, test_count):
+            if len(remaining_data) < 40: break
+            
+            data["tanks"][tank_number].append({
+                "report_type":         remaining_data[0:2],
+                "leak_history_number": remaining_data[2:4],
+                "test_type":           remaining_data[4:6],
+                "year":                int(remaining_data[6:8]),
+                "month":               int(remaining_data[8:10]),
+                "day":                 int(remaining_data[10:12]),
+                "hour":                int(remaining_data[12:14]),
+                "minute":              int(remaining_data[14:16]),
+                "duration":            hex_to_float(remaining_data[16:24]),
+                "volume":              hex_to_float(remaining_data[24:32]),
+                "volume_percentage":   hex_to_float(remaining_data[32:40])
+            })
+
+            # Slice off values that have already been added.
+            remaining_data = remaining_data[40:]
+
+    return data
