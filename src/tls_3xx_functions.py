@@ -1,5 +1,20 @@
 from tls_socket import tlsSocket
 
+def get_timestamp(response: str) -> dict:
+    """
+    Extracts date and time from a automatic tank gauge command output/response.
+
+    response - Output from the Veeder-Root TLS system.
+    """
+
+    return {
+        "year":     int(response[0:2]),
+        "month":    int(response[2:4]),
+        "day":      int(response[4:6]),
+        "hour":     int(response[6:8]),
+        "minute":   int(response[8:10])
+    }
+
 def split_data(data: str, length: int) -> list:
     """
     Split a string into specified length chunks.
@@ -63,13 +78,7 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i101" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
     
     data["alarms"] = []
 
@@ -98,13 +107,7 @@ def function_102(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i10200")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
     
     data["slots"] = []
 
@@ -134,13 +137,7 @@ def function_111(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11100")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
     
     data["alarms"] = []
 
@@ -176,13 +173,7 @@ def function_112(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11200")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
     
     data["alarms"] = []
 
@@ -218,13 +209,7 @@ def function_113(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11300")
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
@@ -265,13 +250,7 @@ def function_114(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11400")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
@@ -313,13 +292,7 @@ def function_115(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11500")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] = response[10:30].strip()
@@ -360,13 +333,7 @@ def function_116(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11600")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     # Store extra non-repeated info from this response.
     data["station_header_1"] =  response[10:30].strip()
@@ -421,13 +388,7 @@ def function_119(tls: tlsSocket, start_date: str = "", end_date: str = "") -> di
     else:
         raise ValueError("Both 'start_date' and 'end_date' must either be six digits long or empty.")
 
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     # Store extra non-repeated info from this response.
     data["number_of_records"] = int(response[10:14])
@@ -462,13 +423,7 @@ def function_11A(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11A00")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     # Store extra non-repeated info from this response.
     data["number_of_records"] = int(response[10:12])
@@ -503,13 +458,7 @@ def function_11B(tls: tlsSocket) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i11B00")    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     # Store extra non-repeated info from this response.
     data["service_notice_session"] = int(response[10:11])
@@ -560,13 +509,7 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i201" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     data["tanks"] = []
 
@@ -609,13 +552,7 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i202" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     data["tanks"] = []
 
@@ -686,13 +623,7 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i203" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     data["tanks"] = []
 
@@ -737,13 +668,7 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i204" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     data["inventory"] = []
 
@@ -791,13 +716,7 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i205" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     data["alarms"] = []
 
@@ -832,13 +751,7 @@ def function_206(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i206" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     data["tanks"] = {}
 
@@ -890,13 +803,7 @@ def function_207(tls: tlsSocket, tank: str) -> dict:
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i207" + tank)    
-    data = {
-        "year":     int(response[0:2]),
-        "month":    int(response[2:4]),
-        "day":      int(response[4:6]),
-        "hour":     int(response[6:8]),
-        "minute":   int(response[8:10])
-    }
+    data = get_timestamp(response)
 
     data["tanks"] = {}
 
