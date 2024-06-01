@@ -807,7 +807,7 @@ def function_207(tls: tlsSocket, tank: str) -> dict:
 
     data["tanks"] = {}
 
-    # Get the list of alarms for each tank after finding how many tests each tank has.
+    # Get the list of tests for each tank after finding how many tests each tank has.
     response = response[10:]
 
     while response:
@@ -837,6 +837,63 @@ def function_207(tls: tlsSocket, tank: str) -> dict:
                 "duration":            hex_to_float(response[16:24]),
                 "volume":              hex_to_float(response[24:32]),
                 "volume_percentage":   hex_to_float(response[32:40])
+            })
+
+            # Slice off values that have already been added.
+            response = response[40:]
+
+    return data
+
+def function_208(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 208 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i208" + tank)    
+    data = get_timestamp(response)
+
+    data["tanks"] = {}
+
+    # Get the list of tests for each tank after finding how many tests each tank has.
+    response = response[10:]
+
+    while response:
+        if len(response) < 44: break
+
+        # Collect tank number and test count, then slice them out of the current data.
+        tank_number = response[0:2]
+        test_count = int(response[2:4], 16)
+
+        response = response[4:]
+
+        # Create a dictionary for the tank and add the tests into an associated list.
+        data["tanks"][tank_number] = []
+    
+        for _ in range(0, test_count):
+            if len(response) < 40: break
+            
+            data["tanks"][tank_number].append({
+                "test_result_type":     response[0:2],
+                "test_manifold_status": response[2:4],
+                "year":                 int(response[4:6]),
+                "month":                int(response[6:8]),
+                "day":                  int(response[8:10]),
+                "hour":                 int(response[10:12]),
+                "minute":               int(response[12:14]),
+                "test_result":          response[14:16],
+                "test_rate":            hex_to_float(response[16:24]),
+                "duration":             hex_to_float(response[24:32]),
+                "volume":               hex_to_float(response[32:40])
             })
 
             # Slice off values that have already been added.
