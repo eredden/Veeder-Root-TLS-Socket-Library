@@ -515,7 +515,6 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
 
     # Get values from the remaining data, split up tank reports.
     response = response[10:]
-    print(response)
     data_length = 65
 
     # Get values from each tank report.
@@ -899,4 +898,46 @@ def function_208(tls: tlsSocket, tank: str) -> dict:
             # Slice off values that have already been added.
             response = response[40:]
 
+    return data
+
+def function_21A(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 21A on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i21A" + tank)    
+    data = get_timestamp(response)
+
+    data["tanks"] = []
+
+    # Get values from the remaining data, split up tank reports.
+    response = response[10:]
+    data_length = 65
+
+    # Get values from each tank report.
+    if len(response) >= data_length:
+        for value in split_data(response, data_length):
+            data["tanks"].append({
+                "tank_number":      value[0:2],
+                "product_code":     value[2:3],
+                "tank_status_bits": int(value[3:7]),
+                "volume":           hex_to_float(value[9:17]),
+                "tc_volume":        hex_to_float(value[17:25]),
+                "ullage":           hex_to_float(value[25:33]),
+                "height":           hex_to_float(value[33:41]),
+                "water":            hex_to_float(value[41:49]),
+                "temperature":      hex_to_float(value[49:57]),
+                "water_volume":     hex_to_float(value[57:65])
+            })
+    
     return data
