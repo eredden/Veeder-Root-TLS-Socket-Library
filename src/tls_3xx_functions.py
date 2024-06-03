@@ -941,3 +941,87 @@ def function_21A(tls: tlsSocket, tank: str) -> dict:
             })
     
     return data
+
+# The TLS system I am using does not support this function. This is untested.
+def function_21B(tls: tlsSocket, tank: str, deliveries: int) -> dict:
+    """
+    Runs function 21B on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
+    if not type(deliveries) == int:       raise ValueError("Argument 'deliveries' must be an integer.")
+    if deliveries < 1 or deliveries > 99: raise ValueError("Argument 'deliveries' must be two digits long.")
+
+    # When passed into the command, deliveries must be two digits long.
+    deliveries = str(deliveries.zfill(2))
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i21B" + tank + deliveries)    
+    data = get_timestamp(response)
+
+    data["tanks"] = {}
+
+    # Get the list of deliveries for each tank.
+    response = response[10:]
+
+    while response:
+        if len(response) < 194: break
+
+        # Collect tank number and delivery count, then slice them out of the current data.
+        tank_number = response[0:2]
+        delivery_count = int(response[2:4])
+
+        response = response[4:]
+
+        # Create a dictionary for the tank and add the deliveries into an associated list.
+        data["tanks"][tank_number] = []
+    
+        for _ in range(0, delivery_count):
+            if len(response) < 190: break
+            
+            data["tanks"][tank_number].append({
+                "start_year":                                       int(response[0:2]),
+                "start_month":                                      int(response[2:4]),
+                "start_day":                                        int(response[4:6]),
+                "start_hour":                                       int(response[6:8]),
+                "start_minute":                                     int(response[8:10]),
+                "end_year":                                         int(response[10:12]),
+                "end_month":                                        int(response[12:14]),
+                "end_day":                                          int(response[14:16]),
+                "end_hour":                                         int(response[16:18]),
+                "end_minute":                                       int(response[18:20]),
+                "start_volume":                                     hex_to_float(response[22:30]),
+                "end_volume":                                       hex_to_float(response[30:38]),
+                "adjusted_delivery_volume":                         hex_to_float(response[38:46]),
+                "adjusted_temperature_compensated_delivery_volume": hex_to_float(response[46:54]),
+                "start_fuel_height":                                hex_to_float(response[54:62]),
+                "start_fuel_temperature_1":                         hex_to_float(response[62:70]),
+                "start_fuel_temperature_2":                         hex_to_float(response[70:78]),
+                "start_fuel_temperature_3":                         hex_to_float(response[78:86]),
+                "start_fuel_temperature_4":                         hex_to_float(response[86:94]),
+                "start_fuel_temperature_5":                         hex_to_float(response[94:102]),
+                "start_fuel_temperature_6":                         hex_to_float(response[102:110]),
+                "end_fuel_height":                                  hex_to_float(response[110:118]),
+                "end_fuel_temperature_1":                           hex_to_float(response[118:126]),
+                "end_fuel_temperature_2":                           hex_to_float(response[126:134]),
+                "end_fuel_temperature_3":                           hex_to_float(response[134:142]),
+                "end_fuel_temperature_4":                           hex_to_float(response[142:150]),
+                "end_fuel_temperature_5":                           hex_to_float(response[150:158]),
+                "end_fuel_temperature_6":                           hex_to_float(response[158:166]),
+                "total_dispensed":                                  hex_to_float(response[166:174]),
+                "start_fuel_temperature_average":                   hex_to_float(response[174:182]),
+                "end_fuel_temperature average":                     hex_to_float(response[182:190])
+            })
+
+            # Slice off values that have already been added.
+            response = response[190:]
+
+    return data
