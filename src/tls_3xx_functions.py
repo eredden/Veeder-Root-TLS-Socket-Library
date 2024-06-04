@@ -951,6 +951,8 @@ def function_21B(tls: tlsSocket, tank: str, deliveries: int) -> dict:
     tls - A socket for a TLS device, should be created with the tlsSocket class.
 
     tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+
+    deliveries - The amount of deliveries to show for each tank.
     """
 
     if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
@@ -961,7 +963,7 @@ def function_21B(tls: tlsSocket, tank: str, deliveries: int) -> dict:
     if deliveries < 1 or deliveries > 99: raise ValueError("Argument 'deliveries' must be two digits long.")
 
     # When passed into the command, deliveries must be two digits long.
-    deliveries = str(deliveries.zfill(2))
+    deliveries = str(deliveries).zfill(2)
 
     # Execute the command and extract common values from it immediately.
     response = tls.execute("i21B" + tank + deliveries)    
