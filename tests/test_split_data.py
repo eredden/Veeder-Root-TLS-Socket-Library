@@ -1,5 +1,5 @@
 import unittest
-from src.tls_3xx_functions import split_data
+from tls_3xx_functions import split_data
 
 # Verify that split_data() correctly splits apart chunks of data.
 class test_split_data(unittest.TestCase):
