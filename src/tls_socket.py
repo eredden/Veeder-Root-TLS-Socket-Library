@@ -45,6 +45,14 @@ class tlsSocket:
         changed if your ATG is set to use a different end of transmission.
         """
 
+        # Validating function arguments prior to executing any commands.
+        if not command:              raise ValueError("Argument 'command' cannot be empty.")
+        if not type(command) == str: raise ValueError("Argument 'command' must be a string.")
+
+        if not etx:                  raise ValueError("Argument 'etx' cannot be empty.")
+        if not type(etx) == bytes:   raise ValueError("Argument 'etx' must be a bytecode.")
+
+        # Setting up foundational variables.
         socket = self.socket
         soh    = b"\x01"
 
