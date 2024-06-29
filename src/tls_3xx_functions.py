@@ -1027,3 +1027,39 @@ def function_21B(tls: tlsSocket, tank: str, deliveries: int) -> dict:
             response = response[190:]
 
     return data
+
+# Coming back to functions 221 through to 227 soon.
+
+def function_251(tls: tlsSocket, tank: str) -> dict:
+    """
+    Runs function 251 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i251" + tank)    
+    data = get_timestamp(response)
+    
+    data["reports"] = []
+
+    # Get values from the remaining data, split up reports.
+    response = response[10:]
+    data_length = 4
+
+    # Get values from each alarm.
+    if len(response) >= data_length: 
+        for value in split_data(response, data_length):
+            data["reports"].append({
+                "tank_number":  value[0:2],
+                "csld_results": value[2:4] 
+            })
+
+    return data
