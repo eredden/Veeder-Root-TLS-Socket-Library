@@ -1,6 +1,8 @@
 ## Unit Testing
 
-In order to run the `unittest` tests included with this repository, you will need to set the `PYTHONPATH` environment variable to the `src` path of this repository and run `python -m unittest` from within the `tests` directory.
+In order to run the `unittest` tests included with this repository, you will need to set the 
+`PYTHONPATH` environment variable to the `src` path of this repository and run `python -m unittest` 
+from within the `tests` directory.
 
 All provided examples assume that your working directory is the root of this repository.
 
