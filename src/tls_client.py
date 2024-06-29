@@ -14,6 +14,11 @@ if __name__ == "__main__":
         while True:
             command = input("\n>> ")
 
+            if command.lower() == "help":
+                print("Veeder-Root tank gauge commands can be found in the Serial Interface" \
+                      " manual for that model of tank gauge.")
+                print("You can exit this program by using the 'exit' command at any time.")
+                continue
             if command.lower() == "exit": break
             if command.lower() == "":  continue
 
