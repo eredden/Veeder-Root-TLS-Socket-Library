@@ -66,12 +66,13 @@ class tlsSocket:
         timeout   = 1
         data_size = 4098
 
+        socket.settimeout(timeout)
         socket.sendall(byte_command)
 
-        for retry_count in range(1, retries + 1):
-            time.sleep(timeout)
+        for retry_count in range(0, retries):
+            try:                 chunk = socket.recv(data_size)
+            except TimeoutError: raise ValueError("Transmission failed.")
 
-            chunk = socket.recv(data_size)
             byte_response += chunk
 
             if etx in chunk:           break
