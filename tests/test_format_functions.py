@@ -1,5 +1,5 @@
 import unittest
-from tls_3xx_functions import get_timestamp, split_data, hex_to_float
+from tls_format import get_timestamp, split_data, hex_to_float
 
 class test_get_timestamp(unittest.TestCase):
     def test_get_timestamp(self):
