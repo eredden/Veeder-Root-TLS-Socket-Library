@@ -1,3 +1,5 @@
+# tls_format.py - A series of utilities used to normalize output from TLS automatic tank gauges.
+
 def get_timestamp(response: str) -> dict:
     """
     Extracts date and time from a automatic tank gauge command output/response.

@@ -1,3 +1,5 @@
+# tls_3xx_functions.py - A series of functions used to extract data from command outputs.
+
 from tls_socket import tlsSocket
 from tls_format import get_timestamp, split_data, hex_to_float
 

@@ -1,3 +1,5 @@
+# tls_socket.py - Defines the socket used to connect to TLS automatic tank gauges.
+
 import socket
 import time
 

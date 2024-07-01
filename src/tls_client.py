@@ -1,3 +1,5 @@
+# tls_client.py - A command-line interface for communicating with TLS automatic tank gauges.
+
 import tls_socket
 import argparse
 
