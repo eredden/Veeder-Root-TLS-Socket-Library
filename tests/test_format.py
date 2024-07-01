@@ -1,4 +1,4 @@
-# test_format_functions.py - Used to test the functionality of functions in src/tls_format.py.
+# test_format.py - Used to test the functionality of functions in src/tls_format.py.
 
 import unittest
 from tls_format import get_timestamp, split_data, hex_to_float
