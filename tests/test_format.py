@@ -3,7 +3,7 @@
 import unittest
 from tls_format import get_timestamp, split_data, hex_to_float
 
-class test_get_timestamp(unittest.TestCase):
+class test_format(unittest.TestCase):
     def test_get_timestamp(self):
         """
         Verify that get_timestamp() correctly extracts timestamps from command output.
@@ -21,7 +21,6 @@ class test_get_timestamp(unittest.TestCase):
             actual = get_timestamp(outputs[index])
             self.assertEqual(actual, expected[index])
 
-class test_split_data(unittest.TestCase):
     def test_split_data(self):
         """
         Verify that split_data() correctly splits apart chunks of data.
@@ -43,7 +42,6 @@ class test_split_data(unittest.TestCase):
             actual = split_data(data[index], length[index])
             self.assertEqual(actual, expected[index])
 
-class test_hex_to_float(unittest.TestCase):
     def test_hex_to_float(self):
         """
         Verify that hex_to_float() correctly makes IEEE floats from hexadecimal codes.
