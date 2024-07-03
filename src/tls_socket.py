@@ -113,8 +113,7 @@ class tlsSocket:
                     "Transmission either partially completed or failed.")
 
             if not self.__data_integrity_check(byte_response):
-                raise ValueError("Incorrect checksum, data integrity " \
-                    "invalidated.")
+                raise ValueError("Incorrect checksum, data integrity invalidated.")
             
             # Removes SOH, checksum, and ETX from being shown in output.
             response = byte_response.decode("utf-8")[1:][:-7]
@@ -122,8 +121,7 @@ class tlsSocket:
             # Removes SOH and ETX from being shown in output.
             response = byte_response.decode("utf-8")[1:][:-1]
         
-        
-        command  = byte_command.decode("utf-8")[1:]
+        command = byte_command.decode("utf-8")[1:]
 
         # Removes the command from being shown in output.
         response = response.replace(command, "")
@@ -160,4 +158,4 @@ class tlsSocket:
         integrity_threshold = "0b10000000000000000"
         binary_sum = bin(message_int + checksum_int)
         
-        return bool(binary_sum == integrity_threshold)
+        return binary_sum == integrity_threshold
