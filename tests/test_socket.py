@@ -6,17 +6,22 @@ from datetime import date
 from tls_socket import tlsSocket
 
 class test_tlsSocket(unittest.TestCase):
+    def setUp(self):
+        self.ip   = os.getenv("TLS_IP")
+        self.port = int(os.getenv("TLS_PORT"))
+
+        if not self.ip or not self.port:
+            raise ValueError("TLS_IP and TLS_PORT environment variables must have values.")
+    
     def test_valid_command(self):
         """
         Verify that tlsSocket.execute() and your system return the same date to test communication.
         """
 
-        ip   = os.getenv("TLS_IP")
-        port = int(os.getenv("TLS_PORT"))
+        today = date.today() 
+        expected = today.strftime("%y%m%d")
 
-        with tlsSocket(ip, port) as tls:
-            today = date.today()
-            expected = today.strftime("%y%m%d")
+        with tlsSocket(self.ip, self.port) as tls:
             actual = tls.execute("i10100")[:6]
 
         self.assertEqual(expected, actual)
@@ -26,10 +31,7 @@ class test_tlsSocket(unittest.TestCase):
         Verify that tlsSocket.execute() handles invalid commands by returning a ValueError.
         """
 
-        ip   = os.getenv("TLS_IP")
-        port = int(os.getenv("TLS_PORT"))
-
-        with tlsSocket(ip, port) as tls:
+        with tlsSocket(self.ip, self.port) as tls:
             with self.assertRaises(ValueError):
                 tls.execute("test")
 
