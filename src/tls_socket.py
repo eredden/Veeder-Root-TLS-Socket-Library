@@ -1,7 +1,6 @@
 # tls_socket.py - Defines the socket used to connect to TLS automatic tank gauges.
 
 import socket
-import time
 
 class tlsSocket:
     """
@@ -35,7 +34,12 @@ class tlsSocket:
         socket = self.socket
         socket.close()
 
-    def execute(self, command: str, etx: bytes = b"\x03") -> str:
+    def execute(self, 
+                command: str, 
+                etx: bytes = b"\x03",
+                retries: int = 30,
+                timeout: int = 1,
+                data_size: int = 4098) -> str:
         """
         Sends a command to a socket connection using the command 
         format from the Veeder-Root Serial Interface Manual 576013-635.
@@ -45,6 +49,12 @@ class tlsSocket:
 
         etx - This has a default value (ASCII code 001) and should only be 
         changed if your ATG is set to use a different end of transmission.
+
+        retries - The amount of times to listen for output before failing.
+
+        timeout - The amount of time to listen for output per retry.
+
+        data_size - The maximum amount of data to listen for at any time.
         """
 
         # Validating function arguments prior to executing any commands.
@@ -63,10 +73,6 @@ class tlsSocket:
 
         # Send command and repeatedly receive data in chunks until ETX is found.
         byte_response = b""
-
-        retries   = 30
-        timeout   = 1
-        data_size = 4098
 
         socket.settimeout(timeout)
         socket.sendall(byte_command)
