@@ -12,9 +12,9 @@ class test_tlsSocket(unittest.TestCase):
         """
 
         ip   = os.getenv("TLS_IP")
-        port = os.getenv("TLS_PORT")
+        port = int(os.getenv("TLS_PORT"))
 
-        with tlsSocket(ip, int(port)) as tls:
+        with tlsSocket(ip, port) as tls:
             today = date.today()
             expected = today.strftime("%y%m%d")
             actual = tls.execute("i10100")[:6]
@@ -27,11 +27,11 @@ class test_tlsSocket(unittest.TestCase):
         """
 
         ip   = os.getenv("TLS_IP")
-        port = os.getenv("TLS_PORT")
+        port = int(os.getenv("TLS_PORT"))
 
-        with tlsSocket(ip, int(port)) as tls:
-            try:                        tls.execute("test")
-            except ValueError as error: self.assertIsInstance(error, ValueError)
+        with tlsSocket(ip, port) as tls:
+            with self.assertRaises(ValueError):
+                tls.execute("test")
 
 if __name__ == "__main__":
     unittest.main()
