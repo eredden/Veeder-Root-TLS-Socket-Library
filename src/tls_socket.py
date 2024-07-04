@@ -1,5 +1,6 @@
 # tls_socket.py - Defines the socket used to connect to TLS automatic tank gauges.
 
+import time
 import socket
 
 class tlsSocket:
@@ -52,9 +53,9 @@ class tlsSocket:
 
         retries - The amount of times to listen for output before failing.
 
-        timeout - The amount of time to listen for output per retry.
+        timeout - The amount of time to listen per retry.
 
-        data_size - The maximum amount of data to listen for at any time.
+        data_size - The maximum amount of bytes to listen for at any time.
         """
 
         # Validating function arguments prior to executing any commands.
@@ -67,6 +68,7 @@ class tlsSocket:
         # Setting up foundational variables.
         socket = self.socket
         soh    = b"\x01"
+        error  = b"9999FF1B\n"
 
         byte_command = soh + bytes(command, "utf-8")
         is_display   = command[0].isupper()
@@ -77,19 +79,18 @@ class tlsSocket:
         socket.settimeout(timeout)
         socket.sendall(byte_command)
 
-        for retry_count in range(0, retries):
+        for _ in range(0, retries):
+            time.sleep(timeout)
+
             try:                 chunk = socket.recv(data_size)
             except TimeoutError: raise ValueError("Transmission failed.")
 
             byte_response += chunk
 
-            if etx in chunk:           break
-            if b"9999FF1B\n" in chunk: raise ValueError("Invalid command.")
-            if retry_count == retries: raise ValueError("Transmission failed.")
+            if chunk.endswith(etx):    break
+            if error in chunk:         raise ValueError("Invalid command.")
     
-        return self.__handle_response(byte_response, 
-                                      byte_command,
-                                      is_display)
+        return self.__handle_response(byte_response, byte_command, is_display)
     
     def __handle_response(self, byte_response: bytes, 
                           byte_command: bytes, is_display: bool) -> str:
@@ -109,11 +110,10 @@ class tlsSocket:
             checksum_separator_position  = byte_response[-7:-5]
 
             if checksum_separator not in checksum_separator_position:
-                raise ValueError("Checksum missing from command response. " \
-                    "Transmission either partially completed or failed.")
+                raise ValueError("Checksum missing from command response.")
 
             if not self.__data_integrity_check(byte_response):
-                raise ValueError("Incorrect checksum, data integrity invalidated.")
+                raise ValueError("Data integrity invalidated due to invalid checksum.")
             
             # Removes SOH, checksum, and ETX from being shown in output.
             response = byte_response.decode("utf-8")[1:][:-7]
