@@ -68,7 +68,6 @@ class tlsSocket:
         # Setting up foundational variables.
         socket = self.socket
         soh    = b"\x01"
-        error  = b"9999FF1B\n"
 
         byte_command = soh + bytes(command, "utf-8")
         is_display   = command[0].isupper()
@@ -82,13 +81,13 @@ class tlsSocket:
         for _ in range(0, retries):
             time.sleep(timeout)
 
-            try:                 chunk = socket.recv(data_size)
-            except TimeoutError: raise ValueError("Transmission failed.")
+            try:                 
+                chunk = socket.recv(data_size)
+                byte_response += chunk
+                if chunk.endswith(etx): break
 
-            byte_response += chunk
-
-            if chunk.endswith(etx):    break
-            if error in chunk:         raise ValueError("Invalid command.")
+            except TimeoutError: 
+                raise ValueError("Transmission failed.")
     
         return self.__handle_response(byte_response, byte_command, is_display)
     
@@ -103,6 +102,10 @@ class tlsSocket:
 
         is_display - Used to determine if the command uses Display format.
         """
+
+        # Validate that the generic error was not returned.
+        if b"\x019999FF1B" in byte_response: 
+            raise ValueError("Unsupported command for this server.")
 
         # Check checksum position & value if non-Display format command is used.
         if not is_display:
