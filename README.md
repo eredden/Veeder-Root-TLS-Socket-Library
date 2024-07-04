@@ -153,10 +153,10 @@ month: 7
 day: 3
 hour: 20
 minute: 35
-station_header_1: CONNECTED TO S* 2745
+station_header_1: CONNECTED TO ROOT
 station_header_2:
-station_header_3: OMAHA, NE. 68144
-station_header_4: 334-7587
+station_header_3: ROOT CITY, RC 01234
+station_header_4: 123-4567
 alarms: []
 
 >>
