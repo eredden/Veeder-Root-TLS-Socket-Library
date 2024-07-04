@@ -142,6 +142,26 @@ have this data more readily accessible through a Python `dict` object. Another n
 this is that strings and floats are converted by these functions as well, so you do not have to 
 worry about implementing your own IEEE-compliant hex to float function like I did.
 
-The downside of this is that not every TLS-3XX function has been added yet. Please feel free to 
+It is also possible to use these function commands directly from the TLS client that I created as well. Simply type the function code into the command line and you will receive the same results, albeit with neater formatting.
+
+**Output:**
+
+```python
+>> 113
+year: 24
+month: 7
+day: 3
+hour: 20
+minute: 35
+station_header_1: CONNECTED TO S* 2745
+station_header_2:
+station_header_3: OMAHA, NE. 68144
+station_header_4: 334-7587
+alarms: []
+
+>>
+```
+
+The downside of this is that not every TLS-3XX function code has been added yet. Please feel free to 
 submit a feature request or pull request with additional functions if you would like them added 
 to my library.
