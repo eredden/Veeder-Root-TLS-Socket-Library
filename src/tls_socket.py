@@ -87,7 +87,7 @@ class tlsSocket:
                 if chunk.endswith(etx): break
 
             except TimeoutError: 
-                raise ValueError("Transmission failed.")
+                raise ValueError("Invalid command.")
     
         return self.__handle_response(byte_response, byte_command, is_display)
     
