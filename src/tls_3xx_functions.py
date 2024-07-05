@@ -662,16 +662,25 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
 
     # Get values from the remaining data, split up alarms.
     response = response[10:]
-    data_length = 6
 
-    # Get values from each alarm.
-    if len(response) >= data_length:
-        for value in split_data(response, data_length):
+    while len(response) > 0:
+        number_of_alarms = int(response[2:4], 16)
+
+        if number_of_alarms > 0:
             data["alarms"].append({
-                "tank_number":      value[0:2],
-                "number_of_alarms": int(value[2:4]),
-                "alarm_type":       int(value[4:6])
+                "tank_number":      response[0:2],
+                "number_of_alarms": number_of_alarms,
+                "alarm_type":       response[4:6]
             })
+
+            response = response[6:]
+        else:
+            data["alarms"].append({
+                "tank_number":      response[0:2],
+                "number_of_alarms": number_of_alarms
+            })
+
+            response = response[4:]
 
     return data
 
