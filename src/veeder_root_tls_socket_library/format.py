@@ -1,4 +1,4 @@
-# tls_format.py - A series of utilities used to normalize output from TLS automatic tank gauges.
+# format.py - A series of utilities used to normalize output from TLS automatic tank gauges.
 
 def _get_timestamp(response: str) -> dict:
     """
