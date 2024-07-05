@@ -108,7 +108,14 @@ class tlsSocket:
             raise ValueError("Unsupported command for this server.")
 
         # Check checksum position & value if non-Display format command is used.
-        if not is_display:
+        if is_display:
+            # Removes SOH and ETX from being shown in output.
+            response = byte_response.decode("utf-8")[1:][:-1]
+
+            # Checks for and removes newlines at both ends of output.
+            if response[:4]  == "\r\n\r\n": response = response[4:]
+            if response[-4:] == "\r\n\r\n": response = response[:-4]
+        else:
             checksum_separator = b"&&"
             checksum_separator_position  = byte_response[-7:-5]
 
@@ -118,20 +125,8 @@ class tlsSocket:
             if not self.__data_integrity_check(byte_response):
                 raise ValueError("Data integrity invalidated due to invalid checksum.")
             
-            # Removes SOH, checksum, and ETX from being shown in output.
-            response = byte_response.decode("utf-8")[1:][:-7]
-        else:
-            # Removes SOH and ETX from being shown in output.
-            response = byte_response.decode("utf-8")[1:][:-1]
-        
-        command = byte_command.decode("utf-8")[1:]
-
-        # Removes the command from being shown in output.
-        response = response.replace(command, "")
-
-        # Checks for and removes newlines at both ends of output.
-        if response[:4]  == "\r\n\r\n": response = response[4:]
-        if response[-4:] == "\r\n\r\n": response = response[:-4]
+            # Removes SOH, command, checksum, and ETX from being shown in output.
+            response = byte_response.decode("utf-8")[7:][:-7]
 
         return response
 
