@@ -1,9 +1,9 @@
 # tls_3xx_functions.py - A series of functions used to extract data from TLS system outputs.
 
-from tls_socket import tlsSocket
-from tls_format import _get_timestamp, _split_data, _hex_to_float
+from veeder_root_tls_socket_library.socket import TlsSocket
+from veeder_root_tls_socket_library.format import _get_timestamp, _split_data, _hex_to_float
 
-def function_101(tls: tlsSocket, tank: str) -> dict:
+def function_101(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 101 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -38,7 +38,7 @@ def function_101(tls: tlsSocket, tank: str) -> dict:
 
     return data
         
-def function_102(tls: tlsSocket) -> dict:
+def function_102(tls: TlsSocket) -> dict:
     """
     Runs function 102 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -68,7 +68,7 @@ def function_102(tls: tlsSocket) -> dict:
 
     return data
 
-def function_111(tls: tlsSocket) -> dict:
+def function_111(tls: TlsSocket) -> dict:
     """
     Runs function 111 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -104,7 +104,7 @@ def function_111(tls: tlsSocket) -> dict:
         
     return data
 
-def function_112(tls: tlsSocket) -> dict:
+def function_112(tls: TlsSocket) -> dict:
     """
     Runs function 112 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -140,7 +140,7 @@ def function_112(tls: tlsSocket) -> dict:
     
     return data
 
-def function_113(tls: tlsSocket) -> dict:
+def function_113(tls: TlsSocket) -> dict:
     """
     Runs function 113 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -181,7 +181,7 @@ def function_113(tls: tlsSocket) -> dict:
 
     return data
 
-def function_114(tls: tlsSocket) -> dict:
+def function_114(tls: TlsSocket) -> dict:
     """
     Runs function 114 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -223,7 +223,7 @@ def function_114(tls: tlsSocket) -> dict:
 
     return data
 
-def function_115(tls: tlsSocket) -> dict:
+def function_115(tls: TlsSocket) -> dict:
     """
     Runs function 115 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -264,7 +264,7 @@ def function_115(tls: tlsSocket) -> dict:
 
     return data
 
-def function_116(tls: tlsSocket) -> dict:
+def function_116(tls: TlsSocket) -> dict:
     """
     Runs function 116 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -304,7 +304,7 @@ def function_116(tls: tlsSocket) -> dict:
             
     return data
 
-def function_119(tls: tlsSocket, start_date: str = "", end_date: str = "") -> dict:
+def function_119(tls: TlsSocket, start_date: str = "", end_date: str = "") -> dict:
     """
     Runs function 119 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -354,7 +354,7 @@ def function_119(tls: tlsSocket, start_date: str = "", end_date: str = "") -> di
 
     return data
 
-def function_11A(tls: tlsSocket) -> dict:
+def function_11A(tls: TlsSocket) -> dict:
     """
     Runs function 11A on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -389,7 +389,7 @@ def function_11A(tls: tlsSocket) -> dict:
         
     return data
 
-def function_11B(tls: tlsSocket) -> dict:
+def function_11B(tls: TlsSocket) -> dict:
     """
     Runs function 11B on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -434,7 +434,7 @@ def function_11B(tls: tlsSocket) -> dict:
 
     return data
 
-def function_201(tls: tlsSocket, tank: str) -> dict:
+def function_201(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 201 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -476,7 +476,7 @@ def function_201(tls: tlsSocket, tank: str) -> dict:
     
     return data
 
-def function_202(tls: tlsSocket, tank: str) -> dict:
+def function_202(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 202 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -547,7 +547,7 @@ def function_202(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-def function_203(tls: tlsSocket, tank: str) -> dict:
+def function_203(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 203 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -592,7 +592,7 @@ def function_203(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-def function_204(tls: tlsSocket, tank: str) -> dict:
+def function_204(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 204 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -640,7 +640,7 @@ def function_204(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-def function_205(tls: tlsSocket, tank: str) -> dict:
+def function_205(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 205 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -684,7 +684,7 @@ def function_205(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-def function_206(tls: tlsSocket, tank: str) -> dict:
+def function_206(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 206 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -736,7 +736,7 @@ def function_206(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-def function_207(tls: tlsSocket, tank: str) -> dict:
+def function_207(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 207 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -793,7 +793,7 @@ def function_207(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-def function_208(tls: tlsSocket, tank: str) -> dict:
+def function_208(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 208 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -850,7 +850,7 @@ def function_208(tls: tlsSocket, tank: str) -> dict:
 
     return data
 
-def function_21A(tls: tlsSocket, tank: str) -> dict:
+def function_21A(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 21A on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -893,7 +893,7 @@ def function_21A(tls: tlsSocket, tank: str) -> dict:
     return data
 
 # The TLS system I am using does not support this function. This is untested.
-def function_21B(tls: tlsSocket, tank: str, deliveries: int) -> dict:
+def function_21B(tls: TlsSocket, tank: str, deliveries: int) -> dict:
     """
     Runs function 21B on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -978,7 +978,7 @@ def function_21B(tls: tlsSocket, tank: str, deliveries: int) -> dict:
 
     return data
 
-def function_221(tls: tlsSocket, tank: str, current_report: bool) -> dict:
+def function_221(tls: TlsSocket, tank: str, current_report: bool) -> dict:
     """
     Runs function 221 on a given Veeder-Root TLS device and returns a dict with 
     report info.
@@ -1048,7 +1048,7 @@ def function_221(tls: tlsSocket, tank: str, current_report: bool) -> dict:
 
 # Coming back to functions 222 through to 227 soon.
 
-def function_251(tls: tlsSocket, tank: str) -> dict:
+def function_251(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 251 on a given Veeder-Root TLS device and returns a dict with 
     report info.

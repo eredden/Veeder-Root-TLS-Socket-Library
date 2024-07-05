@@ -3,7 +3,7 @@
 import time
 import socket
 
-class tlsSocket:
+class TlsSocket:
     """
     Defines a socket for the TLS automatic tank gauges 
     manufactured by Veeder-Root.
