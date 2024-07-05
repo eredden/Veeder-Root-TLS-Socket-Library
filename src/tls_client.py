@@ -1,6 +1,6 @@
 # tls_client.py - A command-line interface for communicating with TLS automatic tank gauges.
 
-import tls_socket
+from veeder_root_tls_socket_library.tls_socket import tlsSocket
 import argparse
 
 if __name__ == "__main__":
@@ -10,7 +10,7 @@ if __name__ == "__main__":
         "serial interface remotely.", type=int)
     args = parser.parse_args()
 
-    with tls_socket.tlsSocket(args.ip, args.port) as tls:
+    with tlsSocket(args.ip, args.port) as tls:
         print(f"You are connected to {args.ip} using port {args.port}.")
 
         while True:
