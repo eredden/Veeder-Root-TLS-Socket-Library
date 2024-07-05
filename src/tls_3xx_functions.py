@@ -978,7 +978,75 @@ def function_21B(tls: tlsSocket, tank: str, deliveries: int) -> dict:
 
     return data
 
-# Coming back to functions 221 through to 227 soon.
+def function_221(tls: tlsSocket, tank: str, current_report: bool) -> dict:
+    """
+    Runs function 221 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+
+    current_report - Boolean indicating whether current report or previous report should be shown.
+    """
+
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
+    if not type(current_report) == bool: raise ValueError("Argument 'current_report' must be " \
+                                                          "a bool.")
+    report_type = "01" if current_report else "02"
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i221" + tank + report_type)
+    data = get_timestamp(response)
+
+    data["reports"] = []
+
+    # Get values from the remaining data, split up reports.
+    response = response[10:]
+
+    while response:
+        if len(response) < 68: break
+
+        # Collect tank number and alarm count, then slice them out of the current data.
+        tank_number    = response[0:2]
+        product_code   = response[2:3]
+        probe_type     = response[3:5]
+        delivery_count = int(response[5:8])
+
+        response = response[8:]
+
+        # Create a dictionary for the tank and add the alarms into an associated list.
+        data["reports"][tank_number] = []
+    
+        for _ in range(0, delivery_count):
+            if len(response) < 60: break
+            
+            data["tanks"][tank_number].append({
+                "product_code":                   product_code,
+                "probe_type":                     probe_type,
+                "year":                           int(response[0:2]),
+                "month":                          int(response[2:4]),
+                "day":                            int(response[4:6]),
+                "hour":                           int(response[6:8]),
+                "minute":                         int(response[8:10]),
+                "ticket_volume":                  hex_to_float(response[12:20]),
+                "gauged_volume":                  hex_to_float(response[20:28]),
+                "delivery_variance":              hex_to_float(response[28:36]),
+                "start_fuel_temperature":         hex_to_float(response[36:44]),
+                "end_fuel_temperature":           hex_to_float(response[44:52]),
+                "estimated_delivery_temperature": hex_to_float(response[52:60])
+            })
+
+            # Slice off values that have already been added.
+            response = response[60:]
+
+    return data
+
+
+# Coming back to functions 222 through to 227 soon.
 
 def function_251(tls: tlsSocket, tank: str) -> dict:
     """
