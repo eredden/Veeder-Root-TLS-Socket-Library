@@ -31,9 +31,9 @@ get a system status report.
 **Script:**
 
 >```python
-> from Veeder-Root-TLS-Socket-Library-Source-Folder import tls_socket
+> from veeder_root_tls_socket_library.socket import TlsSocket
 >
-> tls = tls_socket.tlsSocket("127.0.0.1", 10001) # initial connection
+> tls = TlsSocket("127.0.0.1", 10001) # initial connection
 > response = tls.execute("i10100") # get system status report
 > 
 > print(response)
@@ -58,7 +58,7 @@ information about how response data is structured for each function. The serial 
 
 # Using the TLS Client
 
-You can also use the tls_client.py file that I created for this library to interact with the 
+You can also use the ``tls_client.py`` file that I created for this library to interact with the 
 automatic tank gauge systems through a command line interface, similar to how you would with other 
 systems through Telnet, SSH, or Putty.
 
@@ -108,7 +108,7 @@ an error after that point.
 
 ## Using The TLS-3XX Functions
 
-I have also created `tls_3xx_functions.py` which contains various functions that can be used to 
+I have also created various functions that can be used to 
 query information from TLS-3XX systems and output a Python dict object rather than the raw output 
 that is typically given by these systems. This serves well for extracting specific bits of data from
  these commands (e.g. the ullage of a specific tank).
@@ -116,10 +116,13 @@ that is typically given by these systems. This serves well for extracting specif
 **Script:**
 
 > ```python
-> from Veeder-Root-TLS-Socket-Library-Source-Folder import tls_3xx_functions
+> from veeder_root_tls_socket_library.socket import TlsSocket
+> from veeder_root_tls_socket_library import tls_3xx
 >
-> tls = tlsSocket("127.0.0.1", 10001) # initial connection
-> response = tls_3xx_functions.function_101(tls, "00") # function_101() used instead of execute("i10100")
+> # initial connection
+> tls = TlsSocket("127.0.0.1", 10001) 
+> # function_101() used instead of execute("i10100")
+> response = tls_3xx.function_101(tls, "00")
 >
 > print(response)
 > ```
