@@ -1,4 +1,5 @@
 # setup.py - Setup for the veeder_root_tls_socket_library package.
+# This can be executed to make a wheel package by running "python -m build" in this directory.
 
 import setuptools
 
@@ -21,5 +22,6 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     python_requires=">=3.10",
     test_suite="unittest",
-    tests_require=["unitest"]
+    tests_require=["unitest"],
+    version = "1.0.0"
 )
