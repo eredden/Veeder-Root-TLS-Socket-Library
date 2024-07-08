@@ -7,8 +7,8 @@ from veeder_root_tls_socket_library.socket import TlsSocket
 
 class test_tlsSocket(unittest.TestCase):
     def setUp(self):
-        self.ip   = os.getenv("TLS_IP")
-        self.port = int(os.getenv("TLS_PORT"))
+        self.ip   = os.environ["TLS_IP"]
+        self.port = int(os.environ["TLS_PORT"])
 
         if not self.ip or not self.port:
             raise ValueError("TLS_IP and TLS_PORT environment variables must have values.")
