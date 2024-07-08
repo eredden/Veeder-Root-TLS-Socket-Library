@@ -1,10 +1,36 @@
 ## Unit Testing
 
-In order to run the `unittest` tests included with this repository, 
-you will need to do the following:
-1. Set the `PYTHONPATH` environment variable to the `./src/veeder-root-tls-socket-library` path of 
-this repository.
-2. Set the `TLS_IP` and `TLS_PORT` environment variables to point to your Veeder-Root system.
-3.  Run `python -m unittest` from within the `tests` directory.
+The following script can used to execute unit tests against a development wheel of this package.
 
-Working on scripts to do this automatically with the new directory structure.
+**Powershell:**
+
+```powershell
+# Remove previously built wheel of this package.
+pip uninstall veeder_root_tls_socket_library --no-input
+
+if (Test-Path -Path "build") {
+    Remove-Item -Path "build" -Recurse -Force
+}
+
+if (Test-Path -Path "dist") {
+    Remove-Item -Path "dist" -Recurse -Force
+}
+
+# Build a new wheel for this package and install it.
+python -m build --wheel
+
+Set-Location -Path "dist"
+$wheel = $(Get-Location).Path + "\" + $(Get-ChildItem)[0].Name
+Set-Location -Path ".."
+
+python -m pip install $wheel
+
+# Set environment variables before testing.
+$env:TLS_IP   = "INSERT IP HERE"
+$env:TLS_PORT = "INSERT PORT HERE"
+
+# Run the tests.
+Set-Location -Path "tests"
+
+python -m unittest
+```
