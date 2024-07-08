@@ -14,11 +14,6 @@ on:
     branches:
       - "*"
 
-env:
-  PROJECT_NAME: veeder_root_tls_socket_library
-  TLS_IP: ${{ secrets.tls_ip }}
-  TLS_PORT: ${{ secrets.tls_port }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,6 +37,11 @@ jobs:
           pip install -r requirements.txt
           python -m build
           pip install dist/*.whl
+        
+        name: Create IP/PORT env variables
+        run: |
+          export TLS_IP = ${{ secrets.tls_ip }}
+          export TLS_PORT = ${{ secrets.tls_port }}
 
       - name: Run tests
         run: |
