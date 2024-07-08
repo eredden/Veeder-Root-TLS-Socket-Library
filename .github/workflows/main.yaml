@@ -1,5 +1,21 @@
 # Testing.
 
+name: Testing
+
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - docs
+      - LICENSE
+      - README.md
+  pull_request:
+    branches:
+      - "*"
+
 env:
   TLS_IP: ${{ secrets.TLS_IP }}
   TLS_PORT: ${{ secrets.TLS_PORT }}
