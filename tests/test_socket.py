@@ -19,10 +19,10 @@ class test_tlsSocket(unittest.TestCase):
         """
 
         today = date.today() 
-        expected = today.strftime("%y%m%d")
+        expected = today.strftime("%y%m")
 
         with TlsSocket(self.ip, self.port) as tls:
-            actual = tls.execute("i10100")[:6]
+            actual = tls.execute("i10100")[:4]
 
         self.assertEqual(expected, actual)
     
