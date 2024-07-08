@@ -15,8 +15,8 @@ on:
       - "*"
 
 env:
-  TLS_IP: ${{ secrets.TLS_IP }}
-  TLS_PORT: ${{ secrets.TLS_PORT }}
+  TLS_IP: ${{ vars.TLS_IP }}
+  TLS_PORT: ${{ vars.TLS_PORT }}
 
 jobs:
   build:
