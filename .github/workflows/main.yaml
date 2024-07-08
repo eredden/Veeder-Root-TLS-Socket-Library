@@ -16,6 +16,8 @@ on:
 
 env:
   PROJECT_NAME: veeder_root_tls_socket_library
+  TLS_IP: ${{ secrets.tls_ip }}
+  TLS_PORT: ${{ secrets.tls_port }}
 
 jobs:
   build:
