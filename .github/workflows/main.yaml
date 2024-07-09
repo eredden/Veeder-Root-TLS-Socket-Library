@@ -57,6 +57,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    environment: main
     needs: build
     if: github.event_name == 'release'
     steps:
