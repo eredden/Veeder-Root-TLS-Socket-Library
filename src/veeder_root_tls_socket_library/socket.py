@@ -68,8 +68,9 @@ class TlsSocket:
         # Setting up foundational variables.
         socket = self.socket
         soh    = b"\x01"
+        end    = b"\r\n" # Fixes an error when executing command i72E.
 
-        byte_command = soh + bytes(command, "utf-8")
+        byte_command = soh + bytes(command, "utf-8") + end
         is_display   = command[0].isupper()
 
         # Send command and repeatedly receive data in chunks until ETX is found.
