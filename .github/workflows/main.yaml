@@ -10,6 +10,7 @@ on:
       - docs
       - LICENSE
       - README.md
+      - .github
   pull_request:
     branches:
       - "*"
