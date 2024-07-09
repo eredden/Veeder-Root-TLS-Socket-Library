@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "veeder_root_tls_socket_library"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
     { name = "Evan Redden", email = "redden.evan@gmail.com" }
 ]
