@@ -136,7 +136,7 @@ that is typically given by these systems. This serves well for extracting specif
 >   'day': 26,
 >   'hour': 16,
 >   'minute': 14,
->   'alarms': [{'alarm_category': 2, 'alarm_type': 5, 'tank_number': 1}]
+>   'alarms': [{'alarm_category': 2, 'alarm_type': 5, 'tank_number': '01'}]
 > }
 > ```
 
