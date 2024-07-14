@@ -850,6 +850,8 @@ def function_208(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
+# Functions 20A through 219 need to be added.
+
 def function_21A(tls: TlsSocket, tank: str) -> dict:
     """
     Runs function 21A on a given Veeder-Root TLS device and returns a dict with 
@@ -1046,7 +1048,7 @@ def function_221(tls: TlsSocket, tank: str, current_report: bool) -> dict:
     return data
 
 
-# Coming back to functions 222 through to 227 soon.
+# Functions 222 through 227 need to be added.
 
 def function_251(tls: TlsSocket, tank: str) -> dict:
     """
