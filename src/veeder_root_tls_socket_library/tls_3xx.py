@@ -1,7 +1,7 @@
 # tls_3xx.py - A series of functions used to extract data from TLS system outputs.
 
-from veeder_root_tls_socket_library.socket import TlsSocket
 from veeder_root_tls_socket_library.format import _get_timestamp, _split_data, _hex_to_float
+from veeder_root_tls_socket_library.socket import TlsSocket
 
 def function_101(tls: TlsSocket, tank: str) -> dict:
     """

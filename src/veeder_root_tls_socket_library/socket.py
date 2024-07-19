@@ -1,6 +1,6 @@
 # socket.py - Defines the socket used to connect to TLS automatic tank gauges.
 
-import time
+from time import sleep
 import socket
 
 class TlsSocket:
@@ -80,7 +80,7 @@ class TlsSocket:
         socket.sendall(byte_command)
 
         for _ in range(0, retries):
-            time.sleep(timeout)
+            sleep(timeout)
 
             try:                 
                 chunk = socket.recv(data_size)

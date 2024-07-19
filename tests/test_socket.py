@@ -1,14 +1,14 @@
 # test_socket.py - Tests whether or not the TlsSocket class operates as intended.
 
-import os
-import unittest
 from datetime import date
+from os import environ
+import unittest
 from veeder_root_tls_socket_library.socket import TlsSocket
 
 class test_tlsSocket(unittest.TestCase):
     def setUp(self):
-        self.ip   = os.environ["TLS_IP"]
-        self.port = int(os.environ["TLS_PORT"])
+        self.ip   = environ["TLS_IP"]
+        self.port = int(environ["TLS_PORT"])
 
         if not self.ip or not self.port:
             raise ValueError("TLS_IP and TLS_PORT environment variables must have values.")
