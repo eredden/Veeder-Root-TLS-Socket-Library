@@ -1,13 +1,15 @@
 [build-system]
-requires = ["setuptools>=70.0"]
+requires = [
+    "setuptools >= 70.0",
+    "build >= 1.2.1",
+    "datetime >= 5.5"
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "veeder_root_tls_socket_library"
 version = "1.0.2"
-authors = [
-    { name = "Evan Redden", email = "redden.evan@gmail.com" }
-]
+authors = [ {name = "Evan Redden", email = "redden.evan@gmail.com"} ]
 description = "Socket library for querying and extracting data from Veeder-Root TLS systems."
 readme = "README.md"
 requires-python = ">=3.10"
