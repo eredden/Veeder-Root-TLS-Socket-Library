@@ -1,4 +1,5 @@
 # tls_client.py - A command-line interface for communicating with TLS automatic tank gauges.
+# This is not included with the veeder_root_tls_socket_library wheel or PyPI package.
 
 from argparse import ArgumentParser
 from veeder_root_tls_socket_library.socket import TlsSocket
