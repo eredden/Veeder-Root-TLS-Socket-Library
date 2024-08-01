@@ -41,7 +41,6 @@ jobs:
 
       - name: Download dependencies
         run: |
-          pip install .
           python -m build
           pip install dist/*.whl
 
