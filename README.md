@@ -100,7 +100,7 @@ to my library.
 
 You can also use the ``tls_client.py`` file that I created for this library to interact with the 
 automatic tank gauge systems through a command line interface, similar to how you would with other 
-systems through Telnet, SSH, or Putty.
+systems through Telnet, SSH, or Putty. This is not currently included with the PyPI distribution.
 
 **Script:**
 
