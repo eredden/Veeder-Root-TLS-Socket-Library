@@ -464,7 +464,7 @@ def function_201(tls: TlsSocket, tank: str) -> dict:
             data["tanks"].append({
                 "tank_number":      value[0:2],
                 "product_code":     value[2:3],
-                "tank_status_bits": int(value[3:7]),
+                "tank_status_bits": int(value[3:7], 16),
                 "volume":           _hex_to_float(value[9:17]),
                 "tc_volume":        _hex_to_float(value[17:25]),
                 "ullage":           _hex_to_float(value[25:33]),
@@ -882,7 +882,7 @@ def function_21A(tls: TlsSocket, tank: str) -> dict:
             data["tanks"].append({
                 "tank_number":      value[0:2],
                 "product_code":     value[2:3],
-                "tank_status_bits": int(value[3:7]),
+                "tank_status_bits": int(value[3:7], 16),
                 "volume":           _hex_to_float(value[9:17]),
                 "tc_volume":        _hex_to_float(value[17:25]),
                 "ullage":           _hex_to_float(value[25:33]),
