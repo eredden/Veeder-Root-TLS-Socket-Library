@@ -40,7 +40,7 @@ class TlsSocket:
                 etx: bytes = b"\x03",
                 retries: int = 30,
                 timeout: int = 1,
-                data_size: int = 4098) -> str:
+                data_size: int = 1200) -> str:
         """
         Sends a command to a socket connection using the command 
         format from the Veeder-Root Serial Interface Manual 576013-635.
@@ -56,6 +56,8 @@ class TlsSocket:
         timeout - The amount of time to listen per retry.
 
         data_size - The maximum amount of bytes to listen for at any time.
+        Set to 1200 by default, as the maximum baud rate (bits per second)
+        that a Veeder-Root automatic tank gauge can send is 9600.
         """
 
         # Validating function arguments prior to executing any commands.
