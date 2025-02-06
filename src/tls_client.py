@@ -31,10 +31,13 @@ if __name__ == "__main__":
                     try:                      output = tls.execute(command)
                     except ValueError as err: output = err.args[0] 
 
-            if type(output) == dict:
-                for key in output.keys():
-                    print(f"{key}: {output[key]}")
-            else:
-                print(output)
+                    # Error arguments may be output as a dictionary.
+                    if type(output) == dict:
+                        for key in output.keys():
+                            print(f"{key}: {output[key]}")
+
+                    # Print any other output type to the terminal.
+                    else:
+                        print(output)
 
         print("Connection ended.\n")
