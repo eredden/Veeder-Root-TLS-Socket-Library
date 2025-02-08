@@ -92,7 +92,7 @@ class TlsSocket:
             except TimeoutError: 
                 raise ValueError("Invalid command.")
     
-        return self.__handle_response(byte_response, byte_command, is_display)
+        return self._handle_response(byte_response, byte_command, is_display)
     
     def _handle_response(self, byte_response: bytes, 
                           byte_command: bytes, is_display: bool) -> str:
@@ -125,7 +125,7 @@ class TlsSocket:
             if checksum_separator not in checksum_separator_position:
                 raise ValueError("Checksum missing from command response.")
 
-            if not self.__data_integrity_check(byte_response):
+            if not self._data_integrity_check(byte_response):
                 raise ValueError("Data integrity invalidated due to invalid checksum.")
             
             # Removes SOH, command, checksum, and ETX from being shown in output.
