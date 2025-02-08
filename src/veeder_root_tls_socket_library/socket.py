@@ -94,7 +94,7 @@ class TlsSocket:
     
         return self.__handle_response(byte_response, byte_command, is_display)
     
-    def __handle_response(self, byte_response: bytes, 
+    def _handle_response(self, byte_response: bytes, 
                           byte_command: bytes, is_display: bool) -> str:
         """
         Handles responses from the TLS system after executing a command.
@@ -133,7 +133,7 @@ class TlsSocket:
 
         return response
 
-    def __data_integrity_check(self, byte_response: bytes) -> bool:
+    def _data_integrity_check(self, byte_response: bytes) -> bool:
         """
         Verifies whether or not a command response retains its integrity
         after transmission by comparing it against the response checksum.
@@ -145,18 +145,11 @@ class TlsSocket:
         response = byte_response.decode()
         message  = response[:-5]
         checksum = response[-5:-1]
+        integrity_threshold = "0b10000000000000000"
 
         # Calculate the 16-bit binary count of the message.
-        message_int = sum(ord(char) for char in message) & 0xFFFF
-
-        # Convert message integer to twos complement integer.
-        message_int = message_int + (message_int >> 16)
-
-        # Convert checksum hexadecimal string into integer.
+        message_sum = sum(ord(char) for char in message)
         checksum_int = int(checksum, 16)
 
         # Compare sum of checksum and message to expected result.
-        integrity_threshold = "0b10000000000000000"
-        binary_sum = bin(message_int + checksum_int)
-        
-        return binary_sum == integrity_threshold
+        return bin(message_sum + checksum_int) == integrity_threshold

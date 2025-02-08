@@ -35,5 +35,24 @@ class test_tlsSocket(unittest.TestCase):
             with self.assertRaises(ValueError):
                 tls.execute("test")
 
+    def test_checksum(self):
+        """
+        Verify that TlsSocket._data_integrity_check() correctly validates outputs.
+        """
+
+        # Cases are tuples with the full command output and expected checksum validation result.
+        cases = [
+            (b"\x01i101002312301342020402&&FB3B\x03", True),
+            (b"\x01i101002312301342020402&&FB3A\x03", False),
+            (b"\x01j101002312301342020402&&FB3B\x03", False)
+        ]
+
+        with TlsSocket(self.ip, self.port) as tls:
+            for case in cases:
+                actual = tls._data_integrity_check(case[0])
+                expected = case[1]
+
+                self.assertEqual(actual, expected)
+
 if __name__ == "__main__":
     unittest.main()
