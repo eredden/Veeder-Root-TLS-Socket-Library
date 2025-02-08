@@ -8,22 +8,19 @@ class test_format(unittest.TestCase):
         """
         Verify that get_timestamp() correctly extracts timestamps from command output.
         """
-
-        outputs = [
-            "240626210300",
-            "230525200300",
-            "220424190300"
-        ]
-        
-        expected = [
-            {"year": 24, "month": 6, "day": 26, "hour": 21, "minute": 3},
-            {"year": 23, "month": 5, "day": 25, "hour": 20, "minute": 3},
-            {"year": 22, "month": 4, "day": 24, "hour": 19, "minute": 3}
+        # Cases are tuples with unformatted timestamps and formatted timestamps.
+        cases = [
+            ("240626210300", {"year": 24, "month": 6, "day": 26, "hour": 21, "minute": 3}),
+            ("230525200300", {"year": 23, "month": 5, "day": 25, "hour": 20, "minute": 3}),
+            ("220424190300", {"year": 22, "month": 4, "day": 24, "hour": 19, "minute": 3})
         ]
 
-        for index in range(0, len(outputs)):
-            actual = _get_timestamp(outputs[index])
-            self.assertEqual(actual, expected[index])
+        for case in cases:
+            actual = _get_timestamp(case[0])
+            expected = case[1]
+
+            self.assertEqual(actual, expected)
+
 
     def test_split_data(self):
         """
@@ -55,12 +52,19 @@ class test_format(unittest.TestCase):
         Verify that hex_to_float() correctly makes IEEE floats from hexadecimal codes.
         """
 
-        hex_codes = ["3F800000", "B8D1B717", "C2C7FAE1", "461C4000"]
-        expected  = [       1.0,    -0.0001,     -99.99,    10000.0]
+        # Cases are tuples with a hexadecimal float and the equivalent decimal float.
+        cases = [
+            ("3F800000",     1.0),
+            ("B8D1B717", -0.0001),
+            ("C2C7FAE1",  -99.99),
+            ("461C4000", 10000.0)
+        ]
 
-        for index in range(0, len(hex_codes)):
-            actual = _hex_to_float(hex_codes[index])
-            self.assertEqual(actual, expected[index])
+        for case in cases:
+            actual = _hex_to_float(case[0])
+            expected = case[1]
+
+            self.assertEqual(actual, expected)
 
 if __name__ == "__main__":
     unittest.main()
