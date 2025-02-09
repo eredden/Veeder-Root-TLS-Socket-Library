@@ -148,7 +148,7 @@ class TlsSocket:
         integrity_threshold = "0b10000000000000000"
 
         # Calculate the 16-bit binary count of the message.
-        message_sum = sum(ord(char) for char in message)
+        message_sum = sum(ord(char) for char in message) & 0xFFFF
         checksum_int = int(checksum, 16)
 
         # Compare sum of checksum and message to expected result.
