@@ -12,7 +12,8 @@ authors = [ {name = "Evan Redden", email = "redden.evan@gmail.com"} ]
 description = "Socket library for querying and extracting data from Veeder-Root TLS systems."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = ["LICENSE"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent"
