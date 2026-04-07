@@ -1083,3 +1083,37 @@ def function_251(tls: TlsSocket, tank: str) -> dict:
             })
 
     return data
+
+def function_602(tls: TlsSocket, tank: str) -> dict:
+    """
+    Runs function 602 on a given Veeder-Root TLS device and returns a dict with 
+    report info.
+
+    tls - A socket for a TLS device, should be created with the tlsSocket class.
+
+    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    """
+
+    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
+    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
+    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+
+    # Execute the command and extract common values from it immediately.
+    response = tls.execute("i602" + tank)    
+    data = _get_timestamp(response)
+    
+    data["labels"] = {}
+
+    # Get values from the remaining data, split up labels.
+    response = response[10:]
+    data_length = 22
+
+    # Get values from each alarm.
+    if len(response) >= data_length: 
+        for value in _split_data(response, data_length):
+            tank_number = int(value[0:2])
+            label = str(value[2:23]).strip()
+
+            data["labels"][tank_number] = label
+
+    return data
