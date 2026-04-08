@@ -18,6 +18,9 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent"
 ]
+dependencies = [
+    "asyncio"
+]
 
 [project.urls]
 Homepage = "https://github.com/eredden/Veeder-Root-TLS-Socket-Library"
