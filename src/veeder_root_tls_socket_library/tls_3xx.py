@@ -1,24 +1,19 @@
 # tls_3xx.py - A series of functions used to extract data from TLS system outputs.
 
 from veeder_root_tls_socket_library.format import _get_timestamp, _split_data, _hex_to_float
-from veeder_root_tls_socket_library.socket import TlsSocket
 
-def function_101(tls: TlsSocket, tank: str) -> dict:
+def function_101(response: str) -> dict:
     """
-    Runs function 101 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 101 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i101" + tank)    
     data = _get_timestamp(response)
     
     data["alarms"] = []
@@ -38,16 +33,18 @@ def function_101(tls: TlsSocket, tank: str) -> dict:
 
     return data
         
-def function_102(tls: TlsSocket) -> dict:
+def function_102(response: str) -> dict:
     """
-    Runs function 102 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 102 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
 
-    # Execute the command and extract common values from it immediately.
-    response = tls.execute("i10200")    
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
+
+    # Execute the command and extract common values from it immediately.  
     data = _get_timestamp(response)
     
     data["slots"] = []
@@ -68,16 +65,18 @@ def function_102(tls: TlsSocket) -> dict:
 
     return data
 
-def function_111(tls: TlsSocket) -> dict:
+def function_111(response: str) -> dict:
     """
-    Runs function 111 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 111 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str:
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11100")    
     data = _get_timestamp(response)
     
     data["alarms"] = []
@@ -104,16 +103,18 @@ def function_111(tls: TlsSocket) -> dict:
         
     return data
 
-def function_112(tls: TlsSocket) -> dict:
+def function_112(response: str) -> dict:
     """
-    Runs function 112 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 112 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11200")    
     data = _get_timestamp(response)
     
     data["alarms"] = []
@@ -140,16 +141,18 @@ def function_112(tls: TlsSocket) -> dict:
     
     return data
 
-def function_113(tls: TlsSocket) -> dict:
+def function_113(response: str) -> dict:
     """
-    Runs function 113 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 113 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11300")
     data = _get_timestamp(response)
 
     # Store extra non-repeated info from this response.
@@ -181,16 +184,18 @@ def function_113(tls: TlsSocket) -> dict:
 
     return data
 
-def function_114(tls: TlsSocket) -> dict:
+def function_114(response: str) -> dict:
     """
-    Runs function 114 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 114 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11400")    
     data = _get_timestamp(response)
 
     # Store extra non-repeated info from this response.
@@ -223,16 +228,18 @@ def function_114(tls: TlsSocket) -> dict:
 
     return data
 
-def function_115(tls: TlsSocket) -> dict:
+def function_115(response: str) -> dict:
     """
-    Runs function 115 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 115 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11500")    
     data = _get_timestamp(response)
 
     # Store extra non-repeated info from this response.
@@ -264,16 +271,18 @@ def function_115(tls: TlsSocket) -> dict:
 
     return data
 
-def function_116(tls: TlsSocket) -> dict:
+def function_116(response: str) -> dict:
     """
-    Runs function 116 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 116 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11600")    
     data = _get_timestamp(response)
 
     # Store extra non-repeated info from this response.
@@ -304,31 +313,18 @@ def function_116(tls: TlsSocket) -> dict:
             
     return data
 
-def function_119(tls: TlsSocket, start_date: str = "", end_date: str = "") -> dict:
+def function_119(response: str) -> dict:
     """
-    Runs function 119 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 119 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    start_date - The beginning of the range of time to look through with this 
-    command (yymmdd format).
-
-    end_date - The end of the range of time to look through with this command 
-    (yymmdd format).
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    if len(start_date) == 6 and len(end_date) == 6:
-        if start_date.isdigit() and end_date.isdigit():
-            response = tls.execute("i11900" + start_date + end_date) 
-        else:
-            raise ValueError("The 'start_date' and 'end_date' arguments must be in the format 'YYMMDD'.")
-    elif len(start_date) == 0 and len(end_date) == 0: 
-        response = tls.execute("i11900")
-    else:
-        raise ValueError("Both 'start_date' and 'end_date' must either be six digits long or empty.")
-
     data = _get_timestamp(response)
 
     # Store extra non-repeated info from this response.
@@ -354,16 +350,18 @@ def function_119(tls: TlsSocket, start_date: str = "", end_date: str = "") -> di
 
     return data
 
-def function_11A(tls: TlsSocket) -> dict:
+def function_11A(response: str) -> dict:
     """
-    Runs function 11A on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 11A output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str:
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11A00")    
     data = _get_timestamp(response)
 
     # Store extra non-repeated info from this response.
@@ -389,16 +387,18 @@ def function_11A(tls: TlsSocket) -> dict:
         
     return data
 
-def function_11B(tls: TlsSocket) -> dict:
+def function_11B(response: str) -> dict:
     """
-    Runs function 11B on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 11B output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
+    response - The byte response from the function converted to a string format.
     """
+
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i11B00")    
     data = _get_timestamp(response)
 
     # Store extra non-repeated info from this response.
@@ -434,22 +434,18 @@ def function_11B(tls: TlsSocket) -> dict:
 
     return data
 
-def function_201(tls: TlsSocket, tank: str) -> dict:
+def function_201(response: str) -> dict:
     """
-    Runs function 201 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 201 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i201" + tank)    
     data = _get_timestamp(response)
 
     data["tanks"] = []
@@ -476,22 +472,18 @@ def function_201(tls: TlsSocket, tank: str) -> dict:
     
     return data
 
-def function_202(tls: TlsSocket, tank: str) -> dict:
+def function_202(response: str) -> dict:
     """
-    Runs function 202 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 202 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i202" + tank)    
     data = _get_timestamp(response)
 
     data["tanks"] = []
@@ -512,7 +504,7 @@ def function_202(tls: TlsSocket, tank: str) -> dict:
             "deliveries":   []
         }
 
-        # Slicing off the previously collected values, now getting all deliveries.
+        # Slicing off previously collected values, now getting all deliveries.
         response = response[5:]
 
         for _ in range(0, delivery_count):
@@ -547,22 +539,18 @@ def function_202(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
-def function_203(tls: TlsSocket, tank: str) -> dict:
+def function_203(response: str) -> dict:
     """
-    Runs function 203 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 203 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i203" + tank)    
     data = _get_timestamp(response)
 
     data["tanks"] = []
@@ -592,22 +580,18 @@ def function_203(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
-def function_204(tls: TlsSocket, tank: str) -> dict:
+def function_204(response: str) -> dict:
     """
-    Runs function 204 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 204 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
-    # Execute the command and extract common values from it immediately.
-    response = tls.execute("i204" + tank)    
+    # Execute the command and extract common values from it immediately.    
     data = _get_timestamp(response)
 
     data["inventory"] = []
@@ -640,22 +624,18 @@ def function_204(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
-def function_205(tls: TlsSocket, tank: str) -> dict:
+def function_205(response: str) -> dict:
     """
-    Runs function 205 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 205 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i205" + tank)    
     data = _get_timestamp(response)
 
     data["alarms"] = []
@@ -684,39 +664,35 @@ def function_205(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
-def function_206(tls: TlsSocket, tank: str) -> dict:
+def function_206(response: str) -> dict:
     """
-    Runs function 206 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 206 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i206" + tank)    
     data = _get_timestamp(response)
 
     data["tanks"] = {}
 
-    # Get the list of alarms for each tank after finding how many alarms each tank has.
+    # Get the list of alarms for each tank after finding alarm per tank count.
     response = response[10:]
 
     while response:
         if len(response) < 18: break
 
-        # Collect tank number and alarm count, then slice them out of the current data.
+        # Collect tank number and alarm count, then slice them out of the data.
         tank_number = response[0:2]
         alarm_count = int(response[2:4])
 
         response = response[4:]
 
-        # Create a dictionary for the tank and add the alarms into an associated list.
+        # Create a dictionary for the tank and add the alarms into a list.
         data["tanks"][tank_number] = []
     
         for _ in range(0, alarm_count):
@@ -736,39 +712,35 @@ def function_206(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
-def function_207(tls: TlsSocket, tank: str) -> dict:
+def function_207(response: str) -> dict:
     """
-    Runs function 207 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 207 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i207" + tank)    
     data = _get_timestamp(response)
 
     data["tanks"] = {}
 
-    # Get the list of tests for each tank after finding how many tests each tank has.
+    # Get the list of tests for each tank after finding test per tank count.
     response = response[10:]
 
     while response:
         if len(response) < 44: break
 
-        # Collect tank number and test count, then slice them out of the current data.
+        # Collect tank number and test count, then slice them out.
         tank_number = response[0:2]
         test_count = int(response[2:4], 16)
 
         response = response[4:]
 
-        # Create a dictionary for the tank and add the tests into an associated list.
+        # Create a dictionary for the tank and add the tests into an list.
         data["tanks"][tank_number] = []
     
         for _ in range(0, test_count):
@@ -793,39 +765,35 @@ def function_207(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
-def function_208(tls: TlsSocket, tank: str) -> dict:
+def function_208(response: str) -> dict:
     """
-    Runs function 208 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 208 output from a Veeder-Root TLS device and returns a 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i208" + tank)    
     data = _get_timestamp(response)
 
     data["tanks"] = {}
 
-    # Get the list of tests for each tank after finding how many tests each tank has.
+    # Get the list of tests for each tank after finding test per tank count.
     response = response[10:]
 
     while response:
         if len(response) < 44: break
 
-        # Collect tank number and test count, then slice them out of the current data.
+        # Collect tank number and test count, then slice them out.
         tank_number = response[0:2]
         test_count = int(response[2:4], 16)
 
         response = response[4:]
 
-        # Create a dictionary for the tank and add the tests into an associated list.
+        # Create a dictionary for the tank and add the tests into an list.
         data["tanks"][tank_number] = []
     
         for _ in range(0, test_count):
@@ -852,22 +820,18 @@ def function_208(tls: TlsSocket, tank: str) -> dict:
 
 # Functions 20A through 219 need to be added.
 
-def function_21A(tls: TlsSocket, tank: str) -> dict:
+def function_21A(response: str) -> dict:
     """
-    Runs function 21A on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 21A output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i21A" + tank)    
     data = _get_timestamp(response)
 
     data["tanks"] = []
@@ -895,30 +859,18 @@ def function_21A(tls: TlsSocket, tank: str) -> dict:
     return data
 
 # The TLS system I am using does not support this function. This is untested.
-def function_21B(tls: TlsSocket, tank: str, deliveries: int) -> dict:
+def function_21B(response: str) -> dict:
     """
-    Runs function 21B on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 21B output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
-
-    deliveries - The amount of deliveries to show for each tank.
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
-
-    if not type(deliveries) == int:       raise ValueError("Argument 'deliveries' must be an integer.")
-    if deliveries < 1 or deliveries > 99: raise ValueError("Argument 'deliveries' must be two digits long.")
-
-    # When passed into the command, deliveries must be two digits long.
-    deliveries = str(deliveries).zfill(2)
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i21B" + tank + deliveries)    
     data = _get_timestamp(response)
 
     data["tanks"] = {}
@@ -929,13 +881,13 @@ def function_21B(tls: TlsSocket, tank: str, deliveries: int) -> dict:
     while response:
         if len(response) < 194: break
 
-        # Collect tank number and delivery count, then slice them out of the current data.
+        # Collect tank number and delivery count, then slice them out.
         tank_number = response[0:2]
         delivery_count = int(response[2:4])
 
         response = response[4:]
 
-        # Create a dictionary for the tank and add the deliveries into an associated list.
+        # Create a dictionary for the tank and add the deliveries into an list.
         data["tanks"][tank_number] = []
     
         for _ in range(0, delivery_count):
@@ -980,28 +932,18 @@ def function_21B(tls: TlsSocket, tank: str, deliveries: int) -> dict:
 
     return data
 
-def function_221(tls: TlsSocket, tank: str, current_report: bool) -> dict:
+def function_221(response: str) -> dict:
     """
-    Runs function 221 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 221 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
-
-    current_report - Boolean indicating whether current report or previous report should be shown.
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
-
-    if not type(current_report) == bool: raise ValueError("Argument 'current_report' must be " \
-                                                          "a bool.")
-    report_type = "01" if current_report else "02"
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i221" + tank + report_type)
     data = _get_timestamp(response)
 
     data["reports"] = []
@@ -1012,7 +954,7 @@ def function_221(tls: TlsSocket, tank: str, current_report: bool) -> dict:
     while response:
         if len(response) < 68: break
 
-        # Collect tank number and alarm count, then slice them out of the current data.
+        # Collect tank number and alarm count, then slice them out.
         tank_number    = response[0:2]
         product_code   = response[2:3]
         probe_type     = response[3:5]
@@ -1020,7 +962,7 @@ def function_221(tls: TlsSocket, tank: str, current_report: bool) -> dict:
 
         response = response[8:]
 
-        # Create a dictionary for the tank and add the alarms into an associated list.
+        # Create a dictionary for the tank and add the alarms into an list.
         data["reports"][tank_number] = []
     
         for _ in range(0, delivery_count):
@@ -1050,22 +992,18 @@ def function_221(tls: TlsSocket, tank: str, current_report: bool) -> dict:
 
 # Functions 222 through 227 need to be added.
 
-def function_251(tls: TlsSocket, tank: str) -> dict:
+def function_251(response: str) -> dict:
     """
-    Runs function 251 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 251 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i251" + tank)    
     data = _get_timestamp(response)
     
     data["reports"] = []
@@ -1084,22 +1022,18 @@ def function_251(tls: TlsSocket, tank: str) -> dict:
 
     return data
 
-def function_602(tls: TlsSocket, tank: str) -> dict:
+def function_602(response: str) -> dict:
     """
-    Runs function 602 on a given Veeder-Root TLS device and returns a dict with 
-    report info.
+    Parses function 602 output from a Veeder-Root TLS device and returns a dict 
+    with report info.
 
-    tls - A socket for a TLS device, should be created with the tlsSocket class.
-
-    tank - The tank number (ex. 00 for all tanks, 01 for tank one, etc).
+    response - The byte response from the function converted to a string format.
     """
 
-    if not type(tank) == str: raise ValueError("Argument 'tank' must be a string.")
-    if not len(tank) == 2:    raise ValueError("Argument 'tank' must be two digits long.")
-    if not tank.isdigit():    raise ValueError("Argument 'tank' must only contain numbers.")
+    if not type(response) == str: 
+        raise ValueError("Argument 'response' must be a string.")
 
     # Execute the command and extract common values from it immediately.
-    response = tls.execute("i602" + tank)    
     data = _get_timestamp(response)
     
     data["labels"] = {}
