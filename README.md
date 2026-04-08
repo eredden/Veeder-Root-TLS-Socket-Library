@@ -104,6 +104,8 @@ to my library.
 As an example of an asynchronous script, review the simple script below!
 
 ```python
+import asyncio
+
 from veeder_root_tls_socket_library.async_socket import AsyncTlsSocket
 from veeder_root_tls_socket_library.tls_3xx import function_201
 from veeder_root_tls_socket_library.tls_3xx import function_602
