@@ -3,7 +3,7 @@
 
 import asyncio
 
-class AsyncTLSSocket:
+class AsyncTlsSocket:
     """
     Defines an async socket for the TLS automatic tank gauges 
     manufactured by Veeder-Root.
