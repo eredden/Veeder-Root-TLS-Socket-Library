@@ -28,24 +28,24 @@ command.
 ## Examples
 
 This script demonstrates how you can programmatically connect to an automatic tank gauge system and 
-get a system status report.
+get a system status report. Note that this uses the synchronous TlsSocket -- we also have `AsyncTlsSocket`.
 
-**Script:**
+#### Script
 
->```python
-> from veeder_root_tls_socket_library.socket import TlsSocket
->
-> tls = TlsSocket("127.0.0.1", 10001) # initial connection
-> response = tls.execute("i10100") # get system status report
-> 
-> print(response)
->```
+```python
+from veeder_root_tls_socket_library.socket import TlsSocket
 
-**Output:**
+tls = TlsSocket("127.0.0.1", 10001) # initial connection
+response = tls.execute("i10100") # get system status report
 
->```python
-> "2312301342020402"
->```
+print(response)
+```
+
+#### Output
+
+```python
+"2312301342020402"
+```
 
 This output shows the response from the TLS system. The data ``2312301342020402`` is provided to you
 through the ``execute()`` function as a string. You can see that the start of header ``\x01``, the 
@@ -62,30 +62,35 @@ I have also created various functions that can be used to query information from
 a Python dict object rather than the raw output that is typically given by these systems. This serves well 
 for extracting specific bits of data from these commands (e.g. the ullage of a specific tank).
 
-**Script:**
+#### Script
 
-> ```python
-> from veeder_root_tls_socket_library.socket import TlsSocket
-> from veeder_root_tls_socket_library import tls_3xx
->
-> tls = TlsSocket("127.0.0.1", 10001) # initial connection
-> response = tls_3xx.function_101(tls, "00") # function_101() used instead of execute("i10100")
->
-> print(response)
-> ```
+```python
+from veeder_root_tls_socket_library.socket import TlsSocket
+from veeder_root_tls_socket_library import tls_3xx
 
-**Output:**
+tls = TlsSocket("127.0.0.1", 10001) # initial connection
+raw_response = tls_3xx.execute("i10100") # get system status report
+response = function_101(raw_response) # function_101() used to transform raw response
 
-> ```python
-> {
->   'year': 24, 
->   'month': 5,
->   'day': 26,
->   'hour': 16,
->   'minute': 14,
->   'alarms': [{'alarm_category': 2, 'alarm_type': 5, 'tank_number': '01'}]
-> }
-> ```
+print(response)
+```
+
+#### Output
+
+```python
+{
+    'year': 24, 
+    'month': 5,
+    'day': 26,
+    'hour': 16,
+    'minute': 14,
+    'alarms': [{
+        'alarm_category': 2, 
+        'alarm_type': 5, 
+        'tank_number': '01'
+    }]
+}
+```
 
 This looks much more readable than a string of numbers! By using these dedicated functions, you can 
 have this data more readily accessible through a Python `dict` object. Another notable upside of 
@@ -96,49 +101,103 @@ The downside of this is that not every TLS-3XX function code has been added yet.
 submit a feature request or pull request with additional functions if you would like them added 
 to my library.
 
+As an example of an asynchronous script, review the simple script below!
+
+```python
+from veeder_root_tls_socket_library.async_socket import AsyncTlsSocket
+from veeder_root_tls_socket_library.tls_3xx import function_201
+from veeder_root_tls_socket_library.tls_3xx import function_602
+
+# Pulls raw tank data from the tank leak system, including product codes.
+async def pull_tank_data(ip: str) -> list:
+    try:
+        # Instantiate a TLS socket connection.
+        async with AsyncTLSSocket(ip) as tls_socket:
+            print(f"Connected to {ip}.")
+
+            return {
+                "ip": ip,
+                "success": True,
+                "i60200": await tls_socket.execute("i60200"),
+                "i20100": await tls_socket.execute("i20100")
+            }
+    
+    except asyncio.TimeoutError:
+        print(f"Connection to {ip} timed out.")
+
+    except:
+        print(f"Connection to {ip} failed.")
+    
+    return {
+        "ip": ip,
+        "success": False
+    }
+
+async def main():
+    # Asynchronously pull tank data from the tank leak systems.
+    ip_list = [
+        "1.1.1.1", 
+        "2.2.2.2", 
+        "3.3.3.3"
+    ]
+    tasks = []
+
+    for ip in ip_list:
+        task = pull_tank_data(ip)
+        tasks.append(task)
+    
+    results = await asyncio.gather(*tasks)
+
+    # Convert raw command responses into Python dictionaries.
+    for result in results:
+        if result["success"] == True:
+            result["i60200"] = function_602(result["i60200"])
+            result["i20100"] = function_201(result["i20100"])
+        
+        print(result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 # Using the TLS Client
 
 You can also use the ``tls_client.py`` file that I created for this library to interact with the 
 automatic tank gauge systems through a command line interface, similar to how you would with other 
 systems through Telnet, SSH, or Putty. This is not currently included with the PyPI distribution.
 
-**Script:**
 
->```python
-> python tls_client.py "127.0.0.1" 10001
->```
+```bash
+you@computer:/$ python tls_client.py "127.0.0.1" 10001
 
-**Output:**
+You are connected to 127.0.0.1 using port 10001.
 
->```
-> You are connected to 127.0.0.1 using port 10001.
->
-> >>
->```
+>>
+```
 
 From here, you can type in any function code to interact with the TLS system. As an example, you can
 type in ``I10100`` to output a system status report in display format, and ``i10100`` to display a 
 system status report in computer format. The required start of header CTRL + A is automatically 
 prepended to your command, so you do not need to worry about that.
 
-> ```
-> >> i10100
-> 2312301229020402
->
-> >> I10100 
-> DEC 30, 2023 12:29 PM
->
-> GAS STATION
-> 1234 GAS LANE
-> HOUSTON, TX
-> H07188463105001
->
-> SYSTEM STATUS REPORT
->
-> T 2:OVERFILL ALARM
->
-> >>
-> ```
+```
+>> i10100
+2312301229020402
+
+>> I10100 
+DEC 30, 2023 12:29 PM
+
+GAS STATION
+1234 GAS LANE
+HOUSTON, TX
+H07188463105001
+
+SYSTEM STATUS REPORT
+
+T 2:OVERFILL ALARM
+
+>>
+```
 
 The time between responses will vary based on how large the responses are. The response for a 
 command like `i10100` will be significantly smaller than that of `I11100`. I have implemented a 
